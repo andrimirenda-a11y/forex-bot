@@ -1,0 +1,52 @@
+name: Bot forex
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # ogni 10 minuti (GitHub a volte ritarda di qualche minuto)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forex-bot
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Prima calibrazione (solo se manca)
+        if: hashFiles('data/calibration.json') == ''
+        run: python -m bot.calibrate
+
+      - name: Giro del bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          APP_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          LISTEN_MINUTES: "7"
+        run: python -m bot.main
+
+      - name: Salva i dati
+        if: always()
+        run: |
+          git config user.name "forex-bot"
+          git config user.email "forex-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Aggiornamento bot $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs && git push && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
