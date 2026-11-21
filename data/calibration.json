@@ -1,0 +1,280 @@
+{
+ "generated": "2026-11-21T21:07:44Z",
+ "data_from": "2024-11-21T22:00:00Z",
+ "data_to": "2026-11-20T21:00:00Z",
+ "pairs": {
+  "EURUSD": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 18,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 2.0,
+    "breakeven_r": 1.0,
+    "score_min": 60,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 31,
+    "win_rate": 25.8,
+    "profit_factor": 0.89,
+    "net_r": -1.99,
+    "expectancy_r": -0.064,
+    "max_dd_r": 8.77,
+    "avg_win_r": 1.96,
+    "avg_loss_r": -0.77
+   },
+   "out_sample": {
+    "trades": 9,
+    "win_rate": 33.3,
+    "profit_factor": 1.36,
+    "net_r": 1.56,
+    "expectancy_r": 0.174,
+    "max_dd_r": 2.22,
+    "avg_win_r": 1.95,
+    "avg_loss_r": -0.72
+   },
+   "note": "Disattivata: nessuna combinazione di parametri guadagna nel periodo di prova (migliore PF 0,89)."
+  },
+  "GBPUSD": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 22,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 2.0,
+    "breakeven_r": 1.0,
+    "score_min": 70,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 20,
+    "win_rate": 25.0,
+    "profit_factor": 0.73,
+    "net_r": -3.65,
+    "expectancy_r": -0.183,
+    "max_dd_r": 6.34,
+    "avg_win_r": 1.96,
+    "avg_loss_r": -0.9
+   },
+   "out_sample": {
+    "trades": 7,
+    "win_rate": 42.9,
+    "profit_factor": 1.82,
+    "net_r": 2.62,
+    "expectancy_r": 0.375,
+    "max_dd_r": 1.11,
+    "avg_win_r": 1.94,
+    "avg_loss_r": -0.8
+   },
+   "note": "Disattivata: nessuna combinazione di parametri guadagna nel periodo di prova (migliore PF 0,73)."
+  },
+  "EURGBP": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 22,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 2.5,
+    "breakeven_r": 1.0,
+    "score_min": 70,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 15,
+    "win_rate": 20.0,
+    "profit_factor": 0.8,
+    "net_r": -1.86,
+    "expectancy_r": -0.124,
+    "max_dd_r": 3.33,
+    "avg_win_r": 2.41,
+    "avg_loss_r": -0.76
+   },
+   "out_sample": {
+    "trades": 8,
+    "win_rate": 50.0,
+    "profit_factor": 6.71,
+    "net_r": 8.07,
+    "expectancy_r": 1.009,
+    "max_dd_r": 1.21,
+    "avg_win_r": 2.37,
+    "avg_loss_r": -0.35
+   },
+   "note": "Disattivata: nessuna combinazione di parametri guadagna nel periodo di prova (migliore PF 0,80)."
+  },
+  "USDJPY": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 18,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 2.5,
+    "breakeven_r": 1.0,
+    "score_min": 60,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 25,
+    "win_rate": 20.0,
+    "profit_factor": 0.62,
+    "net_r": -7.63,
+    "expectancy_r": -0.305,
+    "max_dd_r": 7.76,
+    "avg_win_r": 2.48,
+    "avg_loss_r": -1.0
+   },
+   "out_sample": {
+    "trades": 11,
+    "win_rate": 18.2,
+    "profit_factor": 1.12,
+    "net_r": 0.53,
+    "expectancy_r": 0.049,
+    "max_dd_r": 3.21,
+    "avg_win_r": 2.45,
+    "avg_loss_r": -0.49
+   },
+   "note": "Disattivata: nessuna combinazione di parametri guadagna nel periodo di prova (migliore PF 0,62)."
+  },
+  "USDCHF": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 26,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 2.0,
+    "breakeven_r": 1.0,
+    "score_min": 55,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 20,
+    "win_rate": 40.0,
+    "profit_factor": 1.34,
+    "net_r": 3.71,
+    "expectancy_r": 0.185,
+    "max_dd_r": 4.26,
+    "avg_win_r": 1.81,
+    "avg_loss_r": -0.9
+   },
+   "out_sample": {
+    "trades": 11,
+    "win_rate": 9.1,
+    "profit_factor": 0.22,
+    "net_r": -6.85,
+    "expectancy_r": -0.623,
+    "max_dd_r": 8.78,
+    "avg_win_r": 1.93,
+    "avg_loss_r": -0.88
+   },
+   "note": "Disattivata: fuori campione perde (PF 0,22, -6,85 R)."
+  },
+  "AUDUSD": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 26,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 1.5,
+    "breakeven_r": 1.0,
+    "score_min": 55,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 17,
+    "win_rate": 35.3,
+    "profit_factor": 0.81,
+    "net_r": -2.05,
+    "expectancy_r": -0.12,
+    "max_dd_r": 5.8,
+    "avg_win_r": 1.44,
+    "avg_loss_r": -0.97
+   },
+   "out_sample": {
+    "trades": 5,
+    "win_rate": 60.0,
+    "profit_factor": 1.92,
+    "net_r": 2.06,
+    "expectancy_r": 0.411,
+    "max_dd_r": 2.24,
+    "avg_win_r": 1.43,
+    "avg_loss_r": -1.12
+   },
+   "note": "Disattivata: nessuna combinazione di parametri guadagna nel periodo di prova (migliore PF 0,81)."
+  },
+  "USDCAD": {
+   "enabled": false,
+   "params": {
+    "ema_fast_h4": 50,
+    "ema_slow_h4": 200,
+    "adx_min": 26,
+    "ema_pullback": 50,
+    "pullback_atr": 0.4,
+    "rsi_reset": 45,
+    "sl_atr_min": 1.0,
+    "sl_atr_max": 3.0,
+    "rr": 1.5,
+    "breakeven_r": 1.0,
+    "score_min": 55,
+    "session_start": 7,
+    "session_end": 19
+   },
+   "in_sample": {
+    "trades": 22,
+    "win_rate": 27.3,
+    "profit_factor": 0.62,
+    "net_r": -5.41,
+    "expectancy_r": -0.246,
+    "max_dd_r": 7.08,
+    "avg_win_r": 1.46,
+    "avg_loss_r": -0.88
+   },
+   "out_sample": {
+    "trades": 14,
+    "win_rate": 35.7,
+    "profit_factor": 0.93,
+    "net_r": -0.54,
+    "expectancy_r": -0.038,
+    "max_dd_r": 3.33,
+    "avg_win_r": 1.43,
+    "avg_loss_r": -0.86
+   },
+   "note": "Disattivata: nessuna combinazione di parametri guadagna nel periodo di prova (migliore PF 0,62)."
+  }
+ }
+}

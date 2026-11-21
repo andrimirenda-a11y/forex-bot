@@ -1,0 +1,48 @@
+{
+ "balance": 10000.0,
+ "equity": 10000.0,
+ "margin_used": 0,
+ "start_balance": 10000.0,
+ "created": "2026-11-21T21:11:16Z",
+ "last_run": "2026-11-21T21:11:39Z",
+ "open_positions": [],
+ "last_prices": {
+  "EURUSD": {
+   "price": 1.09662,
+   "time": "2026-11-20T21:45:00Z"
+  },
+  "GBPUSD": {
+   "price": 1.30764,
+   "time": "2026-11-20T21:45:00Z"
+  },
+  "EURGBP": {
+   "price": 0.83794,
+   "time": "2026-11-20T21:45:00Z"
+  },
+  "USDJPY": {
+   "price": 158.523,
+   "time": "2026-11-20T21:45:00Z"
+  },
+  "USDCHF": {
+   "price": 0.83951,
+   "time": "2026-11-20T21:45:00Z"
+  },
+  "AUDUSD": {
+   "price": 0.6618,
+   "time": "2026-11-20T21:45:00Z"
+  },
+  "USDCAD": {
+   "price": 1.43397,
+   "time": "2026-11-20T21:45:00Z"
+  }
+ },
+ "paused_pairs": {},
+ "trading_halted_until": null,
+ "halt_reason": null,
+ "last_bar": {},
+ "tg_offset": 0,
+ "tg_chat_id": null,
+ "last_weekly_report": null,
+ "last_error_notice": null,
+ "last_calibration_seen": "2026-11-21T21:07:44Z"
+}
