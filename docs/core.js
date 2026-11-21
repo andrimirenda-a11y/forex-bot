@@ -130,7 +130,7 @@
       winRate: null, profitFactor: null, net: 0, grossWin: 0, grossLoss: 0,
       avgWin: null, avgLoss: null, best: null, worst: null,
       maxWinStreak: 0, maxLossStreak: 0, currentStreak: 0, currentStreakType: null,
-      netPips: 0, avgR: null, byResult: { TP: 0, SL: 0, BE: 0, STOP_MANUALE: 0 },
+      netPips: 0, avgR: null, byResult: { TP: 0, SL: 0, BE: 0, STOP_MANUALE: 0, TEMPO: 0 },
       perPair: {}
     };
     if (!list.length) return out;

@@ -60,7 +60,7 @@ def build(h1: pd.DataFrame, params: dict) -> pd.DataFrame:
     short_trigger = (df["rsi"] < 50) & (df["rsi"].shift() >= 50) & (df["close"] < df["open"]) & (df["close"] < df["ema20"]) & (df["close"] < df["ema_pb"])
 
     hour = df["close_time"].dt.hour
-    session = (hour >= p["session_start"]) & (hour < p["session_end"]) & (df["close_time"].dt.dayofweek < 5)
+    session = (hour >= p["session_start"]) & (hour < p["session_end"]) & (df["close_time"].dt.day_of_week < 5)
 
     long_ok = up_trend & near_long & rsi_dip & long_trigger & session
     short_ok = dn_trend & near_short & rsi_pop & short_trigger & session

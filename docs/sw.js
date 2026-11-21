@@ -1,6 +1,6 @@
 /* Service worker: mette in cache SOLO la "scocca" dell'app (HTML/CSS/JS/icone).
    I dati del bot (raw.githubusercontent.com, sample-data/) e l'API GitHub non vengono mai messi in cache. */
-var CACHE = "forexbot-shell-v1";
+var CACHE = "forexbot-shell-v2";
 var SHELL = [
   "./",
   "index.html",

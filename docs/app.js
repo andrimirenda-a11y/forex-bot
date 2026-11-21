@@ -232,6 +232,11 @@
       (status.note ? '<div class="halt-note">' + esc(status.note) + "</div>" : "") +
       '<div style="height:8px"></div></div>';
 
+    if (st.status_line) {
+      html += '<div class="card now-card"><div class="kpi-label">Cosa sta facendo il bot adesso</div>' +
+        '<div class="now-text">' + esc(st.status_line) + '</div></div>';
+    }
+
     html += '<div class="kpis">' +
       kpi("Saldo", C.fmtEur(balance), unreal !== null ? '<span class="' + cls(unreal) + '">' + C.fmtEur(unreal, { sign: true }) + "</span> non realizzati" : "") +
       kpi("Oggi", '<span class="' + cls(today) + '">' + C.fmtEur(today, { sign: true }) + "</span>", todayPct !== null ? '<span class="' + cls(today) + '">' + C.fmtPct(todayPct, 2, true) + "</span>" : "") +
@@ -447,7 +452,9 @@
     }
 
     var tags = "";
-    if (n(p.score) !== null) tags += '<span class="score">Punteggio ' + esc(p.score) + "</span> ";
+    if (p.strategy === "prova") tags += '<span class="tag">🧪 Strategia in prova · soldi finti</span> ';
+    else if (n(p.score) !== null) tags += '<span class="score">Punteggio ' + esc(p.score) + "</span> ";
+    if (p.exit_at) tags += '<span class="tag">⏰ Chiude da sola alle ' + esc(C.fmtDateTime(p.exit_at)) + "</span> ";
     if (slMoved) tags += '<span class="tag green">' + (p.be_moved ? "Stop a pareggio" : "Stop spostato") + "</span> ";
     h += '<div class="pos-reason">' + (tags ? '<div style="margin-bottom:6px">' + tags + "</div>" : "") +
       esc(p.reason || "") + "</div></div>";
@@ -545,7 +552,7 @@
   function stat(label, value, sub) {
     return '<div class="stat"><span>' + esc(label) + "</span><b>" + value + "</b>" + (sub ? '<span>' + esc(sub) + "</span>" : "") + "</div>";
   }
-  var RESULT_TAGS = { TP: ["green", "TP"], SL: ["red", "SL"], BE: ["amber", "Pareggio"], STOP_MANUALE: ["blue", "Manuale"] };
+  var RESULT_TAGS = { TP: ["green", "TP"], SL: ["red", "SL"], BE: ["amber", "Pareggio"], STOP_MANUALE: ["blue", "Manuale"], TEMPO: ["blue", "Fine giornata"] };
   function tradeRow(t) {
     var buy = String(t.side).toUpperCase() === "BUY";
     var rt = RESULT_TAGS[t.result] || ["", t.result || "?"];

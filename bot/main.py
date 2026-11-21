@@ -14,7 +14,7 @@ from datetime import timedelta
 
 import pandas as pd
 
-from . import broker, data, evaluate, strategy, telegram
+from . import broker, data, evaluate, london, strategy, telegram
 from .config import (
     BACKTEST_FILE, CALIBRATION_FILE, DAILY_LOSS_LIMIT_PCT, DEFAULT_PARAMS, DEFAULT_SETTINGS,
     EQUITY_FILE, EUR_CROSSES, HISTORY_FILE, LOG_FILE, MAX_OPEN_POSITIONS, MAX_PER_CURRENCY,
@@ -91,11 +91,20 @@ class Bot:
         cal = (self.calibration.get("pairs") or {}).get(pair) or {}
         return {**DEFAULT_PARAMS, **(cal.get("params") or {})}
 
+    def strategy_for(self, pair):
+        """Strategia principale se ha superato l'esame su questa coppia, altrimenti quella in prova."""
+        cal = (self.calibration.get("pairs") or {}).get(pair) or {}
+        if cal.get("enabled"):
+            return "main"
+        if self.settings.get("strategia_prova", True):
+            return "prova"
+        return None
+
     def pair_enabled(self, pair):
         cal = (self.calibration.get("pairs") or {}).get(pair)
-        if cal is None:
-            return False, "non ancora calibrata"
-        if not cal.get("enabled"):
+        if self.strategy_for(pair) is None:
+            if cal is None:
+                return False, "non ancora calibrata"
             return False, cal.get("note") or "disattivata dalla calibrazione"
         if pair not in self.settings.get("coppie_attive", []):
             return False, "disattivata nelle impostazioni"
@@ -157,8 +166,9 @@ class Bot:
         closed = broker.manage(self.state, self.m15, self.rates, self.now)
         for tr in closed:
             self.history.append(tr)
-            emoji = {"TP": "🎯", "SL": "🛑", "BE": "⚖️"}.get(tr["result"], "✖️")
-            label = {"TP": "Take profit raggiunto", "SL": "Stop loss", "BE": "Chiuso a pareggio"}.get(tr["result"], tr["result"])
+            emoji = {"TP": "🎯", "SL": "🛑", "BE": "⚖️", "TEMPO": "⏰"}.get(tr["result"], "✖️")
+            label = {"TP": "Take profit raggiunto", "SL": "Stop loss", "BE": "Chiuso a pareggio",
+                     "TEMPO": "Chiuso a fine giornata"}.get(tr["result"], tr["result"])
             self.log(f"Chiuso {tr['pair']} {tr['side']}: {label}, {signed_eur(tr['pnl_eur'])}", "trade")
             if self.settings.get("notifiche_chiusura", True):
                 self.tell(
@@ -266,8 +276,10 @@ class Bot:
             # la candela deve essere appena chiusa, non vecchia (es. weekend)
             if pd.Timestamp(self.now) - (last_bar + pd.Timedelta(hours=1)) > pd.Timedelta(minutes=SIGNAL_VALID_MINUTES):
                 continue
-            params = self.params_for(pair)
-            built = strategy.build(h1, params)
+            mode = self.strategy_for(pair)
+            mod = london if mode == "prova" else strategy
+            params = {"breakeven_r": 0, "rr": london.TP_R} if mode == "prova" else self.params_for(pair)
+            built = mod.build(h1, params)
             row = built.iloc[-1]
             if row["signal"] == 0:
                 continue
@@ -314,8 +326,11 @@ class Bot:
                 self.record_signal(pair, side, row, "scartato", note)
                 self.log(f"Segnale {pair} {side} scartato: {note}")
                 continue
-            reason = strategy.describe(row, 1 if side == "BUY" else -1)
+            reason = mod.describe(row, 1 if side == "BUY" else -1)
             pos = broker.open_position(self.state, pair, side, entry, sl, tp, sizing, row["score"], reason, self.now, params)
+            if mode == "prova":
+                pos["strategy"] = "prova"
+                pos["exit_at"] = iso(row["exit_at"])
             self.record_signal(pair, side, row, "aperto")
             self.log(f"Aperto {pair} {side} {pos['lots']:.2f} lotti a {px(pair, pos['entry'])}", "trade")
             if self.settings.get("notifiche_apertura", True):
@@ -328,8 +343,11 @@ class Bot:
         sl_pips = abs(pos["entry"] - pos["sl"]) / PAIRS[pair]["pip"]
         gain = tp_pips * pos["pip_value_eur"]
         eq = broker.equity(self.state)
+        test = pos.get("strategy") == "prova"
+        head = (f"{'🟢 COMPRA' if buy else '🔴 VENDI'} <b>{pair[:3]}/{pair[3:]}</b>"
+                + ("  🧪 <i>strategia in prova</i>" if test else f"  (affidabilità {pos['score']}/100)"))
         lines = [
-            f"{'🟢 COMPRA' if buy else '🔴 VENDI'} <b>{pair[:3]}/{pair[3:]}</b>  (affidabilità {pos['score']}/100)",
+            head,
             "",
             f"Ingresso: <b>{px(pair, pos['entry'])}</b>",
             f"Stop loss: <b>{px(pair, pos['sl'])}</b>  ({sl_pips:.1f} pip)",
@@ -341,14 +359,18 @@ class Bot:
             f"Margine bloccato (leva 1:{self.settings['leva']}): {eur(pos['margin_eur'])}",
             "",
             f"📈 {pos['reason']}",
-            f"⏱ Valido {SIGNAL_VALID_MINUTES} min: se il prezzo è già oltre {px(pair, pos['entry'] + (1 if buy else -1) * 0.3 * abs(pos['entry'] - pos['sl']))}, non entrare.",
         ]
+        if test:
+            lines.append(f"⏰ Se non tocca stop o target, la chiudo da solo alle {rome(pos['exit_at'])} (ora italiana).")
+        else:
+            lines.append(f"⏱ Valido {SIGNAL_VALID_MINUTES} min: se il prezzo è già oltre "
+                         f"{px(pair, pos['entry'] + (1 if buy else -1) * 0.3 * abs(pos['entry'] - pos['sl']))}, non entrare.")
         if sizing.get("note"):
             lines.append("⚠️ " + sizing["note"])
         if news:
             lines.append(f"📰 Prossima notizia importante: {news['title']} ({news['currency']}) alle {rome(news['time'])}")
         lines.append("")
-        lines.append("✅ Aperto in automatico sul conto virtuale.")
+        lines.append("✅ Aperto in automatico sul <b>conto virtuale</b> (soldi finti): non devi fare nulla.")
         return "\n".join(lines)
 
     # ------------------------------------------------------------- comandi telegram
@@ -368,9 +390,14 @@ class Bot:
                 self.state["tg_chat_id"] = chat
                 telegram.set_commands()
                 self.tell(
-                    "👋 Ciao Drew! Il bot è collegato a questa chat.\n\n"
-                    "Da ora in poi ti scrivo quando apro o chiudo una posizione sul conto virtuale, "
-                    "e ogni domenica ti mando il report. Tu non devi fare niente.\n\n" + self.help_text()
+                    "👋 Ciao Drew! Sono il tuo bot forex, collegato a questa chat.\n\n"
+                    "<b>Cosa faccio:</b> controllo il mercato ogni 10 minuti e faccio trading da solo "
+                    "con <b>soldi finti</b> (conto virtuale da " + eur(self.state['start_balance']) + ").\n\n"
+                    "<b>Cosa ti scrivo:</b>\n"
+                    "🟢/🔴 quando apro un'operazione\n🎯/🛑 quando la chiudo, con quanto ho guadagnato o perso\n"
+                    "📅 ogni sera alle 22 un riepilogo della giornata\n📊 ogni domenica il resoconto della settimana\n\n"
+                    "<b>Adesso:</b> " + self.status_line() + "\n\nTu non devi fare niente. "
+                    "Se vuoi sapere com'è la situazione scrivimi /stato.\n\n" + self.help_text()
                 )
                 self.log("Chat Telegram collegata")
                 continue
@@ -458,19 +485,10 @@ class Bot:
         start = st["start_balance"] or 1
         today = self.now.replace(hour=0, minute=0, second=0, microsecond=0)
         d = sum(t["pnl_eur"] for t in self.history if parse(t["closed_at"]) >= today)
-        stato = "▶️ attivo"
-        if self.settings.get("pausa"):
-            stato = "⏸ in pausa"
-        if st.get("trading_halted_until"):
-            stato = f"🧯 bloccato fino al {rome(st['trading_halted_until'])}"
-        enabled = [p for p in PAIRS if self.pair_enabled(p)[0]]
         return (
-            f"💼 <b>Conto virtuale</b>: {eur(eq)} ({(eq - start) / start * 100:+.2f}%)\n"
-            f"Saldo: {eur(st['balance'])} · Oggi: {signed_eur(d)}\n"
-            f"Margine usato: {eur(broker.margin_used(st))}\n"
-            f"Posizioni aperte: {len(st['open_positions'])}\n"
-            f"Stato: {stato}\n"
-            f"Coppie operative: {', '.join(enabled) if enabled else 'nessuna (in attesa di calibrazione)'}"
+            f"💼 <b>Conto virtuale: {eur(eq)}</b> ({(eq - start) / start * 100:+.2f}% dall'inizio)\n"
+            f"Oggi: {signed_eur(d)} · Operazioni aperte: {len(st['open_positions'])}\n\n"
+            f"ℹ️ {self.status_line()}"
         )
 
     def positions_text(self):
@@ -483,6 +501,7 @@ class Bot:
                 f"<b>{p['pair']}</b> {p['side']} {p['lots']:.2f} lotti\n"
                 f"Ingresso {px(p['pair'], p['entry'])} · SL {px(p['pair'], p['sl'])} · TP {px(p['pair'], p['tp'])}\n"
                 f"Ora {px(p['pair'], p['last_price'])}: {signed_eur(p['unrealized_eur'])} ({p['unrealized_pips']:+.1f} pip)"
+                + (f"\n⏰ Chiusura automatica alle {rome(p['exit_at'])}" if p.get("exit_at") else "")
             )
         return "\n\n".join(out)
 
@@ -500,6 +519,11 @@ class Bot:
         st["equity"] = broker.equity(st)
         st["margin_used"] = broker.margin_used(st)
         st["last_run"] = iso(now_utc())
+        try:
+            st["status_line"] = self.status_line()
+            st["market_open"] = self.market_open()
+        except Exception:  # noqa: BLE001
+            pass
         last_t = parse(self.equity_curve[-1]["t"]) if self.equity_curve else None
         if not last_t or (now_utc() - last_t) >= timedelta(minutes=55) or self.state["open_positions"]:
             self.equity_curve.append({"t": iso(now_utc()), "equity": st["equity"], "balance": st["balance"]})
@@ -520,7 +544,7 @@ class Bot:
             return
         rome_now = pd.Timestamp(self.now).tz_convert("Europe/Rome")
         last = parse(self.state.get("last_weekly_report"))
-        if rome_now.dayofweek == 6 and rome_now.hour >= 18 and (not last or self.now - last > timedelta(days=5)):
+        if rome_now.day_of_week == 6 and rome_now.hour >= 18 and (not last or self.now - last > timedelta(days=5)):
             self.tell(evaluate.weekly_report(self.state, self.history, self.calibration, self.backtest, self.now))
             self.state["last_weekly_report"] = iso(self.now)
 
@@ -534,16 +558,74 @@ class Bot:
             tot = (self.backtest or {}).get("total") or {}
             # le coppie in pausa vengono rivalutate a ogni nuova calibrazione
             self.state["paused_pairs"] = {}
-            msg = ["🧪 <b>Calibrazione completata</b> (test su ~2 anni di dati orari)",
-                   f"Coppie attive: {', '.join(on) if on else 'nessuna'}"]
-            if tot:
-                msg.append(f"Risultato storico simulato (fuori campione): {tot.get('trades', 0)} trade, "
-                           f"vincite {tot.get('win_rate', 0)}%, profit factor {tot.get('profit_factor', 0)}, "
-                           f"{tot.get('net_r', 0):+}R")
-            if off:
-                msg.append("Spente: " + "; ".join(off))
-            msg.append("Ricorda: i risultati passati non garantiscono quelli futuri, per questo il conto è virtuale.")
+            if on:
+                msg = ["🧪 <b>Esame settimanale fatto</b>",
+                       "Ho riprovato la strategia sugli ultimi 2 anni di mercato.",
+                       f"✅ Promosse (ci faccio trading): <b>{', '.join(on)}</b>"]
+                if off:
+                    msg.append(f"⛔ Bocciate (le lascio stare): {', '.join(p for p, c in pairs.items() if not c.get('enabled'))}")
+                if tot:
+                    msg.append(f"Nel test su dati mai visti: {tot.get('trades', 0)} trade, "
+                               f"{tot.get('win_rate', 0)}% vinti, risultato {tot.get('net_r', 0):+} volte il rischio.")
+            else:
+                msg = ["🧪 <b>Esame settimanale fatto</b>",
+                       "Ho riprovato la strategia sugli ultimi 2 anni di mercato e <b>non è stata promossa su nessuna coppia</b>.",
+                       (f"Intanto continuo a provare la strategia «{london.NAME}» <b>solo con soldi finti</b>, "
+                        "per vedere se regge sul mercato di adesso." if self.settings.get("strategia_prova", True)
+                        else "Per sicurezza non apro operazioni finché una strategia non supera l'esame.")]
             self.tell("\n".join(msg))
+
+    # ------------------------------------------------------------- frasi semplici per app e Telegram
+    def market_open(self) -> bool:
+        t = pd.Timestamp(self.now)
+        wd, h = t.day_of_week, t.hour
+        return not (wd == 5 or (wd == 4 and h >= 21) or (wd == 6 and h < 22))
+
+    def status_line(self) -> str:
+        st = self.state
+        active = [p for p in PAIRS if self.pair_enabled(p)[0]]
+        ops = st["open_positions"]
+        if ops:
+            u = sum(p.get("unrealized_eur", 0) for p in ops)
+            names = ", ".join(f"{p['pair'][:3]}/{p['pair'][3:]}" for p in ops)
+            return f"Ha {len(ops)} operazion{'e' if len(ops) == 1 else 'i'} apert{'a' if len(ops) == 1 else 'e'} ({names}): in questo momento {signed_eur(u)}."
+        if self.settings.get("pausa"):
+            return "In pausa: non apre nuove operazioni finché non la riattivi."
+        if st.get("trading_halted_until"):
+            return f"Fermo per sicurezza fino al {rome(st['trading_halted_until'])}: {st.get('halt_reason')}."
+        if not self.market_open():
+            return "Mercato forex chiuso nel weekend: si riparte domenica alle 23:00."
+        if not active:
+            return "Acceso, ma non fa trading: nessuna strategia ha ancora superato l'esame sui dati passati."
+        names = ', '.join(a[:3] + '/' + a[3:] for a in active)
+        if all(self.strategy_for(a) == "prova" for a in active):
+            return (f"Sta provando la strategia «{london.NAME}» con soldi finti su {names}. "
+                    "Cerca occasioni ogni mattina tra le 9 e le 12 italiane (mercato di Londra).")
+        return f"Sta osservando {names}: entra solo quando trova un'occasione valida."
+
+    def maybe_daily(self):
+        """Riepilogo serale semplice (lun-ven verso le 22 italiane)."""
+        rome_now = pd.Timestamp(self.now).tz_convert("Europe/Rome")
+        last = parse(self.state.get("last_daily_report"))
+        if rome_now.day_of_week >= 5 or rome_now.hour < 22:
+            return
+        if last and pd.Timestamp(last).tz_convert("Europe/Rome").date() == rome_now.date():
+            return
+        self.state["last_daily_report"] = iso(self.now)
+        day_start = rome_now.normalize().tz_convert("UTC")
+        today = [t for t in self.history if pd.Timestamp(parse(t["closed_at"])) >= day_start]
+        opened = [s for s in self.signals if s["status"] == "aperto" and pd.Timestamp(parse(s["time"])) >= day_start]
+        eq = broker.equity(self.state)
+        start = self.state["start_balance"] or 1
+        lines = [f"📅 <b>Riepilogo di oggi</b>"]
+        if not today and not opened:
+            lines.append("😴 Oggi nessuna occasione buona: non ho aperto operazioni.")
+        else:
+            pnl = sum(t["pnl_eur"] for t in today)
+            lines.append(f"Operazioni aperte oggi: {len(opened)} · chiuse: {len(today)} ({signed_eur(pnl)})")
+        lines.append(f"💼 Conto: <b>{eur(eq)}</b> ({(eq - start) / start * 100:+.2f}% dall'inizio)")
+        lines.append("ℹ️ " + self.status_line())
+        self.tell("\n".join(lines))
 
     def run(self, listen_minutes: float = 0):
         self.handle_commands()
@@ -560,6 +642,7 @@ class Bot:
                 self.log(m, "warn")
                 self.tell(m)
             self.maybe_weekly()
+            self.maybe_daily()
         except Exception as e:  # noqa: BLE001
             traceback.print_exc()
             self.log(f"Errore nel giro: {e}", "warn")

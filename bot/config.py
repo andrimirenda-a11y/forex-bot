@@ -74,4 +74,5 @@ DEFAULT_SETTINGS = {
     "notifiche_chiusura": True,
     "report_settimanale": True,
     "reset_conto": False,
+    "strategia_prova": True,
 }

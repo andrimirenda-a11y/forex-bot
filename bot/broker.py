@@ -72,7 +72,11 @@ def manage(state, candles_by_pair: dict, eur_rates: dict, now) -> list[dict]:
         long = pos["side"] == "BUY"
         risk = abs(pos["entry"] - pos["sl_initial"])
         result = None
+        exit_at = pd.Timestamp(parse(pos["exit_at"])) if pos.get("exit_at") else None
         for t, c in new.iterrows():
+            if exit_at is not None and t >= exit_at:  # uscita a tempo all'apertura della candela
+                result = ("TEMPO", float(c["open"]), t)
+                break
             hit_sl = c["low"] <= pos["sl"] if long else c["high"] >= pos["sl"]
             hit_tp = c["high"] >= pos["tp"] if long else c["low"] <= pos["tp"]
             if hit_sl:  # caso peggiore se tocca entrambi

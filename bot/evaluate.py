@@ -59,11 +59,13 @@ def review_pairs(state, history, calibration, now) -> list[str]:
 
 
 def verdict(s: dict, expected: dict | None) -> str:
-    if s["trades"] < 15:
-        return f"⏳ <b>Servono ancora dati</b>: {s['trades']} trade sono pochi per giudicare (ne servono almeno 30-40)."
+    if s["trades"] < 30:
+        return (f"⏳ <b>Servono ancora dati</b>: {s['trades']} operazioni sono poche per giudicare "
+                "(ne servono almeno 30). Per ora niente soldi veri.")
     exp_pf = (expected or {}).get("profit_factor") or 1.3
     if s["profit_factor"] >= max(1.2, exp_pf * 0.75) and s["net_r"] > 0:
-        return "✅ <b>Funziona</b>: i risultati dal vivo sono in linea o migliori del previsto."
+        return ("✅ <b>Funziona</b>: i risultati dal vivo sono in linea o migliori del previsto. "
+                "Se resta così, si può valutare un conto demo del broker e poi pochi soldi veri.")
     if s["profit_factor"] >= 1.0:
         return "🟡 <b>In equilibrio</b>: guadagna poco o pareggia, sotto le attese. Continuiamo a osservare."
     return "❌ <b>Non sta funzionando</b>: dal vivo perde. Meglio non passare ai soldi veri finché non migliora."
@@ -85,6 +87,9 @@ def weekly_report(state, history, calibration, backtest, now) -> str:
         f"PF {sa['profit_factor']}, calo massimo {sa['max_dd_r']}R",
         "",
     ]
+    if any(p.get("strategy") == "prova" for p in state.get("open_positions", [])) or \
+            not any((c or {}).get("enabled") for c in (calibration.get("pairs") or {}).values()):
+        lines += ["🧪 Strategia usata: <b>breakout di Londra, in prova</b> (solo soldi finti).", ""]
     per = {}
     for t in history:
         per.setdefault(t["pair"], []).append(t)
