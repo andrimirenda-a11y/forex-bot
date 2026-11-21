@@ -1,10 +1,10 @@
 {
- "balance": 10000.0,
- "equity": 10000.0,
+ "balance": 300.0,
+ "equity": 300.0,
  "margin_used": 0,
- "start_balance": 10000.0,
+ "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-21T21:55:14Z",
+ "last_run": "2026-11-21T22:05:15Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -53,6 +53,6 @@
  "last_weekly_report": null,
  "last_error_notice": null,
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Mercato forex chiuso nel weekend: si riparte domenica alle 23:00.",
+ "status_line": "In pausa: non apre nuove operazioni finché non la riattivi.",
  "market_open": false
 }

@@ -3,5 +3,10 @@
   "t": "2026-11-21T21:22:13Z",
   "level": "info",
   "msg": "Chat Telegram collegata"
+ },
+ {
+  "t": "2026-11-21T22:05:14Z",
+  "level": "info",
+  "msg": "Capitale cambiato: -9.700,00 € sul conto (nuovo capitale iniziale 300,00 €)"
  }
 ]
