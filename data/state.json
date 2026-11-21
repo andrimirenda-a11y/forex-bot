@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 10000.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-21T21:11:39Z",
+ "last_run": "2026-11-21T21:22:13Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -40,8 +40,8 @@
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {},
- "tg_offset": 0,
- "tg_chat_id": null,
+ "tg_offset": 615229873,
+ "tg_chat_id": 794818610,
  "last_weekly_report": null,
  "last_error_notice": null,
  "last_calibration_seen": "2026-11-21T21:07:44Z"
