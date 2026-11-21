@@ -1,0 +1,59 @@
+name: Esporta dati storici
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/export-data.yml"]
+permissions:
+  contents: write
+concurrency:
+  group: forex-bot
+  cancel-in-progress: false
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: .cache/duka
+          key: duka-${{ github.run_id }}
+          restore-keys: duka-
+      - name: Scarica 2 anni di candele orarie (Yahoo, riserva Dukascopy)
+        run: |
+          python - <<'EOF'
+          import os, time
+          from bot import data
+          from bot.config import PAIRS
+          os.makedirs("research", exist_ok=True)
+          for pair, info in PAIRS.items():
+              for rng in ["730d", "729d", "365d"]:
+                  try:
+                      df = data.candles(info["yahoo"], "1h", rng)
+                      break
+                  except Exception as e:
+                      print(pair, rng, "errore", e); df = None
+              if df is None:
+                  continue
+              df = data.closed_only(df, __import__("pandas").Timedelta(hours=1))
+              df.round(6).to_csv(f"research/h1_{pair}.csv.gz", compression="gzip")
+              print(pair, len(df), df.index[0], df.index[-1], data.SOURCE_USED.get(info["yahoo"]))
+              time.sleep(2)
+          EOF
+      - name: Salva
+        run: |
+          git config user.name "forex-bot"
+          git config user.email "forex-bot@users.noreply.github.com"
+          git add research
+          git diff --cached --quiet && exit 0
+          git commit -m "Dati storici per la ricerca"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs && git push && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
