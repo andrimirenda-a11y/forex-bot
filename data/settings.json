@@ -3,7 +3,7 @@
   "leva": 30,
   "rischio_pct": 1,
   "valuta": "EUR",
-  "pausa": false,
+  "pausa": true,
   "coppie_attive": [
     "EURUSD",
     "GBPUSD",
