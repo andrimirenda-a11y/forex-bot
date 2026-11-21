@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-21T22:05:15Z",
+ "last_run": "2026-11-21T22:42:23Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -48,11 +48,11 @@
   "AUDUSD": "2026-11-20T21:00:00Z",
   "USDCAD": "2026-11-20T21:00:00Z"
  },
- "tg_offset": 615229874,
+ "tg_offset": 615229875,
  "tg_chat_id": 794818610,
  "last_weekly_report": null,
  "last_error_notice": null,
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "In pausa: non apre nuove operazioni finché non la riattivi.",
+ "status_line": "Mercato forex chiuso nel weekend: si riparte domenica alle 23:00.",
  "market_open": false
 }
