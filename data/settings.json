@@ -1,20 +1,20 @@
 {
- "capitale_iniziale": 10000.0,
- "leva": 30,
- "rischio_pct": 1.0,
- "valuta": "EUR",
- "pausa": false,
- "coppie_attive": [
-  "EURUSD",
-  "GBPUSD",
-  "EURGBP",
-  "USDJPY",
-  "USDCHF",
-  "AUDUSD",
-  "USDCAD"
- ],
- "notifiche_apertura": true,
- "notifiche_chiusura": true,
- "report_settimanale": true,
- "reset_conto": false
+  "capitale_iniziale": 300,
+  "leva": 30,
+  "rischio_pct": 1,
+  "valuta": "EUR",
+  "pausa": false,
+  "coppie_attive": [
+    "EURUSD",
+    "GBPUSD",
+    "EURGBP",
+    "USDJPY",
+    "USDCHF",
+    "AUDUSD",
+    "USDCAD"
+  ],
+  "notifiche_apertura": true,
+  "notifiche_chiusura": true,
+  "report_settimanale": true,
+  "reset_conto": false
 }
