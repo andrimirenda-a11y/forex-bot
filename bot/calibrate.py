@@ -221,6 +221,8 @@ def run(pairs: list[str] | None = None, fetch: Fetcher | None = None,
             say(f"  {pair}: saltata (Yahoo non raggiungibile)")
             continue
         try:
+            if fetch is yahoo_fetch:
+                time.sleep(2)          # gentilezza verso la fonte dei prezzi
             h1, rng = download(pair, fetch)
             net_fail = 0
         except Exception as e:  # noqa: BLE001
@@ -308,6 +310,28 @@ def print_summary(calibration: dict, bt: dict) -> None:
 
 
 def main() -> int:
+    if "--if-missing" in sys.argv:
+        # usato dal giro del bot: calibra solo se non c'è ancora una calibrazione valida,
+        # e non più di una volta ogni 3 ore (per non martellare le fonti dei prezzi)
+        import json
+        from .config import DATA
+        try:
+            cal = json.loads(CALIBRATION_FILE.read_text(encoding="utf-8"))
+            if cal.get("data_from"):
+                print("Calibrazione già presente, niente da fare.")
+                return 0
+        except Exception:  # noqa: BLE001
+            pass
+        marker = DATA / "calibration_attempt.json"
+        try:
+            last = json.loads(marker.read_text(encoding="utf-8")).get("t", 0)
+        except Exception:  # noqa: BLE001
+            last = 0
+        if time.time() - last < 3 * 3600:
+            print("Ultimo tentativo di calibrazione meno di 3 ore fa: riprovo più tardi.")
+            return 0
+        DATA.mkdir(parents=True, exist_ok=True)
+        marker.write_text(json.dumps({"t": time.time()}), encoding="utf-8")
     t0 = time.time()
     print("Calibrazione in corso (download ~2 anni di candele a 1 ora per coppia)...")
     calibration, _ = run()

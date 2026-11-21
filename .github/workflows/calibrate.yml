@@ -23,6 +23,11 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: .cache/duka
+          key: duka-${{ github.run_id }}
+          restore-keys: duka-
       - run: python -m bot.calibrate
       - name: Salva i risultati
         run: |

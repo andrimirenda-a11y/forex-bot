@@ -15,7 +15,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -26,9 +26,17 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Prima calibrazione (solo se manca)
-        if: hashFiles('data/calibration.json') == ''
-        run: python -m bot.calibrate
+      # file storici Dukascopy già scaricati (non cambiano più): si tengono tra un giro e l'altro
+      - uses: actions/cache@v4
+        with:
+          path: .cache/duka
+          key: duka-${{ github.run_id }}
+          restore-keys: duka-
+
+      - name: Calibrazione (solo se manca, max una volta ogni 3 ore)
+        continue-on-error: true
+        timeout-minutes: 12
+        run: python -m bot.calibrate --if-missing
 
       - name: Giro del bot
         env:
