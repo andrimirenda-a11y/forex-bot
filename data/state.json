@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 10000.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-21T21:22:13Z",
+ "last_run": "2026-11-21T21:55:14Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -39,10 +39,20 @@
  "paused_pairs": {},
  "trading_halted_until": null,
  "halt_reason": null,
- "last_bar": {},
- "tg_offset": 615229873,
+ "last_bar": {
+  "EURUSD": "2026-11-20T21:00:00Z",
+  "GBPUSD": "2026-11-20T21:00:00Z",
+  "EURGBP": "2026-11-20T21:00:00Z",
+  "USDJPY": "2026-11-20T21:00:00Z",
+  "USDCHF": "2026-11-20T21:00:00Z",
+  "AUDUSD": "2026-11-20T21:00:00Z",
+  "USDCAD": "2026-11-20T21:00:00Z"
+ },
+ "tg_offset": 615229874,
  "tg_chat_id": 794818610,
  "last_weekly_report": null,
  "last_error_notice": null,
- "last_calibration_seen": "2026-11-21T21:07:44Z"
+ "last_calibration_seen": "2026-11-21T21:07:44Z",
+ "status_line": "Mercato forex chiuso nel weekend: si riparte domenica alle 23:00.",
+ "market_open": false
 }
