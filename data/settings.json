@@ -1,7 +1,7 @@
 {
   "capitale_iniziale": 300,
   "leva": 30,
-  "rischio_pct": 1,
+  "rischio_pct": 1.75,
   "valuta": "EUR",
   "pausa": true,
   "coppie_attive": [
