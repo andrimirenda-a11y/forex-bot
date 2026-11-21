@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Forex Bot</title>
+  <meta name="description" content="Bot di trading forex con conto virtuale (paper trading)">
+  <meta name="theme-color" content="#0b0e14">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icon-192.png" alt="" class="brand-logo" width="28" height="28">
+      <div class="brand-text">
+        <span class="brand-name">Forex Bot</span>
+        <span class="brand-sub" id="updatedLabel">caricamento…</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="demo-pill" id="demoPill" hidden>DEMO</span>
+      <button class="icon-btn" id="refreshBtn" type="button" aria-label="Aggiorna">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="ptr" id="ptr" aria-hidden="true"><div class="ptr-spinner"></div></div>
+
+  <main id="main">
+    <div class="banner banner-warn" id="globalBanner" hidden></div>
+
+    <!-- ================= CONTO ================= -->
+    <section class="tab" id="tab-conto" data-tab="conto">
+      <div id="contoBody"></div>
+    </section>
+
+    <!-- ================= POSIZIONI ================= -->
+    <section class="tab" id="tab-posizioni" data-tab="posizioni" hidden>
+      <h2 class="section-title">Posizioni aperte <span class="count" id="posCount"></span></h2>
+      <div id="positionsList"></div>
+      <h2 class="section-title">Ultimi segnali</h2>
+      <div id="signalsList"></div>
+    </section>
+
+    <!-- ================= GRAFICI ================= -->
+    <section class="tab tab-chart" id="tab-grafici" data-tab="grafici" hidden>
+      <div class="pair-scroller" id="pairSelector" role="tablist" aria-label="Coppia"></div>
+      <div class="tv-wrap" id="tvWrap">
+        <div id="tvChart" class="tv-chart"></div>
+        <div class="tv-fallback" id="tvFallback" hidden>
+          <p>Impossibile caricare il grafico di TradingView.</p>
+          <p class="muted">Controlla la connessione e riprova.</p>
+          <button class="btn btn-secondary" type="button" id="tvRetry">Riprova</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATISTICHE ================= -->
+    <section class="tab" id="tab-statistiche" data-tab="statistiche" hidden>
+      <div id="statsBody"></div>
+    </section>
+
+    <!-- ================= IMPOSTAZIONI ================= -->
+    <section class="tab" id="tab-impostazioni" data-tab="impostazioni" hidden>
+      <form id="settingsForm" class="settings" novalidate autocomplete="off">
+        <div class="card">
+          <h3 class="card-title">Conto virtuale</h3>
+          <label class="field">
+            <span class="field-label">Capitale iniziale (€)</span>
+            <input type="number" inputmode="decimal" min="100" step="100" id="sCapitale" name="capitale_iniziale">
+          </label>
+          <label class="field">
+            <span class="field-label">Leva</span>
+            <select id="sLeva" name="leva"></select>
+          </label>
+          <div class="field">
+            <div class="field-row">
+              <span class="field-label">Rischio per trade</span>
+              <span class="field-value" id="sRischioVal">1%</span>
+            </div>
+            <input type="range" min="0.25" max="5" step="0.25" id="sRischio" name="rischio_pct">
+            <div class="range-ticks"><span>0,25%</span><span>prudente: 0,5–1%</span><span>5%</span></div>
+          </div>
+          <label class="switch-row">
+            <span>
+              <span class="switch-title">Pausa</span>
+              <span class="switch-sub">Nessun nuovo trade (le posizioni aperte restano gestite)</span>
+            </span>
+            <input type="checkbox" class="switch" id="sPausa" name="pausa">
+          </label>
+        </div>
+
+        <div class="card calc" id="calcCard">
+          <h3 class="card-title">Anteprima</h3>
+          <p class="calc-text" id="calcText"></p>
+          <div class="calc-grid" id="calcGrid"></div>
+          <div class="calc-warn" id="calcWarn" hidden></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Coppie attive</h3>
+          <div class="pair-checks" id="pairChecks"></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Notifiche Telegram</h3>
+          <label class="switch-row">
+            <span><span class="switch-title">Apertura trade</span></span>
+            <input type="checkbox" class="switch" id="sNotApertura" name="notifiche_apertura">
+          </label>
+          <label class="switch-row">
+            <span><span class="switch-title">Chiusura trade</span></span>
+            <input type="checkbox" class="switch" id="sNotChiusura" name="notifiche_chiusura">
+          </label>
+          <label class="switch-row">
+            <span><span class="switch-title">Report settimanale</span></span>
+            <input type="checkbox" class="switch" id="sReport" name="report_settimanale">
+          </label>
+        </div>
+
+        <div class="sticky-save">
+          <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
+          <button type="submit" class="btn btn-primary btn-block" id="saveBtn">Salva impostazioni</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Collega GitHub</h3>
+          <div id="ghStatus"></div>
+          <div id="ghConnect">
+            <p class="help">Per salvare le impostazioni l'app scrive il file <code>data/settings.json</code> nel tuo repository. Serve un <b>token GitHub</b> (lo incolli una volta sola, resta salvato solo su questo telefono).</p>
+            <details class="help-details">
+              <summary>Come creo il token?</summary>
+              <ol>
+                <li>Apri github.com → foto profilo → <b>Settings</b> → <b>Developer settings</b>.</li>
+                <li><b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>.</li>
+                <li>Repository access: <b>Only select repositories</b> → scegli <b>forex-bot</b>.</li>
+                <li>Permissions → Repository permissions → <b>Contents: Read and write</b>.</li>
+                <li>Genera, copia il token (inizia con <code>github_pat_</code>) e incollalo qui sotto.</li>
+              </ol>
+            </details>
+            <label class="field">
+              <span class="field-label">Token GitHub</span>
+              <input type="password" id="ghToken" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+            </label>
+            <button type="button" class="btn btn-secondary btn-block" id="ghSaveToken">Collega</button>
+          </div>
+        </div>
+
+        <div class="card danger-zone">
+          <h3 class="card-title">Azzera conto virtuale</h3>
+          <p class="help">Al prossimo giro il bot chiude le posizioni virtuali e fa ripartire il conto dal capitale iniziale impostato qui sopra. Nessun soldo vero è coinvolto.</p>
+          <button type="button" class="btn btn-danger btn-block" id="resetBtn">Azzera conto virtuale</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Comandi Telegram</h3>
+          <p class="help">Puoi controllare il bot anche dalla chat Telegram:</p>
+          <ul class="cmd-list">
+            <li><code>/stato</code> conto, equity e stato del bot</li>
+            <li><code>/posizioni</code> posizioni aperte</li>
+            <li><code>/statistiche</code> risultati dei trade chiusi</li>
+            <li><code>/capitale 2000</code> imposta il capitale iniziale</li>
+            <li><code>/leva 30</code> imposta la leva (1:30)</li>
+            <li><code>/rischio 1</code> rischio per trade in %</li>
+            <li><code>/pausa</code> nessun nuovo trade</li>
+            <li><code>/riprendi</code> riattiva i nuovi trade</li>
+            <li><code>/stop</code> chiude subito tutte le posizioni</li>
+            <li><code>/aiuto</code> elenco dei comandi</li>
+          </ul>
+        </div>
+      </form>
+    </section>
+
+    <footer class="signature">Firmato Andrea Pietro Mirenda</footer>
+  </main>
+
+  <nav class="tabbar" id="tabbar" aria-label="Sezioni">
+    <button type="button" class="tab-btn active" data-tab="conto">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3zM3 7l2-3h14l2 3M16 13h2"/></svg>
+      <span>Conto</span>
+    </button>
+    <button type="button" class="tab-btn" data-tab="posizioni">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>Posizioni</span><i class="tab-badge" id="posBadge" hidden></i>
+    </button>
+    <button type="button" class="tab-btn" data-tab="grafici">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M7 8h-2v6h2M17 4v16M17 7h-2v9h2M12 6v12M12 10h-2v4h2"/></svg>
+      <span>Grafici</span>
+    </button>
+    <button type="button" class="tab-btn" data-tab="statistiche">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+      <span>Statistiche</span>
+    </button>
+    <button type="button" class="tab-btn" data-tab="impostazioni">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      <span>Impostazioni</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
