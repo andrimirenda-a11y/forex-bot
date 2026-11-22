@@ -1,4 +1,4 @@
-"""Un "giro" del bot. Lanciato da GitHub Actions ogni 10 minuti.
+"""Un "giro" del bot. Lanciato da GitHub Actions sempre acceso (controlla il mercato ogni minuto).
 
 1. legge impostazioni e comandi Telegram
 2. scarica i prezzi, aggiorna le posizioni aperte (stop / target / pareggio)
@@ -391,7 +391,7 @@ class Bot:
                 telegram.set_commands()
                 self.tell(
                     "👋 Ciao Drew! Sono il tuo bot forex, collegato a questa chat.\n\n"
-                    "<b>Cosa faccio:</b> controllo il mercato ogni 10 minuti e faccio trading da solo "
+                    "<b>Cosa faccio:</b> controllo il mercato ogni minuto e faccio trading da solo "
                     "con <b>soldi finti</b> (conto virtuale da " + eur(self.state['start_balance']) + ").\n\n"
                     "<b>Cosa ti scrivo:</b>\n"
                     "🟢/🔴 quando apro un'operazione\n🎯/🛑 quando la chiudo, con quanto ho guadagnato o perso\n"
@@ -627,17 +627,17 @@ class Bot:
         lines.append("ℹ️ " + self.status_line())
         self.tell("\n".join(lines))
 
-    def run(self, listen_minutes: float = 0):
-        self.handle_commands()
-        self.apply_settings()
-        self.calibration_news()
+    def cycle(self, full: bool = True):
+        """Un giro di mercato: prezzi, gestione posizioni, ricerca segnali, report."""
+        self.now = now_utc()
         try:
             got = self.load_prices()
             if not got:
                 raise RuntimeError("nessun prezzo scaricato")
             self.manage_positions()
             can_trade = self.check_limits()
-            self.scan(can_trade)
+            if full:
+                self.scan(can_trade)
             for m in evaluate.review_pairs(self.state, self.history, self.calibration, self.now):
                 self.log(m, "warn")
                 self.tell(m)
@@ -650,25 +650,65 @@ class Bot:
             if not last or self.now - last > timedelta(hours=6):
                 self.state["last_error_notice"] = iso(self.now)
                 self.tell(f"⚠️ Problema tecnico: {e}. Riprovo da solo al prossimo giro.")
+
+    def scan_due(self) -> bool:
+        """La ricerca segnali serve solo quando si è appena chiusa una candela oraria non ancora analizzata."""
+        t = pd.Timestamp(now_utc())
+        last_closed = t.floor("h") - pd.Timedelta(hours=1)
+        if (t - t.floor("h")) > pd.Timedelta(minutes=SIGNAL_VALID_MINUTES):
+            return False
+        active = [p for p in PAIRS if self.pair_enabled(p)[0]]
+        return any(self.state["last_bar"].get(p) != iso(last_closed) for p in active)
+
+    def run(self, listen_minutes: float = 0, cycle_seconds: float = 60, push=None, push_every: float = 600):
+        """Primo giro completo, poi resta acceso per `listen_minutes`: risponde subito ai comandi
+        Telegram e ricontrolla il mercato ogni `cycle_seconds` secondi."""
+        self.handle_commands()
+        self.apply_settings()
+        self.calibration_news()
+        self.cycle(full=True)
         self.save_all()
-        # resta in ascolto dei comandi per avere risposte quasi immediate
-        deadline = time.time() + listen_minutes * 60
+        start = time.time()
+        deadline = start + listen_minutes * 60
+        next_cycle = time.time() + cycle_seconds
+        last_push = time.time()
         while time.time() < deadline:
+            wait = int(max(1, min(25, next_cycle - time.time(), deadline - time.time())))
             before = self.state.get("tg_offset")
-            res = telegram.call("getUpdates", offset=self.state.get("tg_offset", 0), timeout=25,
-                                allowed_updates=["message"])
+            res = telegram.call("getUpdates", offset=self.state.get("tg_offset", 0), timeout=wait,
+                                allowed_updates=["message"]) if telegram.enabled() else None
             if res:
-                # rimetti in coda e gestisci con la logica standard
                 self.state["tg_offset"] = before
                 self.handle_commands()
+                self.apply_settings()
                 self.save_all()
             elif res is None:
-                time.sleep(5)
+                time.sleep(min(wait, 5))
+            if time.time() >= next_cycle:
+                self.cycle(full=self.scan_due())
+                self.save_all()
+                next_cycle = time.time() + cycle_seconds
+            if push and time.time() - last_push >= push_every:
+                push()
+                last_push = time.time()
+
+
+def git_push():
+    """Pubblica i dati aggiornati (così app e storico restano freschi anche durante un giro lungo)."""
+    import subprocess
+    cmds = ("git add data && (git diff --cached --quiet || git commit -q -m \"Aggiornamento bot $(date -u +%Y-%m-%dT%H:%MZ)\") "
+            "&& (git pull -q --rebase -X theirs && git push -q)")
+    try:
+        subprocess.run(["bash", "-c", cmds], timeout=60, check=False)
+    except Exception as e:  # noqa: BLE001
+        print("push fallito:", e)
 
 
 def main():
     listen = float(os.environ.get("LISTEN_MINUTES", "0"))
-    Bot().run(listen)
+    cycle = float(os.environ.get("CYCLE_SECONDS", "60"))
+    push = git_push if os.environ.get("PUSH_DURING_RUN") == "1" else None
+    Bot().run(listen, cycle, push)
 
 
 if __name__ == "__main__":

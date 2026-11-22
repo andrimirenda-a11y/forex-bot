@@ -4,7 +4,7 @@ Bot di trading forex su **conto virtuale** con notifiche Telegram e app installa
 Firmato Andrea Pietro Mirenda.
 
 ## Come funziona
-- **Cervello** (`bot/`): gira gratis su GitHub Actions ogni 10 minuti. Scarica i prezzi reali
+- **Cervello** (`bot/`): gira gratis su GitHub Actions, sempre acceso (controlla il mercato ogni minuto). Scarica i prezzi reali
   (EUR/USD, GBP/USD, EUR/GBP, USD/JPY, USD/CHF, AUD/USD, USD/CAD), cerca segnali
   (trend sul 4 ore + ritracciamento e ripartenza a 1 ora), filtra le notizie importanti,
   calcola lotti/margine su capitale, leva e rischio, e apre/chiude le posizioni sul conto virtuale.
