@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-22T08:33:40Z",
+ "last_run": "2026-11-22T09:29:12Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -48,7 +48,7 @@
   "AUDUSD": "2026-11-20T21:00:00Z",
   "USDCAD": "2026-11-20T21:00:00Z"
  },
- "tg_offset": 615229875,
+ "tg_offset": 615229877,
  "tg_chat_id": 794818610,
  "last_weekly_report": null,
  "last_error_notice": null,
