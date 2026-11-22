@@ -6,7 +6,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: forex-bot
+  group: export-data
   cancel-in-progress: false
 jobs:
   export:
