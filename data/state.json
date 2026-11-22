@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-22T23:01:07Z",
+ "last_run": "2026-11-22T23:17:31Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -77,6 +77,10 @@
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-22T22:48:30Z",
-  "rate-GBP": "2026-11-22T22:48:30Z"
+  "rate-GBP": "2026-11-22T22:48:30Z",
+  "h1-USDCHF": "2026-11-22T23:02:07Z",
+  "h1-AUDUSD": "2026-11-22T23:02:07Z",
+  "h1-EURGBP": "2026-11-22T23:09:35Z",
+  "h1-USDCAD": "2026-11-22T23:09:35Z"
  }
 }
