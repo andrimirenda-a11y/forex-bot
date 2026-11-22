@@ -11,16 +11,30 @@ def to_eur(amount: float, currency: str, eur_rates: dict) -> float:
     return amount / eur_rates[currency]
 
 
+def contract(pair: str) -> float:
+    return PAIRS[pair].get("contract", CONTRACT_SIZE)
+
+
+def leverage_for(pair: str, leverage: float) -> float:
+    """Leva effettiva: quella scelta, ma mai oltre il limite UE dello strumento (oro/indici 20, argento 10)."""
+    return max(1.0, min(float(leverage), PAIRS[pair].get("max_lev", 30)))
+
+
 def pip_value_eur(pair: str, eur_rates: dict, lots: float = 1.0) -> float:
-    """Valore in EUR di 1 pip per `lots` lotti."""
+    """Valore in EUR di 1 pip (o punto) per `lots` lotti."""
     p = PAIRS[pair]
-    return to_eur(CONTRACT_SIZE * lots * p["pip"], p["quote"], eur_rates)
+    return to_eur(contract(pair) * lots * p["pip"], p["quote"], eur_rates)
 
 
-def margin_eur(pair: str, lots: float, leverage: float, eur_rates: dict) -> float:
+def notional_eur(pair: str, lots: float, eur_rates: dict, price: float | None = None) -> float:
     p = PAIRS[pair]
-    notional_eur = to_eur(CONTRACT_SIZE * lots, p["base"], eur_rates)
-    return notional_eur / max(leverage, 1)
+    if p.get("kind") == "cfd":       # CFD: valore = unità x prezzo, nella valuta di quotazione
+        return to_eur(contract(pair) * lots * (price or 0.0), p["quote"], eur_rates)
+    return to_eur(CONTRACT_SIZE * lots, p["base"], eur_rates)
+
+
+def margin_eur(pair: str, lots: float, leverage: float, eur_rates: dict, price: float | None = None) -> float:
+    return notional_eur(pair, lots, eur_rates, price) / leverage_for(pair, leverage)
 
 
 def size_position(pair: str, entry: float, sl: float, equity: float, free_margin: float,
@@ -44,18 +58,18 @@ def size_position(pair: str, entry: float, sl: float, equity: float, free_margin
             return {"lots": 0, "sl_pips": sl_pips, "skip": (
                 f"Stop troppo largo per il capitale: anche 0,01 lotti rischierebbero {min_risk:.2f} € "
                 f"({min_risk / equity * 100:.1f}% del conto).")}
-    lev = settings["leva"]
-    m = margin_eur(pair, lots, lev, eur_rates)
+    lev = leverage_for(pair, settings["leva"])
+    m = margin_eur(pair, lots, lev, eur_rates, entry)
     # non usare più di metà del margine libero per un singolo trade
     if m > free_margin * 0.5:
-        max_lots = math.floor((free_margin * 0.5 * lev / to_eur(CONTRACT_SIZE, p["base"], eur_rates)) / LOT_STEP) * LOT_STEP
+        max_lots = math.floor((free_margin * 0.5 * lev / notional_eur(pair, 1.0, eur_rates, entry)) / LOT_STEP) * LOT_STEP
         if max_lots < MIN_LOT:
             return {"lots": 0, "sl_pips": sl_pips, "skip": (
                 f"Margine insufficiente con leva 1:{lev}: servirebbero {m:.2f} € di margine.")}
         note = (note + " " if note else "") + (
             f"Lotti ridotti da {lots:.2f} a {max_lots:.2f} perché con leva 1:{lev} il margine non basta.")
         lots = max_lots
-        m = margin_eur(pair, lots, lev, eur_rates)
+        m = margin_eur(pair, lots, lev, eur_rates, entry)
     lots = round(lots, 2)
     pv = pv1 * lots
     return {

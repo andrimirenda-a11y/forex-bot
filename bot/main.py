@@ -7,6 +7,7 @@
 5. si autovaluta e manda il report settimanale
 6. resta in ascolto dei comandi Telegram per qualche minuto, poi salva tutto
 """
+import math
 import os
 import time
 import traceback
@@ -19,9 +20,9 @@ from .config import (
     BACKTEST_FILE, CALIBRATION_FILE, DAILY_LOSS_LIMIT_PCT, DEFAULT_PARAMS, DEFAULT_SETTINGS,
     EQUITY_FILE, EUR_CROSSES, HISTORY_FILE, LOG_FILE, MAX_OPEN_POSITIONS, MAX_PER_CURRENCY,
     NEWS_BLOCK_MINUTES, PAIRS, SETTINGS_FILE, SIGNAL_VALID_MINUTES, SIGNALS_FILE, STATE_FILE,
-    WEEKLY_LOSS_LIMIT_PCT,
+    WEEKLY_LOSS_LIMIT_PCT, CFD_PAIRS, label,
 )
-from .risk import size_position
+from .risk import leverage_for, size_position
 from .storage import iso, load, now_utc, parse, save
 
 APP_URL = os.environ.get("APP_URL", "")
@@ -38,7 +39,14 @@ def signed_eur(x: float) -> str:
 
 
 def px(pair: str, v: float) -> str:
-    return f"{v:.3f}" if PAIRS[pair]["pip"] == 0.01 else f"{v:.5f}"
+    info = PAIRS[pair]
+    if info.get("kind") == "cfd":
+        return f"{v:.{max(0, round(-math.log10(info['pip']))) + 1}f}"
+    return f"{v:.3f}" if info["pip"] == 0.01 else f"{v:.5f}"
+
+
+def unit(pair: str) -> str:
+    return "punti" if PAIRS[pair].get("kind") == "cfd" else "pip"
 
 
 def rome(ts) -> str:
@@ -115,6 +123,13 @@ class Bot:
     # ------------------------------------------------------------- impostazioni / reset
     def apply_settings(self):
         s = self.settings
+        if not s.get("strumenti_cfd_v1"):     # una volta sola: attiva oro, argento e indici
+            s["coppie_attive"] = list(dict.fromkeys(list(s.get("coppie_attive", [])) + CFD_PAIRS))
+            s["strumenti_cfd_v1"] = True
+            self.settings_dirty = True
+            self.tell("🆕 <b>Nuovi strumenti nel conto finto</b>: " + ", ".join(label(p) for p in CFD_PAIRS) + ".\n"
+                      "Nei test sugli ultimi 2 anni la strategia in prova è andata bene anche lì, "
+                      "sia nel primo periodo che in quello di verifica. Sempre e solo soldi finti.")
         if s.get("reset_conto"):
             cap = float(s["capitale_iniziale"])
             chat, offset = self.state.get("tg_chat_id"), self.state.get("tg_offset", 0)
@@ -174,7 +189,7 @@ class Bot:
                 self.tell(
                     f"{emoji} <b>{label} – {tr['pair']}</b>\n"
                     f"{tr['side']} {tr['lots']:.2f} lotti · ingresso {px(tr['pair'], tr['entry'])} → uscita {px(tr['pair'], tr['exit'])}\n"
-                    f"Risultato: <b>{signed_eur(tr['pnl_eur'])}</b> ({tr['pnl_pips']:+.1f} pip, {tr['r_multiple']:+.2f}R)\n"
+                    f"Risultato: <b>{signed_eur(tr['pnl_eur'])}</b> ({tr['pnl_pips']:+.1f} {unit(tr['pair'])}, {tr['r_multiple']:+.2f}R)\n"
                     f"Conto: {eur(self.state['balance'])}"
                 )
         for pos in self.state["open_positions"]:
@@ -344,19 +359,19 @@ class Bot:
         gain = tp_pips * pos["pip_value_eur"]
         eq = broker.equity(self.state)
         test = pos.get("strategy") == "prova"
-        head = (f"{'🟢 COMPRA' if buy else '🔴 VENDI'} <b>{pair[:3]}/{pair[3:]}</b>"
+        head = (f"{'🟢 COMPRA' if buy else '🔴 VENDI'} <b>{label(pair)}</b>"
                 + ("  🧪 <i>strategia in prova</i>" if test else f"  (affidabilità {pos['score']}/100)"))
         lines = [
             head,
             "",
             f"Ingresso: <b>{px(pair, pos['entry'])}</b>",
-            f"Stop loss: <b>{px(pair, pos['sl'])}</b>  ({sl_pips:.1f} pip)",
-            f"Take profit: <b>{px(pair, pos['tp'])}</b>  ({tp_pips:.1f} pip)",
+            f"Stop loss: <b>{px(pair, pos['sl'])}</b>  ({sl_pips:.1f} {unit(pair)})",
+            f"Take profit: <b>{px(pair, pos['tp'])}</b>  ({tp_pips:.1f} {unit(pair)})",
             "",
-            f"Lotti: <b>{pos['lots']:.2f}</b>  ·  1 pip = {eur(pos['pip_value_eur'])}",
+            f"Lotti: <b>{pos['lots']:.2f}</b>  ·  1 {'punto' if unit(pair) == 'punti' else 'pip'} = {eur(pos['pip_value_eur'])}",
             f"Se tocca lo stop: <b>-{eur(pos['risk_eur'])}</b> ({pos['risk_eur'] / eq * 100:.1f}% del conto)",
             f"Se tocca il target: <b>+{eur(gain)}</b>  (rapporto 1:{params['rr']:g})",
-            f"Margine bloccato (leva 1:{self.settings['leva']}): {eur(pos['margin_eur'])}",
+            f"Margine bloccato (leva 1:{leverage_for(pair, self.settings['leva']):g}): {eur(pos['margin_eur'])}",
             "",
             f"📈 {pos['reason']}",
         ]
@@ -500,7 +515,7 @@ class Bot:
             out.append(
                 f"<b>{p['pair']}</b> {p['side']} {p['lots']:.2f} lotti\n"
                 f"Ingresso {px(p['pair'], p['entry'])} · SL {px(p['pair'], p['sl'])} · TP {px(p['pair'], p['tp'])}\n"
-                f"Ora {px(p['pair'], p['last_price'])}: {signed_eur(p['unrealized_eur'])} ({p['unrealized_pips']:+.1f} pip)"
+                f"Ora {px(p['pair'], p['last_price'])}: {signed_eur(p['unrealized_eur'])} ({p['unrealized_pips']:+.1f} {unit(p['pair'])})"
                 + (f"\n⏰ Chiusura automatica alle {rome(p['exit_at'])}" if p.get("exit_at") else "")
             )
         return "\n\n".join(out)
@@ -587,7 +602,7 @@ class Bot:
         ops = st["open_positions"]
         if ops:
             u = sum(p.get("unrealized_eur", 0) for p in ops)
-            names = ", ".join(f"{p['pair'][:3]}/{p['pair'][3:]}" for p in ops)
+            names = ", ".join(label(p['pair']) for p in ops)
             return f"Ha {len(ops)} operazion{'e' if len(ops) == 1 else 'i'} apert{'a' if len(ops) == 1 else 'e'} ({names}): in questo momento {signed_eur(u)}."
         if self.settings.get("pausa"):
             return "In pausa: non apre nuove operazioni finché non la riattivi."
@@ -597,7 +612,7 @@ class Bot:
             return "Mercato forex chiuso nel weekend: si riparte domenica alle 23:00."
         if not active:
             return "Acceso, ma non fa trading: nessuna strategia ha ancora superato l'esame sui dati passati."
-        names = ', '.join(a[:3] + '/' + a[3:] for a in active)
+        names = ', '.join(label(a) for a in active)
         if all(self.strategy_for(a) == "prova" for a in active):
             return (f"Sta provando la strategia «{london.NAME}» con soldi finti su {names}. "
                     "Cerca occasioni ogni mattina tra le 9 e le 12 italiane (mercato di Londra).")

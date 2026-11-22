@@ -30,8 +30,11 @@ _session = requests.Session()
 _session.headers.update(UA)
 
 
+CFD_SYMBOLS = {"XAUUSD", "XAGUSD", "USA500IDXUSD", "USA30IDXUSD", "USATECHIDXUSD", "DEUIDXEUR", "LIGHTCMDUSD"}
+
+
 def point(symbol: str) -> float:
-    return 1e3 if symbol.endswith("JPY") else 1e5
+    return 1e3 if symbol.endswith("JPY") or symbol in CFD_SYMBOLS else 1e5
 
 
 def _get(path: str, immutable: bool) -> bytes | None:

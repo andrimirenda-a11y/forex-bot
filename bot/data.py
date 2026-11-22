@@ -48,6 +48,12 @@ def _yahoo_session():
 
 def candles(symbol: str, interval: str = "1h", rng: str = "60d") -> pd.DataFrame:
     """Candele OHLC indicizzate per ora di apertura UTC (con Yahoo l'ultima riga è la candela in corso)."""
+    if symbol.startswith("duka:"):          # CFD: sempre Dukascopy (stessa fonte della ricerca)
+        df = duka.candles(symbol[5:], "1h" if interval == "1h" else "15min", days=RANGE_DAYS.get(rng, 60))
+        if len(df) < 10:
+            raise RuntimeError(f"Dukascopy senza dati per {symbol}")
+        SOURCE_USED[symbol] = "dukascopy"
+        return df
     try:
         if time.time() < _yahoo["blocked_until"]:
             raise RuntimeError("Yahoo temporaneamente evitato dopo un rifiuto")

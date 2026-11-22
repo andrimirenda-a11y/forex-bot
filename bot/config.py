@@ -26,7 +26,25 @@ PAIRS = {
     "USDCHF": {"yahoo": "CHF=X",    "base": "USD", "quote": "CHF", "pip": 0.0001, "spread": 1.5},
     "AUDUSD": {"yahoo": "AUDUSD=X", "base": "AUD", "quote": "USD", "pip": 0.0001, "spread": 1.3},
     "USDCAD": {"yahoo": "CAD=X",    "base": "USD", "quote": "CAD", "pip": 0.0001, "spread": 1.6},
+    # CFD (prezzi da Dukascopy, gli stessi della ricerca). contract = unità per 1 lotto,
+    # max_lev = leva massima consentita in UE ai clienti retail (ESMA).
+    "XAUUSD": {"yahoo": "duka:XAUUSD", "base": "XAU", "quote": "USD", "pip": 0.1, "spread": 3.5,
+               "kind": "cfd", "contract": 100, "max_lev": 20, "name": "Oro"},
+    "XAGUSD": {"yahoo": "duka:XAGUSD", "base": "XAG", "quote": "USD", "pip": 0.01, "spread": 3,
+               "kind": "cfd", "contract": 5000, "max_lev": 10, "name": "Argento"},
+    "US500":  {"yahoo": "duka:USA500IDXUSD", "base": "USIDX", "quote": "USD", "pip": 1.0, "spread": 0.6,
+               "kind": "cfd", "contract": 1, "max_lev": 20, "name": "S&P 500"},
+    "US30":   {"yahoo": "duka:USA30IDXUSD", "base": "USIDX", "quote": "USD", "pip": 1.0, "spread": 3,
+               "kind": "cfd", "contract": 1, "max_lev": 20, "name": "Dow Jones"},
 }
+FX_PAIRS = [p for p, i in PAIRS.items() if i.get("kind", "fx") == "fx"]
+CFD_PAIRS = [p for p, i in PAIRS.items() if i.get("kind") == "cfd"]
+
+
+def label(pair: str) -> str:
+    """Nome leggibile: 'EUR/USD', 'Oro', 'S&P 500'."""
+    info = PAIRS.get(pair, {})
+    return info.get("name") or f"{pair[:3]}/{pair[3:]}"
 
 # Simboli per convertire qualsiasi valuta in EUR (prezzo = quanti X per 1 EUR)
 EUR_CROSSES = {

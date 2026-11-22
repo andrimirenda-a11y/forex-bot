@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 
 from . import backtest, strategy
-from .config import BACKTEST_FILE, CALIBRATION_FILE, DEFAULT_PARAMS, PAIRS
+from .config import BACKTEST_FILE, CALIBRATION_FILE, DEFAULT_PARAMS, FX_PAIRS, PAIRS
 
 # --- impostazioni della calibrazione ---
 GRID = {
@@ -200,7 +200,7 @@ def run(pairs: list[str] | None = None, fetch: Fetcher | None = None,
         calibration_file: Path | None = None, backtest_file: Path | None = None,
         grid: dict | None = None, verbose: bool = True, write: bool = True) -> tuple[dict, dict]:
     """Esegue la calibrazione completa. `fetch` è iniettabile (test senza internet)."""
-    pairs = pairs or list(PAIRS)
+    pairs = pairs or list(FX_PAIRS)   # la strategia principale è pensata solo per le valute
     fetch = fetch or yahoo_fetch
     calibration_file = calibration_file or CALIBRATION_FILE
     backtest_file = backtest_file or BACKTEST_FILE

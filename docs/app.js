@@ -13,7 +13,8 @@
   var SAVED_KEY = "fxbot_last_saved";
   var PAIR_KEY = "fxbot_chart_pair";
   var RANGE_KEY = "fxbot_eq_range";
-  var TV_SYMBOLS = { EURUSD: "FX:EURUSD", GBPUSD: "FX:GBPUSD", EURGBP: "FX:EURGBP", USDJPY: "FX:USDJPY", USDCHF: "FX:USDCHF", AUDUSD: "FX:AUDUSD", USDCAD: "FX:USDCAD" };
+  var TV_SYMBOLS = { EURUSD: "FX:EURUSD", GBPUSD: "FX:GBPUSD", EURGBP: "FX:EURGBP", USDJPY: "FX:USDJPY", USDCHF: "FX:USDCHF", AUDUSD: "FX:AUDUSD", USDCAD: "FX:USDCAD",
+    XAUUSD: "OANDA:XAUUSD", XAGUSD: "OANDA:XAGUSD", US500: "OANDA:SPX500USD", US30: "OANDA:US30USD" };
 
   /* localStorage protetto da try/catch (può essere disabilitato) */
   var store = {
@@ -435,7 +436,7 @@
       '<div class="pos-meta">' + C.fmtLots(n(p.lots)) + " lotti · aperta " + esc(C.fmtDateTime(p.opened_at)) +
       " · da " + esc(C.fmtDuration(p.opened_at, new Date().toISOString())) + "</div></div>" +
       '<div class="pos-pnl"><div class="big ' + cls(eur) + '">' + C.fmtEur(eur, { sign: true }) + "</div>" +
-      '<div class="small ' + cls(pips) + '">' + (pips !== null ? (pips > 0 ? "+" : "") + C.fmtNum(pips, 1) + " pip" : "—") + "</div></div></div>";
+      '<div class="small ' + cls(pips) + '">' + (pips !== null ? (pips > 0 ? "+" : "") + C.fmtNum(pips, 1) + " " + C.unitName(pair) : "—") + "</div></div></div>";
 
     h += '<div class="pos-grid">' +
       cell("Entrata", C.fmtPrice(entry, pair)) + cell("Prezzo", C.fmtPrice(price, pair)) +
@@ -445,8 +446,8 @@
       h += '<div class="track"><div class="track-bar">' +
         (fe !== null ? '<div class="track-entry" style="left:' + (fe * 100).toFixed(1) + '%"></div>' : "") +
         '<div class="track-dot ' + cls(pips) + '" style="left:' + (f * 100).toFixed(1) + '%"></div></div>' +
-        '<div class="track-labels"><span class="sl">SL ' + C.fmtPrice(sl, pair) + (toSl !== null ? " · " + C.fmtNum(toSl, 1) + " pip" : "") + "</span>" +
-        '<span class="tp">' + (toTp !== null ? C.fmtNum(toTp, 1) + " pip · " : "") + "TP " + C.fmtPrice(tp, pair) + "</span></div></div>";
+        '<div class="track-labels"><span class="sl">SL ' + C.fmtPrice(sl, pair) + (toSl !== null ? " · " + C.fmtNum(toSl, 1) + " " + C.unitName(pair) : "") + "</span>" +
+        '<span class="tp">' + (toTp !== null ? C.fmtNum(toTp, 1) + " " + C.unitName(pair) + " · " : "") + "TP " + C.fmtPrice(tp, pair) + "</span></div></div>";
     } else {
       h += '<div class="track-labels"><span class="sl">SL ' + C.fmtPrice(sl, pair) + '</span><span class="tp">TP ' + C.fmtPrice(tp, pair) + "</span></div>";
     }
@@ -562,7 +563,7 @@
       '<span class="tag ' + rt[0] + '">' + esc(rt[1]) + "</span></div>" +
       '<div class="trade-sub">' + esc(C.fmtDateTime(t.closed_at)) + " · " + esc(C.fmtDuration(t.opened_at, t.closed_at)) + " · " + C.fmtLots(n(t.lots)) + " lotti</div></div>" +
       '<div class="trade-right"><b class="' + cls(pnl) + '">' + C.fmtEur(pnl, { sign: true }) + "</b><span>" +
-      (pips !== null ? (pips > 0 ? "+" : "") + C.fmtNum(pips, 1) + " pip" : "") + (r !== null ? " · " + (r > 0 ? "+" : "") + C.fmtNum(r, 2) + "R" : "") + "</span></div></div>";
+      (pips !== null ? (pips > 0 ? "+" : "") + C.fmtNum(pips, 1) + " " + C.unitName(t.pair) : "") + (r !== null ? " · " + (r > 0 ? "+" : "") + C.fmtNum(r, 2) + "R" : "") + "</span></div></div>";
   }
 
   function rStats(s) {

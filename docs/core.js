@@ -7,7 +7,9 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
-  var PAIRS = ["EURUSD", "GBPUSD", "EURGBP", "USDJPY", "USDCHF", "AUDUSD", "USDCAD"];
+  var PAIRS = ["EURUSD", "GBPUSD", "EURGBP", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "XAUUSD", "XAGUSD", "US500", "US30"];
+  /* CFD: nome leggibile, dimensione del "punto" e decimali del prezzo */
+  var CFD = { XAUUSD: ["Oro", 0.1, 2], XAGUSD: ["Argento", 0.01, 3], US500: ["S&P 500", 1, 1], US30: ["Dow Jones", 1, 1] };
   var LEVERAGES = [1, 2, 5, 10, 20, 30, 50, 100, 200, 500];
   var CONTRACT_SIZE = 100000;
   var MIN_LOT = 0.01;
@@ -49,16 +51,18 @@
     if (!isNum(v)) return "—";
     return fmtNum(v, 2).replace(/,00$/, "").replace(/(,\d)0$/, "$1") + "%";
   }
-  function pipSize(pair) { return /JPY$/.test(pair || "") ? 0.01 : 0.0001; }
-  function priceDigits(pair) { return /JPY$/.test(pair || "") ? 3 : 5; }
+  function pipSize(pair) { return CFD[pair] ? CFD[pair][1] : /JPY$/.test(pair || "") ? 0.01 : 0.0001; }
+  function priceDigits(pair) { return CFD[pair] ? CFD[pair][2] : /JPY$/.test(pair || "") ? 3 : 5; }
   function fmtPrice(v, pair) {
     if (!isNum(v)) return "—";
     return v.toFixed(priceDigits(pair));
   }
   function fmtPair(pair) {
     pair = String(pair || "");
+    if (CFD[pair]) return CFD[pair][0];
     return pair.length === 6 ? pair.slice(0, 3) + "/" + pair.slice(3) : pair;
   }
+  function unitName(pair) { return CFD[pair] ? "punti" : "pip"; }
   function fmtLots(v) { return isNum(v) ? fmtNum(v, 2) : "—"; }
 
   function parseTime(iso) {
@@ -324,7 +328,7 @@
   return {
     PAIRS: PAIRS, LEVERAGES: LEVERAGES, DEFAULT_SETTINGS: DEFAULT_SETTINGS,
     isNum: isNum, num: num,
-    fmtEur: fmtEur, fmtNum: fmtNum, fmtPct: fmtPct, fmtPctShort: fmtPctShort, fmtPrice: fmtPrice, fmtPair: fmtPair, fmtLots: fmtLots,
+    fmtEur: fmtEur, fmtNum: fmtNum, fmtPct: fmtPct, fmtPctShort: fmtPctShort, fmtPrice: fmtPrice, fmtPair: fmtPair, fmtLots: fmtLots, unitName: unitName,
     fmtDateTime: fmtDateTime, fmtDate: fmtDate, fmtDuration: fmtDuration, timeAgo: timeAgo, minutesSince: minutesSince,
     parseTime: parseTime, pipSize: pipSize, priceDigits: priceDigits,
     slTpFraction: slTpFraction, pipsBetween: pipsBetween,
