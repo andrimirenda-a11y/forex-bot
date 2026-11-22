@@ -71,7 +71,7 @@ def verdict(s: dict, expected: dict | None) -> str:
     return "❌ <b>Non sta funzionando</b>: dal vivo perde. Meglio non passare ai soldi veri finché non migliora."
 
 
-def weekly_report(state, history, calibration, backtest, now) -> str:
+def weekly_report(state, history, calibration, backtest, now, study=None) -> str:
     week_ago = now - timedelta(days=7)
     week = [t for t in history if parse(t["closed_at"]) >= week_ago]
     sw = stats(week)
@@ -101,5 +101,13 @@ def weekly_report(state, history, calibration, backtest, now) -> str:
         lines.append("")
     if state.get("paused_pairs"):
         lines.append("<b>In pausa</b>: " + ", ".join(state["paused_pairs"].keys()))
-    lines.append(verdict(sa, (backtest or {}).get("total")))
+    st_closed = (study or {}).get("closed", [])
+    if st_closed:
+        ss = stats(st_closed)
+        lines.append(f"📝 <b>Operazioni di studio</b> (segnali che il conto non permetteva, seguiti sulla carta): "
+                     f"{ss['trades']}, vincite {ss['win_rate']}%, risultato {ss['net_r']:+}R")
+        lines.append("")
+    # il giudizio sulla strategia usa TUTTE le operazioni: vere + di studio (in R, indipendente dal capitale)
+    sa_all = stats(sorted(history + st_closed, key=lambda t: t["closed_at"])) if st_closed else sa
+    lines.append(verdict(sa_all, (backtest or {}).get("total")))
     return "\n".join(lines)

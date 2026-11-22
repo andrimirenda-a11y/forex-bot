@@ -18,10 +18,11 @@ import pandas as pd
 from . import broker, data, evaluate, london, strategy, telegram
 from .config import (
     BACKTEST_FILE, CALIBRATION_FILE, DAILY_LOSS_LIMIT_PCT, DEFAULT_PARAMS, DEFAULT_SETTINGS,
-    EQUITY_FILE, EUR_CROSSES, HISTORY_FILE, LOG_FILE, MAX_OPEN_POSITIONS, MAX_PER_CURRENCY,
+    EQUITY_FILE, EUR_CROSSES, HISTORY_FILE, LOG_FILE, STUDY_FILE, MAX_OPEN_POSITIONS, MAX_PER_CURRENCY,
     NEWS_BLOCK_MINUTES, PAIRS, SETTINGS_FILE, SIGNAL_VALID_MINUTES, SIGNALS_FILE, STATE_FILE,
     WEEKLY_LOSS_LIMIT_PCT, CFD_PAIRS, label,
 )
+from . import risk as risk_mod
 from .risk import leverage_for, size_position
 from .storage import iso, load, now_utc, parse, save
 
@@ -75,6 +76,7 @@ class Bot:
         self.settings_dirty = not SETTINGS_FILE.exists()
         self.state = {**default_state(self.settings), **load(STATE_FILE, {})}
         self.history = load(HISTORY_FILE, [])
+        self.study = {"open_positions": [], "closed": [], "balance": 0.0, **load(STUDY_FILE, {})}
         self.signals = load(SIGNALS_FILE, [])
         self.equity_curve = load(EQUITY_FILE, [])
         self.log_items = load(LOG_FILE, [])
@@ -175,7 +177,52 @@ class Bot:
         return len(self.m15) > 0 and "USD" in self.rates
 
     # ------------------------------------------------------------- posizioni
+    def manage_study(self):
+        """Le operazioni di studio seguono le stesse regole di quelle vere, ma non toccano il conto."""
+        if not self.study["open_positions"]:
+            return
+        for tr in broker.manage(self.study, self.m15, self.rates, self.now):
+            tr["studio"] = True
+            self.study["closed"].append(tr)
+            self.log(f"Studio {tr['pair']}: {tr['result']} {tr['r_multiple']:+.2f}R")
+            if self.settings.get("notifiche_chiusura", True):
+                self.tell(f"📝 <b>Operazione di studio chiusa – {label(tr['pair'])}</b>: {tr['r_multiple']:+.2f}R "
+                          f"(con il conto abbastanza grande sarebbe stato {signed_eur(tr['pnl_eur'])}). Non tocca il tuo conto.")
+        for pos in self.study["open_positions"]:
+            pos.pop("events", None)
+
+    def open_study(self, pair, side, entry, sl, tp, row, params, why):
+        """Segnale valido che il conto non permette: lo seguo lo stesso 'sulla carta' per giudicare la strategia."""
+        if any(p["pair"] == pair for p in self.study["open_positions"] + self.state["open_positions"]):
+            return
+        info = PAIRS[pair]
+        live = self.state["last_prices"].get(pair, {}).get("price")
+        if live:
+            moved = (live - entry) if side == "BUY" else (entry - live)
+            if moved > 0.3 * abs(entry - sl) or (side == "BUY" and live <= sl) or (side == "SELL" and live >= sl):
+                return
+            entry = live
+        sl_pips = abs(entry - sl) / info["pip"]
+        if sl_pips <= 0:
+            return
+        eq = broker.equity(self.state)
+        risk_eur = eq * self.settings["rischio_pct"] / 100
+        pv1 = risk_mod.pip_value_eur(pair, self.rates, 1.0)
+        lots = risk_eur / (sl_pips * pv1)
+        sizing = {"lots": round(lots, 4), "risk_eur": round(risk_eur, 2), "pip_value_eur": round(pv1 * lots, 4),
+                  "margin_eur": 0.0}
+        pos = broker.open_position(self.study, pair, side, entry, sl, tp, sizing, row["score"], why, self.now, params)
+        pos["studio"] = True
+        if "exit_at" in row and pd.notna(row["exit_at"]):
+            pos["exit_at"] = iso(row["exit_at"])
+        self.log(f"Studio {pair} {side}: seguito sulla carta ({why})")
+        if self.settings.get("notifiche_apertura", True):
+            self.tell(f"📝 <b>Operazione di studio – {label(pair)}</b> ({'compra' if side == 'BUY' else 'vendi'})\n"
+                      f"Segnale valido, ma non la apro sul conto: {why}\n"
+                      "La seguo lo stesso sulla carta, così il test della strategia resta completo.")
+
     def manage_positions(self):
+        self.manage_study()
         if not self.state["open_positions"]:
             return
         closed = broker.manage(self.state, self.m15, self.rates, self.now)
@@ -301,6 +348,7 @@ class Bot:
             side = "BUY" if row["signal"] == 1 else "SELL"
             # filtri
             note = None
+            study_ok = False
             if not can_trade:
                 note = self.state.get("halt_reason") or "bot in pausa"
             elif self.settings.get("pausa"):
@@ -309,6 +357,7 @@ class Bot:
                 note = "posizione già aperta su questa coppia"
             elif len(self.state["open_positions"]) >= MAX_OPEN_POSITIONS:
                 note = f"già {MAX_OPEN_POSITIONS} posizioni aperte"
+                study_ok = True
             else:
                 nb = self.news_block(pair, events)
                 if nb:
@@ -317,6 +366,7 @@ class Bot:
                     ok_exp, why_exp = self.exposure_ok(pair, side)
                     if not ok_exp:
                         note = why_exp
+                        study_ok = True
             # il prezzo attuale non deve essere già scappato
             live = self.state["last_prices"].get(pair, {}).get("price")
             entry = float(row["entry"])
@@ -337,9 +387,12 @@ class Bot:
                 sizing = size_position(pair, entry, sl, eq, free, self.settings, self.rates)
                 if sizing.get("skip"):
                     note = sizing["skip"]
+                    study_ok = True
             if note:
                 self.record_signal(pair, side, row, "scartato", note)
                 self.log(f"Segnale {pair} {side} scartato: {note}")
+                if study_ok:
+                    self.open_study(pair, side, entry, sl, tp, row, params, note)
                 continue
             reason = mod.describe(row, 1 if side == "BUY" else -1)
             pos = broker.open_position(self.state, pair, side, entry, sl, tp, sizing, row["score"], reason, self.now, params)
@@ -446,7 +499,7 @@ class Bot:
         elif cmd == "/posizioni":
             self.tell(self.positions_text())
         elif cmd == "/statistiche":
-            self.tell(evaluate.weekly_report(self.state, self.history, self.calibration, self.backtest, self.now)
+            self.tell(evaluate.weekly_report(self.state, self.history, self.calibration, self.backtest, self.now, self.study)
                       .replace("Report settimanale", "Statistiche"))
         elif cmd == "/impostazioni":
             self.tell(self.settings_text())
@@ -548,6 +601,8 @@ class Bot:
         self.snapshot()
         save(STATE_FILE, self.state)
         save(HISTORY_FILE, self.history)
+        self.study["closed"] = self.study["closed"][-2000:]
+        save(STUDY_FILE, self.study)
         save(SIGNALS_FILE, self.signals)
         save(EQUITY_FILE, self.equity_curve)
         save(LOG_FILE, self.log_items)
@@ -560,7 +615,7 @@ class Bot:
         rome_now = pd.Timestamp(self.now).tz_convert("Europe/Rome")
         last = parse(self.state.get("last_weekly_report"))
         if rome_now.day_of_week == 6 and rome_now.hour >= 18 and (not last or self.now - last > timedelta(days=5)):
-            self.tell(evaluate.weekly_report(self.state, self.history, self.calibration, self.backtest, self.now))
+            self.tell(evaluate.weekly_report(self.state, self.history, self.calibration, self.backtest, self.now, self.study))
             self.state["last_weekly_report"] = iso(self.now)
 
     def calibration_news(self):
