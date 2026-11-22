@@ -45,27 +45,30 @@ jobs:
               print(pair, len(df), df.index[0], df.index[-1], data.SOURCE_USED.get(info["yahoo"]))
               time.sleep(2)
           EOF
-      - name: Oro, indici e petrolio (Yahoo, futures quasi 24h)
+      - name: Oro, indici e petrolio da Dukascopy (Yahoo blocca GitHub)
         run: |
           python - <<'EOF'
-          import time, pandas as pd
-          from bot import data
-          EXTRA = {"XAUUSD": "GC=F", "US500": "ES=F", "NAS100": "NQ=F", "GER40": "^GDAXI",
-                   "WTI": "CL=F", "XAGUSD": "SI=F", "US30": "YM=F"}
-          for name, sym in EXTRA.items():
-              df = None
-              for rng in ["730d", "729d", "365d"]:
-                  try:
-                      df = data._yahoo_candles(sym, "1h", rng)
-                      break
-                  except Exception as e:
-                      print(name, rng, "errore", e); time.sleep(5)
-              if df is None:
-                  continue
-              df = data.closed_only(df, pd.Timedelta(hours=1))
-              df.round(6).to_csv(f"research/h1_{name}.csv.gz", compression="gzip")
-              print(name, len(df), df.index[0], df.index[-1])
-              time.sleep(3)
+          import time, numpy as np, pandas as pd
+          from bot import duka
+          duka.point = lambda s: 1.0      # prezzi grezzi: il divisore lo ricavo sotto
+          EXTRA = {"XAUUSD": ("XAUUSD", 1500, 6000), "XAGUSD": ("XAGUSD", 15, 120),
+                   "US500": ("USA500IDXUSD", 3000, 10000), "NAS100": ("USATECHIDXUSD", 10000, 40000),
+                   "US30": ("USA30IDXUSD", 25000, 70000), "GER40": ("DEUIDXEUR", 12000, 40000),
+                   "WTI": ("LIGHTCMDUSD", 30, 150)}
+          for name, (sym, lo, hi) in EXTRA.items():
+              try:
+                  df = duka.candles(sym, "1h", days=730)
+              except Exception as e:
+                  print(name, "errore", e); continue
+              if df is None or len(df) < 100:
+                  print(name, "pochi dati", 0 if df is None else len(df)); continue
+              med = float(df["close"].median())
+              div = next((d for d in (1e5, 1e4, 1e3, 1e2, 10, 1) if lo <= med / d <= hi), None)
+              if div is None:
+                  print(name, "scala sconosciuta", med); continue
+              df = (df[["open", "high", "low", "close"]] / div).round(6)
+              df.to_csv(f"research/h1_{name}.csv.gz", compression="gzip")
+              print(name, len(df), df.index[0], df.index[-1], "divisore", div)
           EOF
       - name: Salva
         run: |
