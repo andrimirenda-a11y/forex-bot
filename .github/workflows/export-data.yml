@@ -45,6 +45,28 @@ jobs:
               print(pair, len(df), df.index[0], df.index[-1], data.SOURCE_USED.get(info["yahoo"]))
               time.sleep(2)
           EOF
+      - name: Oro, indici e petrolio (Yahoo, futures quasi 24h)
+        run: |
+          python - <<'EOF'
+          import time, pandas as pd
+          from bot import data
+          EXTRA = {"XAUUSD": "GC=F", "US500": "ES=F", "NAS100": "NQ=F", "GER40": "^GDAXI",
+                   "WTI": "CL=F", "XAGUSD": "SI=F", "US30": "YM=F"}
+          for name, sym in EXTRA.items():
+              df = None
+              for rng in ["730d", "729d", "365d"]:
+                  try:
+                      df = data._yahoo_candles(sym, "1h", rng)
+                      break
+                  except Exception as e:
+                      print(name, rng, "errore", e); time.sleep(5)
+              if df is None:
+                  continue
+              df = data.closed_only(df, pd.Timedelta(hours=1))
+              df.round(6).to_csv(f"research/h1_{name}.csv.gz", compression="gzip")
+              print(name, len(df), df.index[0], df.index[-1])
+              time.sleep(3)
+          EOF
       - name: Salva
         run: |
           git config user.name "forex-bot"
