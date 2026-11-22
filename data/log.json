@@ -18,5 +18,25 @@
   "t": "2026-11-22T16:03:53Z",
   "level": "warn",
   "msg": "Prezzi XAGUSD non disponibili: Dukascopy non raggiungibile per XAGUSD/2026/10/17/BID_candles_min_1.bi5: HTTP 503"
+ },
+ {
+  "t": "2026-11-22T22:01:18Z",
+  "level": "warn",
+  "msg": "Cambio EUR/USD non disponibile: Dukascopy non raggiungibile per EURUSD/2026/10/22/21h_ticks.bi5: HTTPSConnectionPool(host='datafeed.dukascopy.com', port=443): Read timed out. (read timeout=25)"
+ },
+ {
+  "t": "2026-11-22T22:06:56Z",
+  "level": "warn",
+  "msg": "Candele orarie GBPUSD non disponibili: Dukascopy non raggiungibile per GBPUSD/2026/10/22/21h_ticks.bi5: HTTP 503"
+ },
+ {
+  "t": "2026-11-22T22:08:02Z",
+  "level": "warn",
+  "msg": "Candele orarie EURGBP non disponibili: Dukascopy non raggiungibile per EURGBP/2026/10/22/21h_ticks.bi5: HTTPSConnectionPool(host='datafeed.dukascopy.com', port=443): Read timed out. (read timeout=25)"
+ },
+ {
+  "t": "2026-11-22T22:08:28Z",
+  "level": "warn",
+  "msg": "Candele orarie USDJPY non disponibili: Dukascopy non raggiungibile per USDJPY/2026/10/22/21h_ticks.bi5: HTTP 503"
  }
 ]

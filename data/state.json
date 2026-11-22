@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-22T21:57:26Z",
+ "last_run": "2026-11-22T22:09:05Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -73,6 +73,6 @@
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": null,
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Mercato forex chiuso nel weekend: si riparte domenica alle 23:00.",
- "market_open": false
+ "status_line": "Sta provando la strategia «Breakout di Londra (in prova)» con soldi finti su EUR/USD, GBP/USD, EUR/GBP, USD/JPY, USD/CHF, AUD/USD, USD/CAD, Oro, Argento, S&P 500, Dow Jones. Cerca occasioni ogni mattina tra le 9 e le 12 italiane (mercato di Londra).",
+ "market_open": true
 }
