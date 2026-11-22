@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-22T23:17:31Z",
+ "last_run": "2026-11-22T23:27:15Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -81,6 +81,7 @@
   "h1-USDCHF": "2026-11-22T23:02:07Z",
   "h1-AUDUSD": "2026-11-22T23:02:07Z",
   "h1-EURGBP": "2026-11-22T23:09:35Z",
-  "h1-USDCAD": "2026-11-22T23:09:35Z"
+  "h1-USDCAD": "2026-11-22T23:09:35Z",
+  "m15-US30": "2026-11-22T23:20:51Z"
  }
 }
