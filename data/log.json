@@ -8,5 +8,15 @@
   "t": "2026-11-21T22:05:14Z",
   "level": "info",
   "msg": "Capitale cambiato: -9.700,00 € sul conto (nuovo capitale iniziale 300,00 €)"
+ },
+ {
+  "t": "2026-11-22T16:03:27Z",
+  "level": "warn",
+  "msg": "Prezzi XAUUSD non disponibili: Dukascopy non raggiungibile per XAUUSD/2026/10/17/BID_candles_min_1.bi5: HTTP 503"
+ },
+ {
+  "t": "2026-11-22T16:03:53Z",
+  "level": "warn",
+  "msg": "Prezzi XAGUSD non disponibili: Dukascopy non raggiungibile per XAGUSD/2026/10/17/BID_candles_min_1.bi5: HTTP 503"
  }
 ]
