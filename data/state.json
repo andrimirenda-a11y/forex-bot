@@ -4,36 +4,36 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-22T22:47:27Z",
+ "last_run": "2026-11-22T23:01:07Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09662,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 1.09722,
+   "time": "2026-11-22T22:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.30764,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 1.30913,
+   "time": "2026-11-22T22:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83794,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 0.83768,
+   "time": "2026-11-22T22:45:00Z"
   },
   "USDJPY": {
-   "price": 158.523,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 158.547,
+   "time": "2026-11-22T22:45:00Z"
   },
   "USDCHF": {
-   "price": 0.83951,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 0.83984,
+   "time": "2026-11-22T22:45:00Z"
   },
   "AUDUSD": {
-   "price": 0.6618,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 0.6621,
+   "time": "2026-11-22T22:45:00Z"
   },
   "USDCAD": {
-   "price": 1.43397,
-   "time": "2026-11-20T21:45:00Z"
+   "price": 1.43374,
+   "time": "2026-11-22T22:45:00Z"
   },
   "US500": {
    "price": 6946.085,
@@ -56,13 +56,13 @@
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-20T21:00:00Z",
-  "GBPUSD": "2026-11-20T21:00:00Z",
-  "EURGBP": "2026-11-20T21:00:00Z",
-  "USDJPY": "2026-11-20T21:00:00Z",
-  "USDCHF": "2026-11-20T21:00:00Z",
-  "AUDUSD": "2026-11-20T21:00:00Z",
-  "USDCAD": "2026-11-20T21:00:00Z",
+  "EURUSD": "2026-11-22T22:00:00Z",
+  "GBPUSD": "2026-11-22T22:00:00Z",
+  "EURGBP": "2026-11-22T22:00:00Z",
+  "USDJPY": "2026-11-22T22:00:00Z",
+  "USDCHF": "2026-11-22T22:00:00Z",
+  "AUDUSD": "2026-11-22T22:00:00Z",
+  "USDCAD": "2026-11-22T22:00:00Z",
   "XAUUSD": "2026-11-20T21:00:00Z",
   "XAGUSD": "2026-11-20T21:00:00Z",
   "US500": "2026-11-20T21:00:00Z",
@@ -71,8 +71,12 @@
  "tg_offset": 615229877,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
- "last_error_notice": null,
+ "last_error_notice": "2026-11-22T22:48:30Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
  "status_line": "Sta provando la strategia «Breakout di Londra (in prova)» con soldi finti su EUR/USD, GBP/USD, EUR/GBP, USD/JPY, USD/CHF, AUD/USD, USD/CAD, Oro, Argento, S&P 500, Dow Jones. Cerca occasioni ogni mattina tra le 9 e le 12 italiane (mercato di Londra).",
- "market_open": true
+ "market_open": true,
+ "warn_times": {
+  "rate-USD": "2026-11-22T22:48:30Z",
+  "rate-GBP": "2026-11-22T22:48:30Z"
+ }
 }
