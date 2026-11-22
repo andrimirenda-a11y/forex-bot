@@ -151,13 +151,23 @@ class Bot:
             self.log(f"Capitale cambiato: {signed_eur(diff)} sul conto (nuovo capitale iniziale {eur(cap)})")
 
     # ------------------------------------------------------------- prezzi
+    def warn_once(self, key, msg, err=None, hours=3):
+        """Intoppi passeggeri: li scrivo negli eventi al massimo una volta ogni `hours` ore."""
+        print("avviso:", key, err)
+        seen = self.state.setdefault("warn_times", {})
+        last = parse(seen.get(key))
+        if last and self.now - last < timedelta(hours=hours):
+            return
+        seen[key] = iso(self.now)
+        self.log(msg, "warn")
+
     def load_prices(self):
         for cur, sym in EUR_CROSSES.items():
             try:
                 df = data.candles(sym, "15m", "5d")
                 self.rates[cur] = float(df["close"].iloc[-1])
             except Exception as e:  # noqa: BLE001
-                self.log(f"Cambio EUR/{cur} non disponibile: {e}", "warn")
+                self.warn_once(f"rate-{cur}", f"Cambio EUR/{cur}: fonte prezzi momentaneamente occupata, riprovo da solo.", e)
         for pair, info in PAIRS.items():
             try:
                 df = data.candles(info["yahoo"], "15m", "5d")
@@ -165,7 +175,7 @@ class Bot:
                 self.state["last_prices"][pair] = {"price": round(float(df["close"].iloc[-1]), 6),
                                                    "time": iso(df.index[-1])}
             except Exception as e:  # noqa: BLE001
-                self.log(f"Prezzi {pair} non disponibili: {e}", "warn")
+                self.warn_once(f"m15-{pair}", f"{label(pair)}: fonte prezzi momentaneamente occupata, riprovo da solo.", e)
         # se manca qualche cambio lo ricaviamo dalle coppie
         if "USD" in self.rates:
             usd = self.rates["USD"]
@@ -325,7 +335,7 @@ class Bot:
             try:
                 h1 = data.candles(info["yahoo"], "1h", "180d")
             except Exception as e:  # noqa: BLE001
-                self.log(f"Candele orarie {pair} non disponibili: {e}", "warn")
+                self.warn_once(f"h1-{pair}", f"{label(pair)}: fonte prezzi momentaneamente occupata, riprovo da solo.", e)
                 continue
             h1 = data.closed_only(h1, pd.Timedelta(hours=1), self.now)
             if len(h1) < 900:

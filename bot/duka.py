@@ -37,28 +37,37 @@ def point(symbol: str) -> float:
     return 1e3 if symbol.endswith("JPY") or symbol in CFD_SYMBOLS else 1e5
 
 
-def _get(path: str, immutable: bool) -> bytes | None:
-    """Scarica un file. None = non (ancora) disponibile. b'' = periodo senza dati."""
+_MISSING: dict[str, float] = {}   # file non ancora pubblicati: non richiederli di nuovo per un po'
+MISSING_RETRY_S = 120
+
+
+def _get(path: str, immutable: bool, cache_if_data: bool = False) -> bytes | None:
+    """Scarica un file. None = non (ancora) disponibile. b'' = periodo senza dati.
+    cache_if_data: il file, una volta pubblicato con dati, non cambia più -> lo tengo in cache."""
     cached = CACHE / path
-    if immutable and cached.exists():
+    if (immutable or cache_if_data) and cached.exists():
         return cached.read_bytes()
+    if time.time() - _MISSING.get(path, 0) < MISSING_RETRY_S:
+        return None
     last = None
     for attempt in range(4):
         try:
             r = _session.get(f"{BASE}/{path}", timeout=25)
             if r.status_code == 404:
+                _MISSING[path] = time.time()
                 return None
             if r.status_code in (429, 500, 502, 503, 504):
                 raise RuntimeError(f"HTTP {r.status_code}")
             r.raise_for_status()
             data = r.content
-            if immutable:
+            if immutable or (cache_if_data and data):
                 cached.parent.mkdir(parents=True, exist_ok=True)
                 cached.write_bytes(data)
             return data
         except Exception as e:  # noqa: BLE001
             last = e
-            time.sleep(1.5 * (attempt + 1))
+            time.sleep(3 * (attempt + 1))
+    _MISSING[path] = time.time()      # server occupato: lascio respirare prima di riprovare
     raise RuntimeError(f"Dukascopy non raggiungibile per {path}: {last}")
 
 
@@ -124,7 +133,7 @@ def hour_ticks(sym: str, h: datetime, now: datetime) -> pd.DataFrame | None:
         return pd.DataFrame(columns=["bid"], dtype=float)
     # gli ultimi file possono comparire con qualche minuto di ritardo: non li mettiamo in cache se vuoti
     raw = _get(f"{sym}/{start.year:04d}/{start.month - 1:02d}/{start.day:02d}/{start.hour:02d}h_ticks.bi5",
-               immutable=(now - start) > timedelta(hours=3))
+               immutable=(now - start) > timedelta(hours=3), cache_if_data=True)
     return None if raw is None else _decode_ticks(raw, start, sym)
 
 
