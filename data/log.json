@@ -283,5 +283,10 @@
   "t": "2026-11-23T19:10:15Z",
   "level": "info",
   "msg": "Capitale cambiato: -9.700,00 € sul conto (nuovo capitale iniziale 300,00 €)"
+ },
+ {
+  "t": "2026-11-23T20:01:36Z",
+  "level": "warn",
+  "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]

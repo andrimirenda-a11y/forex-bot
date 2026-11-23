@@ -1,10 +1,10 @@
 {
  "balance": 297.13,
- "equity": 296.65,
+ "equity": 294.58,
  "margin_used": 60.62,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-23T19:59:54Z",
+ "last_run": "2026-11-23T20:04:06Z",
  "open_positions": [
   {
    "id": "USDJPY-20261123T0900",
@@ -20,89 +20,89 @@
    "pip_value_eur": 0.1143,
    "margin_eur": 60.62,
    "opened_at": "2026-11-23T09:00:34Z",
-   "last_check": "2026-11-23T18:45:00Z",
+   "last_check": "2026-11-23T19:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sopra il massimo della notte e il trend dei giorni scorsi è in salita. Stop dall'altro lato del range notturno, chiusura automatica alle 20:00 di Londra.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 159.126,
-   "unrealized_eur": -0.48,
-   "unrealized_pips": -4.2,
+   "last_price": 158.947,
+   "unrealized_eur": -2.55,
+   "unrealized_pips": -22.1,
    "strategy": "prova",
    "exit_at": "2026-11-23T20:00:00Z"
   }
  ],
  "last_prices": {
   "EURUSD": {
-   "price": 1.08901,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 1.09036,
+   "time": "2026-11-23T19:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.30251,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 1.3035,
+   "time": "2026-11-23T19:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83605,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 0.83645,
+   "time": "2026-11-23T19:45:00Z"
   },
   "USDJPY": {
-   "price": 159.126,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 158.947,
+   "time": "2026-11-23T19:45:00Z"
   },
   "USDCHF": {
-   "price": 0.84268,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 0.84153,
+   "time": "2026-11-23T19:45:00Z"
   },
   "AUDUSD": {
-   "price": 0.66245,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 0.66261,
+   "time": "2026-11-23T19:45:00Z"
   },
   "USDCAD": {
-   "price": 1.43752,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 1.43705,
+   "time": "2026-11-23T19:45:00Z"
   },
   "US500": {
-   "price": 7228.469,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 7241.153,
+   "time": "2026-11-23T19:45:00Z"
   },
   "US30": {
-   "price": 49587.539,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 49638.003,
+   "time": "2026-11-23T19:45:00Z"
   },
   "XAUUSD": {
-   "price": 3649.265,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 3643.065,
+   "time": "2026-11-23T19:45:00Z"
   },
   "XAGUSD": {
-   "price": 43.172,
-   "time": "2026-11-23T18:45:00Z"
+   "price": 43.108,
+   "time": "2026-11-23T19:45:00Z"
   }
  },
  "paused_pairs": {},
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-23T18:00:00Z",
-  "GBPUSD": "2026-11-23T18:00:00Z",
-  "EURGBP": "2026-11-23T18:00:00Z",
-  "USDJPY": "2026-11-23T18:00:00Z",
-  "USDCHF": "2026-11-23T18:00:00Z",
-  "AUDUSD": "2026-11-23T18:00:00Z",
-  "USDCAD": "2026-11-23T18:00:00Z",
-  "XAUUSD": "2026-11-23T18:00:00Z",
-  "XAGUSD": "2026-11-23T18:00:00Z",
-  "US500": "2026-11-23T18:00:00Z",
-  "US30": "2026-11-23T18:00:00Z"
+  "EURUSD": "2026-11-23T19:00:00Z",
+  "GBPUSD": "2026-11-23T19:00:00Z",
+  "EURGBP": "2026-11-23T19:00:00Z",
+  "USDJPY": "2026-11-23T19:00:00Z",
+  "USDCHF": "2026-11-23T19:00:00Z",
+  "AUDUSD": "2026-11-23T19:00:00Z",
+  "USDCAD": "2026-11-23T19:00:00Z",
+  "XAUUSD": "2026-11-23T19:00:00Z",
+  "XAGUSD": "2026-11-23T19:00:00Z",
+  "US500": "2026-11-23T19:00:00Z",
+  "US30": "2026-11-23T19:00:00Z"
  },
  "tg_offset": 615229877,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento -0,48 €.",
+ "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento -2,55 €.",
  "market_open": true,
  "warn_times": {
-  "rate-USD": "2026-11-23T15:00:43Z",
+  "rate-USD": "2026-11-23T20:00:55Z",
   "rate-GBP": "2026-11-23T14:00:57Z",
   "h1-USDCHF": "2026-11-22T23:02:07Z",
   "h1-AUDUSD": "2026-11-22T23:02:07Z",
