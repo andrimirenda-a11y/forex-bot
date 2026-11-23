@@ -1,109 +1,83 @@
 {
- "balance": 297.13,
+ "balance": 294.58,
  "equity": 294.58,
- "margin_used": 60.62,
+ "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-23T20:59:37Z",
- "open_positions": [
-  {
-   "id": "USDJPY-20261123T0900",
-   "pair": "USDJPY",
-   "side": "BUY",
-   "entry": 159.162,
-   "signal_price": 159.156,
-   "sl": 158.795,
-   "tp": 160.239,
-   "sl_initial": 158.795,
-   "lots": 0.02,
-   "risk_eur": 4.13,
-   "pip_value_eur": 0.1143,
-   "margin_eur": 60.62,
-   "opened_at": "2026-11-23T09:00:34Z",
-   "last_check": "2026-11-23T19:45:00Z",
-   "score": 50,
-   "reason": "All'apertura di Londra il prezzo è uscito sopra il massimo della notte e il trend dei giorni scorsi è in salita. Stop dall'altro lato del range notturno, chiusura automatica alle 20:00 di Londra.",
-   "be_moved": false,
-   "breakeven_r": 0,
-   "last_price": 158.947,
-   "unrealized_eur": -2.55,
-   "unrealized_pips": -22.1,
-   "strategy": "prova",
-   "exit_at": "2026-11-23T20:00:00Z"
-  }
- ],
+ "last_run": "2026-11-23T21:05:05Z",
+ "open_positions": [],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09036,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 1.09006,
+   "time": "2026-11-23T20:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.3035,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 1.30333,
+   "time": "2026-11-23T20:45:00Z"
   },
   "EURGBP": {
    "price": 0.83645,
    "time": "2026-11-23T19:45:00Z"
   },
   "USDJPY": {
-   "price": 158.947,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 158.957,
+   "time": "2026-11-23T20:45:00Z"
   },
   "USDCHF": {
-   "price": 0.84153,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 0.84144,
+   "time": "2026-11-23T20:45:00Z"
   },
   "AUDUSD": {
-   "price": 0.66261,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 0.66231,
+   "time": "2026-11-23T20:45:00Z"
   },
   "USDCAD": {
-   "price": 1.43705,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 1.43733,
+   "time": "2026-11-23T20:45:00Z"
   },
   "US500": {
-   "price": 7241.153,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 7240.361,
+   "time": "2026-11-23T20:45:00Z"
   },
   "US30": {
-   "price": 49638.003,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 49625.515,
+   "time": "2026-11-23T20:45:00Z"
   },
   "XAUUSD": {
-   "price": 3643.065,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 3634.985,
+   "time": "2026-11-23T20:45:00Z"
   },
   "XAGUSD": {
-   "price": 43.108,
-   "time": "2026-11-23T19:45:00Z"
+   "price": 43.097,
+   "time": "2026-11-23T20:45:00Z"
   }
  },
  "paused_pairs": {},
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-23T19:00:00Z",
-  "GBPUSD": "2026-11-23T19:00:00Z",
+  "EURUSD": "2026-11-23T20:00:00Z",
+  "GBPUSD": "2026-11-23T20:00:00Z",
   "EURGBP": "2026-11-23T19:00:00Z",
-  "USDJPY": "2026-11-23T19:00:00Z",
-  "USDCHF": "2026-11-23T19:00:00Z",
-  "AUDUSD": "2026-11-23T19:00:00Z",
-  "USDCAD": "2026-11-23T19:00:00Z",
-  "XAUUSD": "2026-11-23T19:00:00Z",
-  "XAGUSD": "2026-11-23T19:00:00Z",
-  "US500": "2026-11-23T19:00:00Z",
-  "US30": "2026-11-23T19:00:00Z"
+  "USDJPY": "2026-11-23T20:00:00Z",
+  "USDCHF": "2026-11-23T20:00:00Z",
+  "AUDUSD": "2026-11-23T20:00:00Z",
+  "USDCAD": "2026-11-23T20:00:00Z",
+  "XAUUSD": "2026-11-23T20:00:00Z",
+  "XAGUSD": "2026-11-23T20:00:00Z",
+  "US500": "2026-11-23T20:00:00Z",
+  "US30": "2026-11-23T20:00:00Z"
  },
  "tg_offset": 615229877,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento -2,55 €.",
+ "status_line": "Sta provando la strategia «Breakout di Londra (in prova)» con soldi finti su EUR/USD, GBP/USD, EUR/GBP, USD/JPY, USD/CHF, AUD/USD, USD/CAD, Oro, Argento, S&P 500, Dow Jones. Cerca occasioni ogni mattina tra le 9 e le 12 italiane (mercato di Londra).",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-23T20:00:55Z",
-  "rate-GBP": "2026-11-23T14:00:57Z",
+  "rate-GBP": "2026-11-23T21:00:38Z",
   "h1-USDCHF": "2026-11-22T23:02:07Z",
   "h1-AUDUSD": "2026-11-22T23:02:07Z",
   "h1-EURGBP": "2026-11-22T23:09:35Z",
@@ -122,5 +96,6 @@
   "m15-USDCAD": "2026-11-23T13:00:29Z",
   "m15-XAGUSD": "2026-11-23T13:00:29Z",
   "m15-AUDUSD": "2026-11-23T19:00:04Z"
- }
+ },
+ "last_daily_report": "2026-11-23T21:00:38Z"
 }

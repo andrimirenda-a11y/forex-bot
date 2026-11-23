@@ -15,5 +15,23 @@
   "pnl_pips": -6.0,
   "r_multiple": -1.12,
   "score": 50
+ },
+ {
+  "id": "USDJPY-20261123T0900",
+  "pair": "USDJPY",
+  "side": "BUY",
+  "entry": 159.162,
+  "exit": 158.941,
+  "sl_initial": 158.795,
+  "tp": 160.239,
+  "lots": 0.02,
+  "opened_at": "2026-11-23T09:00:34Z",
+  "closed_at": "2026-11-23T20:00:00Z",
+  "result": "TEMPO",
+  "pnl_eur": -2.55,
+  "pnl_pips": -22.1,
+  "r_multiple": -0.6,
+  "score": 50,
+  "strategy": "prova"
  }
 ]
