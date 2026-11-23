@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write      # per prenotare da solo il giro successivo
 
 concurrency:
   group: forex-bot
@@ -56,3 +57,11 @@ jobs:
       - name: Salva i dati
         if: always()
         run: python -m bot.datasync push
+
+      # GitHub fa partire i giri programmati con molto ritardo: il bot prenota da solo il giro successivo,
+      # che parte appena finisce questo (il cron resta come riserva).
+      - name: Prenota il prossimo giro
+        if: always() && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run bot.yml --ref main || echo "prenotazione non riuscita, ci pensa il cron"
