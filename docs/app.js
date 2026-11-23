@@ -452,43 +452,40 @@
     var entry = n(p.entry), sl = n(p.sl), tp = n(p.tp);
     var price = n(p.last_price);
     if (price === null) price = lastPrice(pair);
-    var pips = n(p.unrealized_pips);
-    if (pips === null && price !== null && entry !== null) pips = (price - entry) / C.pipSize(pair) * (buy ? 1 : -1);
+    var pv = n(p.pip_value_eur), pip = C.pipSize(pair);
     var eur = n(p.unrealized_eur);
-    if (eur === null && pips !== null && n(p.pip_value_eur) !== null) eur = pips * n(p.pip_value_eur);
+    if (eur === null && price !== null && entry !== null && pv !== null) eur = (price - entry) / pip * (buy ? 1 : -1) * pv;
+    var win = tp !== null && entry !== null && pv !== null ? Math.abs(tp - entry) / pip * pv : null;
+    var loss = n(p.risk_eur);
     var f = C.slTpFraction(price, sl, tp);
     var fe = C.slTpFraction(entry, sl, tp);
-    var toSl = C.pipsBetween(price, sl, pair), toTp = C.pipsBetween(price, tp, pair);
-    var slMoved = p.be_moved || (n(p.sl_initial) !== null && sl !== null && Math.abs(n(p.sl_initial) - sl) > 1e-9);
+    var bet = buy ? "che salga" : "che scenda";
 
     var h = '<div class="card pos-card">' +
       '<div class="pos-head"><div><div class="pos-pair">' + esc(C.fmtPair(pair)) +
       '<span class="side ' + (buy ? "buy" : "sell") + '">' + (buy ? "COMPRA" : "VENDI") + "</span></div>" +
-      '<div class="pos-meta">aperta ' + esc(C.timeAgo(p.opened_at)) + "</div></div>" +
-      '<div class="pos-pnl"><div class="big ' + cls(eur) + '">' + C.fmtEur(eur, { sign: true }) + "</div>" +
-      '<div class="small ' + cls(pips) + '">' + (pips !== null ? (pips > 0 ? "+" : "") + C.fmtNum(pips, 1) + " " + C.unitName(pair) : "—") + "</div></div></div>";
+      '<div class="pos-meta">aperta ' + esc(C.timeAgo(p.opened_at)) + " · scommette " + bet + "</div></div>" +
+      '<div class="pos-pnl"><div class="pos-pnl-label">adesso</div><div class="big ' + cls(eur) + '">' + C.fmtEur(eur, { sign: true }) + "</div></div></div>";
 
-    h += '<div class="pos-grid">' +
-      cell("Entrata", C.fmtPrice(entry, pair)) + cell("Adesso", C.fmtPrice(price, pair)) +
-      cell("Se va male perdi", C.fmtEur(n(p.risk_eur))) + cell("Lotti", C.fmtLots(n(p.lots))) + "</div>";
+    // i tre finali possibili, in parole semplici
+    h += '<div class="outcomes">' +
+      '<div class="oc good"><span>🎯 Se arriva a ' + C.fmtPrice(tp, pair) + "</span><b>" + C.fmtEur(win, { sign: true }) + "</b></div>" +
+      '<div class="oc bad"><span>🛑 Se scende a ' + C.fmtPrice(sl, pair) + "</span><b>" + C.fmtEur(loss !== null ? -loss : null, { sign: true }) + "</b></div>" +
+      (p.exit_at ? '<div class="oc"><span>⏰ Se nessuno dei due, chiude da sola alle ' + esc(C.fmtTime(p.exit_at)) + "</span><b>quel che c'è</b></div>" : "") +
+      "</div>";
+    if (!buy) h = h.replace("🛑 Se scende a", "🛑 Se sale a");
 
     if (f !== null) {
       h += '<div class="track"><div class="track-bar">' +
         (fe !== null ? '<div class="track-entry" style="left:' + (fe * 100).toFixed(1) + '%"></div>' : "") +
-        '<div class="track-dot ' + cls(pips) + '" style="left:' + (f * 100).toFixed(1) + '%"></div></div>' +
-        '<div class="track-labels"><span class="sl">Stop ' + C.fmtPrice(sl, pair) + (toSl !== null ? " · " + C.fmtNum(toSl, 1) + " " + C.unitName(pair) : "") + "</span>" +
-        '<span class="tp">' + (toTp !== null ? C.fmtNum(toTp, 1) + " " + C.unitName(pair) + " · " : "") + "Obiettivo " + C.fmtPrice(tp, pair) + "</span></div></div>";
-    } else {
-      h += '<div class="track-labels"><span class="sl">Stop ' + C.fmtPrice(sl, pair) + '</span><span class="tp">TP ' + C.fmtPrice(tp, pair) + "</span></div>";
+        '<div class="track-dot ' + cls(eur) + '" style="left:' + (f * 100).toFixed(1) + '%"></div></div>' +
+        '<div class="track-labels"><span class="sl">stop</span><span class="muted">prezzo ora ' + C.fmtPrice(price, pair) +
+        '</span><span class="tp">obiettivo</span></div></div>';
     }
-
-    var tags = "";
-    if (p.strategy !== "prova" && n(p.score) !== null) tags += '<span class="score">Punteggio ' + esc(p.score) + "</span> ";
-    if (p.exit_at) tags += '<span class="tag">⏰ Chiude da sola alle ' + esc(C.fmtDateTime(p.exit_at)) + "</span> ";
-    if (slMoved) tags += '<span class="tag green">' + (p.be_moved ? "Stop a pareggio" : "Stop spostato") + "</span> ";
-    h += '<div class="pos-reason">' + (tags ? '<div style="margin-bottom:6px">' + tags + "</div>" : "") +
-      esc(p.reason || "") + "</div></div>";
-    return h;
+    if (p.reason) {
+      h += '<div class="pos-reason"><b>Perché l\'ho aperta:</b> ' + esc(p.reason) + "</div>";
+    }
+    return h + "</div>";
   }
   function cell(k, v) { return "<div><span>" + esc(k) + "</span><b>" + v + "</b></div>"; }
 

@@ -384,3 +384,8 @@ input[type=range] { width: 100%; accent-color: var(--green); height: 32px; margi
 .exam-nums span { font-size: 12px; color: var(--muted); }
 details.tech summary { cursor: pointer; font-weight: 600; color: var(--muted); }
 details.tech[open] summary { margin-bottom: 10px; }
+.outcomes { margin: 12px 0 4px; display: grid; gap: 6px; }
+.oc { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.04); }
+.oc b { white-space: nowrap; }
+.oc.good b { color: var(--green); } .oc.bad b { color: var(--red); }
+.pos-pnl-label { font-size: 11px; color: var(--muted); text-align: right; }
