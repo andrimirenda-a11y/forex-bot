@@ -1,10 +1,10 @@
 {
  "balance": 297.13,
- "equity": 296.6,
+ "equity": 296.22,
  "margin_used": 60.62,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-23T12:10:06Z",
+ "last_run": "2026-11-23T12:11:09Z",
  "open_positions": [
   {
    "id": "USDJPY-20261123T0900",
@@ -20,14 +20,14 @@
    "pip_value_eur": 0.1143,
    "margin_eur": 60.62,
    "opened_at": "2026-11-23T09:00:34Z",
-   "last_check": "2026-11-23T10:45:00Z",
+   "last_check": "2026-11-23T11:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sopra il massimo della notte e il trend dei giorni scorsi è in salita. Stop dall'altro lato del range notturno, chiusura automatica alle 20:00 di Londra.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 159.122,
-   "unrealized_eur": -0.53,
-   "unrealized_pips": -4.6,
+   "last_price": 159.089,
+   "unrealized_eur": -0.91,
+   "unrealized_pips": -7.9,
    "strategy": "prova",
    "exit_at": "2026-11-23T20:00:00Z"
   }
@@ -46,8 +46,8 @@
    "time": "2026-11-23T11:45:00Z"
   },
   "USDJPY": {
-   "price": 159.122,
-   "time": "2026-11-23T10:45:00Z"
+   "price": 159.089,
+   "time": "2026-11-23T11:45:00Z"
   },
   "USDCHF": {
    "price": 0.83881,
@@ -85,7 +85,7 @@
   "EURUSD": "2026-11-23T11:00:00Z",
   "GBPUSD": "2026-11-23T11:00:00Z",
   "EURGBP": "2026-11-23T11:00:00Z",
-  "USDJPY": "2026-11-23T10:00:00Z",
+  "USDJPY": "2026-11-23T11:00:00Z",
   "USDCHF": "2026-11-23T10:00:00Z",
   "AUDUSD": "2026-11-23T11:00:00Z",
   "USDCAD": "2026-11-23T11:00:00Z",
@@ -99,7 +99,7 @@
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento -0,53 €.",
+ "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento -0,91 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-23T08:17:32Z",
