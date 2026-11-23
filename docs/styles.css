@@ -389,3 +389,5 @@ details.tech[open] summary { margin-bottom: 10px; }
 .oc b { white-space: nowrap; }
 .oc.good b { color: var(--green); } .oc.bad b { color: var(--red); }
 .pos-pnl-label { font-size: 11px; color: var(--muted); text-align: right; }
+.lessons { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08); font-size: 14px; line-height: 1.45; }
+.lessons b { display: block; margin-bottom: 4px; }

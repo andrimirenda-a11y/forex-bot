@@ -6,7 +6,7 @@
   var CFG = window.APP_CONFIG || {};
   var QS = new URLSearchParams(location.search);
   var DEMO = QS.get("demo") === "1";
-  var FILES = ["state", "settings", "history", "equity", "signals", "calibration", "backtest", "log", "study"];
+  var FILES = ["state", "settings", "history", "equity", "signals", "calibration", "backtest", "log", "study", "lessons"];
   var REFRESH_MS = 30000;
   var STALE_MIN = 40;
   var TOKEN_KEY = "fxbot_gh_token";
@@ -275,6 +275,15 @@
     return simpleRow(t.side, (t.studio ? "📝 " : "") + C.fmtPair(t.pair),
       r[0] + " " + r[1] + " · " + C.fmtDateTime(t.closed_at), right);
   }
+  function lessonsBox() {
+    var L = data.lessons || {};
+    var f = arr(L.filters);
+    var txt = f.length
+      ? f.map(function (x) { return "• " + esc(x.desc) + " (" + esc(x.n) + " casi, in media " + C.fmtNum(n(x.mean_r), 2) + "R)"; }).join("<br>")
+      : "Nessuna per ora: il bot controlla ogni domenica se certe situazioni perdono in modo costante.";
+    return '<div class="lessons"><b>📚 Lezioni imparate dagli errori</b><div>' + txt + "</div>" +
+      (L.updated ? '<div class="log-time">ultimo controllo ' + esc(C.fmtDateTime(L.updated)) + "</div>" : "") + "</div>";
+  }
   function examCard() {
     var real = arr(data.history), study = arr(data.study && data.study.closed);
     var all = real.concat(study);
@@ -294,7 +303,8 @@
       '<div class="margin-bar"><div style="width:' + pct.toFixed(0) + '%"></div></div>' +
       '<div class="kpi-sub" style="margin-top:8px">' + esc(verdict) + "</div>" +
       (study.length ? '<div class="kpi-sub">Comprende ' + study.length + " operazioni di studio 📝 (segnali troppo grandi per il conto, seguiti sulla carta).</div>" : "") +
-      '<div class="kpi-sub">R = quante volte il rischio: +2R vuol dire che hai guadagnato il doppio di quanto rischiavi.</div></div>';
+      '<div class="kpi-sub">R = quante volte il rischio: +2R vuol dire che hai guadagnato il doppio di quanto rischiavi.</div>' +
+      lessonsBox() + "</div>";
   }
   function chip(v, pct) {
     if (v === null) return '<span class="chip flat">—</span>';

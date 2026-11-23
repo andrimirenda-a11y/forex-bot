@@ -16,6 +16,7 @@ CALIBRATION_FILE = DATA / "calibration.json"  # parametri scelti dal backtest pe
 BACKTEST_FILE = DATA / "backtest.json"    # riassunto dell'ultimo backtest
 EQUITY_FILE = DATA / "equity.json"        # curva del conto nel tempo
 LOG_FILE = DATA / "log.json"              # ultimi eventi (per l'app)
+LESSONS_FILE = DATA / "lessons.json"      # lezioni imparate dagli errori (filtri attivi)
 STUDY_FILE = DATA / "study.json"          # operazioni "di studio": segnali validi che il conto piccolo non permette
 
 # Coppie seguite. "yahoo" è il simbolo usato per scaricare i prezzi.

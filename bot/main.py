@@ -8,6 +8,7 @@
 6. resta in ascolto dei comandi Telegram per qualche minuto, poi salva tutto
 """
 import math
+from pathlib import Path
 import os
 import time
 import traceback
@@ -15,10 +16,10 @@ from datetime import timedelta
 
 import pandas as pd
 
-from . import broker, data, evaluate, london, strategy, telegram
+from . import broker, data, evaluate, learn, london, strategy, telegram
 from .config import (
     BACKTEST_FILE, CALIBRATION_FILE, DAILY_LOSS_LIMIT_PCT, DEFAULT_PARAMS, DEFAULT_SETTINGS,
-    EQUITY_FILE, EUR_CROSSES, HISTORY_FILE, LOG_FILE, STUDY_FILE, MAX_OPEN_POSITIONS, MAX_PER_CURRENCY,
+    EQUITY_FILE, EUR_CROSSES, HISTORY_FILE, LESSONS_FILE, LOG_FILE, STUDY_FILE, MAX_OPEN_POSITIONS, MAX_PER_CURRENCY,
     NEWS_BLOCK_MINUTES, PAIRS, SETTINGS_FILE, SIGNAL_VALID_MINUTES, SIGNALS_FILE, STATE_FILE,
     WEEKLY_LOSS_LIMIT_PCT, CFD_PAIRS, label,
 )
@@ -77,6 +78,7 @@ class Bot:
         self.state = {**default_state(self.settings), **load(STATE_FILE, {})}
         self.history = load(HISTORY_FILE, [])
         self.study = {"open_positions": [], "closed": [], "balance": 0.0, **load(STUDY_FILE, {})}
+        self.lessons = load(LESSONS_FILE, {"filters": []})
         self.signals = load(SIGNALS_FILE, [])
         self.equity_curve = load(EQUITY_FILE, [])
         self.log_items = load(LOG_FILE, [])
@@ -201,7 +203,7 @@ class Bot:
         for pos in self.study["open_positions"]:
             pos.pop("events", None)
 
-    def open_study(self, pair, side, entry, sl, tp, row, params, why):
+    def open_study(self, pair, side, entry, sl, tp, row, params, why, ctx=None, lesson=None):
         """Segnale valido che il conto non permette: lo seguo lo stesso 'sulla carta' per giudicare la strategia."""
         if any(p["pair"] == pair for p in self.study["open_positions"] + self.state["open_positions"]):
             return
@@ -223,6 +225,9 @@ class Bot:
                   "margin_eur": 0.0}
         pos = broker.open_position(self.study, pair, side, entry, sl, tp, sizing, row["score"], why, self.now, params)
         pos["studio"] = True
+        pos["ctx"] = ctx
+        if lesson:
+            pos["lesson"] = f"{lesson['key']}={lesson['value']}"
         if "exit_at" in row and pd.notna(row["exit_at"]):
             pos["exit_at"] = iso(row["exit_at"])
         self.log(f"Studio {pair} {side}: seguito sulla carta ({why})")
@@ -249,6 +254,12 @@ class Bot:
                     f"Risultato: <b>{signed_eur(tr['pnl_eur'])}</b> ({tr['pnl_pips']:+.1f} {unit(tr['pair'])}, {tr['r_multiple']:+.2f}R)\n"
                     f"Conto: {eur(self.state['balance'])}"
                 )
+            d = learn.diary(tr)
+            if d:
+                tr["diario"] = d
+                self.log(d.replace("<b>", "").replace("</b>", ""))
+                if self.settings.get("notifiche_chiusura", True):
+                    self.tell(d)
         for pos in self.state["open_positions"]:
             for ev in pos.pop("events", []):
                 self.log(f"{pos['pair']}: {ev['msg']}")
@@ -391,6 +402,11 @@ class Bot:
                 else:
                     # ricalcolo su prezzo attuale mantenendo stop e target del segnale
                     entry = live
+            ctx = learn.context(row, pair, self.now) if mode == "prova" else None
+            lesson = learn.blocked_by(ctx, self.lessons) if ctx and note is None else None
+            if lesson:
+                note = f"lezione imparata: {lesson['desc']}"
+                study_ok = True
             if note is None:
                 eq = broker.equity(self.state)
                 free = eq - broker.margin_used(self.state)
@@ -402,13 +418,14 @@ class Bot:
                 self.record_signal(pair, side, row, "scartato", note)
                 self.log(f"Segnale {pair} {side} scartato: {note}")
                 if study_ok:
-                    self.open_study(pair, side, entry, sl, tp, row, params, note)
+                    self.open_study(pair, side, entry, sl, tp, row, params, note, ctx, lesson)
                 continue
             reason = mod.describe(row, 1 if side == "BUY" else -1)
             pos = broker.open_position(self.state, pair, side, entry, sl, tp, sizing, row["score"], reason, self.now, params)
             if mode == "prova":
                 pos["strategy"] = "prova"
                 pos["exit_at"] = iso(row["exit_at"])
+                pos["ctx"] = ctx
             self.record_signal(pair, side, row, "aperto")
             self.log(f"Aperto {pair} {side} {pos['lots']:.2f} lotti a {px(pair, pos['entry'])}", "trade")
             if self.settings.get("notifiche_apertura", True):
@@ -613,6 +630,7 @@ class Bot:
         save(HISTORY_FILE, self.history)
         self.study["closed"] = self.study["closed"][-2000:]
         save(STUDY_FILE, self.study)
+        save(LESSONS_FILE, self.lessons)
         save(SIGNALS_FILE, self.signals)
         save(EQUITY_FILE, self.equity_curve)
         save(LOG_FILE, self.log_items)
@@ -627,6 +645,48 @@ class Bot:
         if rome_now.day_of_week == 6 and rome_now.hour >= 18 and (not last or self.now - last > timedelta(days=5)):
             self.tell(evaluate.weekly_report(self.state, self.history, self.calibration, self.backtest, self.now, self.study))
             self.state["last_weekly_report"] = iso(self.now)
+            self.learn_weekly()
+
+    def learn_weekly(self):
+        """Lezioni della settimana: rigioca lo storico + operazioni vere e di studio, aggiorna i filtri."""
+        try:
+            root = Path(__file__).resolve().parent.parent
+            hist = []
+            for pair in self.settings.get("coppie_attive", list(PAIRS)):
+                if pair not in PAIRS:
+                    continue
+                parts = []
+                f = root / "research" / f"h1_{pair}.csv.gz"
+                if f.exists():
+                    old = pd.read_csv(f, index_col=0, parse_dates=True)
+                    old.index = pd.to_datetime(old.index, utc=True)
+                    parts.append(old[["open", "high", "low", "close"]])
+                try:
+                    parts.append(data.closed_only(data.candles(PAIRS[pair]["yahoo"], "1h", "180d"), pd.Timedelta(hours=1)))
+                except Exception as e:  # noqa: BLE001
+                    print("lezioni: niente dati recenti per", pair, e)
+                if not parts:
+                    continue
+                h1 = pd.concat(parts).sort_index()
+                h1 = h1[~h1.index.duplicated(keep="last")]
+                hist += learn.replay(h1, pair)
+            done = self.history + self.study["closed"]
+            live = [t for t in done if t.get("ctx") and not t.get("lesson")]
+            blocked = [t for t in self.study["closed"] if t.get("ctx") and t.get("lesson")]
+            new, msgs = learn.weekly_lessons(hist, live, blocked, self.lessons)
+            new["updated"] = iso(self.now)
+            new["history_trades"] = len(hist)
+            self.lessons = new
+            if not msgs:
+                msgs = [f"📚 <b>Lezioni della settimana</b>: ho riguardato {len(hist)} operazioni dello storico e "
+                        f"{len(live)} dal vivo. Nessuna situazione perde in modo abbastanza costante da cambiare le regole"
+                        + (f" (restano attive: {', '.join(f['value'] for f in new['filters'])})." if new["filters"] else ".")]
+            for m in msgs:
+                self.log(m.replace("<b>", "").replace("</b>", ""))
+                self.tell(m)
+        except Exception as e:  # noqa: BLE001
+            traceback.print_exc()
+            self.log(f"Lezioni settimanali non riuscite: {e}", "warn")
 
     def calibration_news(self):
         gen = self.calibration.get("generated")

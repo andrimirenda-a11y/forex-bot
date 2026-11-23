@@ -34,9 +34,11 @@ def build(h1: pd.DataFrame, params: dict | None = None) -> pd.DataFrame:
     dtr = pd.concat([d["high"] - d["low"], (d["high"] - dpc).abs(), (d["low"] - dpc).abs()], axis=1).max(axis=1)
     datr = dtr.rolling(14).mean().shift(1)
     dtrend = np.sign(d["close"] - d["close"].rolling(20).mean()).shift(1)
+    dstrength = ((d["close"] - d["close"].rolling(20).mean()).abs() / dtr.rolling(14).mean()).shift(1)
     key = df.index.floor("1D")
     df["datr"] = datr.reindex(key).values
     df["dtrend"] = dtrend.reindex(key).values
+    df["dstrength"] = dstrength.reindex(key).values   # forza del trend in "giorni di movimento medio"
 
     loc = df.index.tz_convert(TZ)
     day = loc.normalize().tz_localize(None)

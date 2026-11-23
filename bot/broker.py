@@ -52,6 +52,7 @@ def _close(pos, price, when, result, eur_rates):
         "pnl_eur": round(pnl, 2), "pnl_pips": round(pips, 1),
         "r_multiple": round(pips / risk_pips, 2) if risk_pips else 0.0,
         "score": pos["score"],
+        **{k: pos[k] for k in ("ctx", "strategy", "lesson") if pos.get(k) is not None},
     }
 
 
