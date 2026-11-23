@@ -1,1 +1,13 @@
-[]
+[
+ {
+  "time": "2026-11-23T08:24:48Z",
+  "pair": "EURGBP",
+  "side": "BUY",
+  "entry": 0.83799,
+  "sl": 0.83752,
+  "tp": 0.8394,
+  "score": 50,
+  "status": "aperto",
+  "note": null
+ }
+]
