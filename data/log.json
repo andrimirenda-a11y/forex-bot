@@ -138,15 +138,5 @@
   "t": "2026-11-22T23:52:48Z",
   "level": "warn",
   "msg": "USD/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
- },
- {
-  "t": "2026-11-23T00:01:03Z",
-  "level": "warn",
-  "msg": "EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
- },
- {
-  "t": "2026-11-23T00:02:03Z",
-  "level": "warn",
-  "msg": "GBP/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
