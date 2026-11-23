@@ -1,5 +1,5 @@
 {
-  "capitale_iniziale": 10000,
+  "capitale_iniziale": 300,
   "leva": 30,
   "rischio_pct": 2,
   "valuta": "EUR",
