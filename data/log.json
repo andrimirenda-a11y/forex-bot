@@ -308,5 +308,15 @@
   "t": "2026-11-23T23:05:01Z",
   "level": "warn",
   "msg": "EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-23T23:19:31Z",
+  "level": "warn",
+  "msg": "Oro: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-23T23:20:37Z",
+  "level": "warn",
+  "msg": "Argento: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
