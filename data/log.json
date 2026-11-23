@@ -198,5 +198,10 @@
   "t": "2026-11-23T09:02:05Z",
   "level": "trade",
   "msg": "Aperto USDJPY BUY 0.02 lotti a 159.162"
+ },
+ {
+  "t": "2026-11-23T10:04:35Z",
+  "level": "warn",
+  "msg": "Cambio EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
