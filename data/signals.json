@@ -9,5 +9,16 @@
   "score": 50,
   "status": "aperto",
   "note": null
+ },
+ {
+  "time": "2026-11-23T09:00:34Z",
+  "pair": "USDJPY",
+  "side": "BUY",
+  "entry": 159.156,
+  "sl": 158.795,
+  "tp": 160.239,
+  "score": 50,
+  "status": "aperto",
+  "note": null
  }
 ]

@@ -1,1 +1,19 @@
-[]
+[
+ {
+  "id": "EURGBP-20261123T0824",
+  "pair": "EURGBP",
+  "side": "BUY",
+  "entry": 0.838055,
+  "exit": 0.837455,
+  "sl_initial": 0.83752,
+  "tp": 0.8394,
+  "lots": 0.04,
+  "opened_at": "2026-11-23T08:24:48Z",
+  "closed_at": "2026-11-23T08:30:00Z",
+  "result": "SL",
+  "pnl_eur": -2.87,
+  "pnl_pips": -6.0,
+  "r_multiple": -1.12,
+  "score": 50
+ }
+]
