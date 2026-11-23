@@ -298,5 +298,15 @@
   "t": "2026-11-23T21:05:02Z",
   "level": "trade",
   "msg": "Chiuso USDJPY BUY: Chiuso a fine giornata, -2,55 €"
+ },
+ {
+  "t": "2026-11-23T23:03:58Z",
+  "level": "warn",
+  "msg": "GBP/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-23T23:05:01Z",
+  "level": "warn",
+  "msg": "EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
