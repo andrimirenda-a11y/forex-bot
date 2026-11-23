@@ -520,75 +520,76 @@
     var box = $("statsBody");
     if (!everLoaded) { box.innerHTML = '<div class="skeleton" style="height:260px"></div>'; return; }
     var hist = arr(data.history);
+    var study = arr(data.study && data.study.closed);
     var S = C.computeStats(hist);
-    var dd = C.maxDrawdownPct(arr(data.equity));
-    var html = '<h2 class="section-title">Risultati del conto virtuale</h2>';
+    var start0 = n(data.state && data.state.start_balance);
+    var eqPts = arr(data.equity);
+    if (start0) {   // solo dopo l'ultimo cambio di capitale
+      var k = eqPts.length;
+      while (k > 0 && n(eqPts[k - 1].equity) > start0 * 0.3 && n(eqPts[k - 1].equity) < start0 * 3) k--;
+      eqPts = eqPts.slice(k);
+    }
+    var dd = C.maxDrawdownPct(eqPts);
+    var html = '<h2 class="section-title">Le operazioni vere del conto</h2>';
 
     if (!S.trades) {
-      html += emptyState("Nessun trade chiuso ancora", "Le statistiche compariranno dopo i primi trade chiusi dal bot.", ICONS.chart);
+      html += '<div class="card"><div class="muted simple-empty">Le statistiche compariranno dopo le prime operazioni chiuse.</div></div>';
     } else {
       var winW = S.wins / S.trades * 100, beW = S.breakeven / S.trades * 100, lossW = S.losses / S.trades * 100;
-      var pf = S.profitFactor === Infinity ? "∞" : C.fmtNum(S.profitFactor, 2);
-      var streak = S.currentStreakType ? S.currentStreak + " " + (S.currentStreakType === "W" ? "vinc." : "perd.") : "—";
       html += '<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px">' +
-        '<div><div class="kpi-label">Risultato netto</div><div class="hero-value ' + cls(S.net) + '" style="font-size:32px">' + C.fmtEur(S.net, { sign: true }) + "</div></div>" +
-        '<div style="text-align:right"><div class="kpi-label">Win rate</div><div class="kpi-value" style="font-size:24px">' + C.fmtPct(S.winRate, 1) + "</div></div></div>" +
+        '<div><div class="kpi-label">Guadagno o perdita totale</div><div class="hero-value ' + cls(S.net) + '" style="font-size:32px">' + C.fmtEur(S.net, { sign: true }) + "</div></div>" +
+        '<div style="text-align:right"><div class="kpi-label">Vinte</div><div class="kpi-value" style="font-size:24px">' + C.fmtPct(S.winRate, 0) + "</div></div></div>" +
         '<div class="winbar">' + (winW ? '<div style="width:' + winW + '%;background:var(--green)"></div>' : "") +
         (beW ? '<div style="width:' + beW + '%;background:var(--muted)"></div>' : "") +
         (lossW ? '<div style="width:' + lossW + '%;background:var(--red)"></div>' : "") + "</div>" +
-        '<div class="winbar-legend"><span><i style="background:var(--green)"></i>' + S.wins + " vinti</span>" +
+        '<div class="winbar-legend"><span><i style="background:var(--green)"></i>' + S.wins + " vinte</span>" +
         '<span><i style="background:var(--muted)"></i>' + S.breakeven + " pari</span>" +
-        '<span><i style="background:var(--red)"></i>' + S.losses + " persi</span></div></div>";
+        '<span><i style="background:var(--red)"></i>' + S.losses + " perse</span></div>" +
+        '<div class="kpi-sub" style="margin-top:8px">Con questa strategia è normale vincere meno della metà delle volte: conta che le vincite siano più grandi delle perdite.</div></div>';
 
       html += '<div class="card"><div class="stat-grid">' +
-        stat("Trade", S.trades) + stat("Profit factor", pf) + stat("Max drawdown", dd !== null ? '<span class="' + (dd > 0 ? "neg" : "") + '">' + C.fmtPct(-dd, 1) + "</span>" : "—") +
-        stat("Media vincita", '<span class="pos">' + C.fmtEur(S.avgWin) + "</span>") + stat("Media perdita", '<span class="neg">' + C.fmtEur(S.avgLoss) + "</span>") +
-        stat("R medio", S.avgR !== null ? (S.avgR > 0 ? "+" : "") + C.fmtNum(S.avgR, 2) + "R" : "—") +
-        stat("Miglior trade", '<span class="pos">' + C.fmtEur(n(S.best && S.best.pnl_eur), { sign: true }) + "</span>", S.best ? C.fmtPair(S.best.pair) : "") +
-        stat("Peggior trade", '<span class="neg">' + C.fmtEur(n(S.worst && S.worst.pnl_eur), { sign: true }) + "</span>", S.worst ? C.fmtPair(S.worst.pair) : "") +
-        stat("Pip totali", '<span class="' + cls(S.netPips) + '">' + (S.netPips > 0 ? "+" : "") + C.fmtNum(S.netPips, 1) + "</span>") +
-        stat("Serie vincente", S.maxWinStreak) + stat("Serie perdente", S.maxLossStreak) + stat("Serie attuale", streak) +
+        stat("Operazioni", S.trades) +
+        stat("Vincita media", '<span class="pos">' + C.fmtEur(S.avgWin) + "</span>") +
+        stat("Perdita media", '<span class="neg">' + C.fmtEur(S.avgLoss) + "</span>") +
+        stat("Per operazione", S.avgR !== null ? '<span class="' + cls(S.avgR) + '">' + (S.avgR > 0 ? "+" : "") + C.fmtNum(S.avgR, 2) + "R</span>" : "—", "in media") +
+        stat("Calo massimo", dd !== null ? '<span class="' + (dd > 0 ? "neg" : "") + '">' + C.fmtPct(-dd, 1) + "</span>" : "—", "dal punto più alto") +
+        stat("Migliore", '<span class="pos">' + C.fmtEur(n(S.best && S.best.pnl_eur), { sign: true }) + "</span>", S.best ? C.fmtPair(S.best.pair) : "") +
+        stat("Peggiore", '<span class="neg">' + C.fmtEur(n(S.worst && S.worst.pnl_eur), { sign: true }) + "</span>", S.worst ? C.fmtPair(S.worst.pair) : "") +
+        stat("Vinte di fila", S.maxWinStreak, "record") +
+        stat("Perse di fila", S.maxLossStreak, "record") +
         "</div></div>";
 
       var pairs = Object.keys(S.perPair).map(function (k) { return S.perPair[k]; }).sort(function (a, b) { return b.net - a.net; });
-      html += '<div class="card"><h3 class="card-title">Per coppia</h3><div class="table-wrap"><table class="tbl"><thead><tr>' +
-        "<th>Coppia</th><th>Trade</th><th>Win</th><th>PF</th><th>Netto</th></tr></thead><tbody>" +
+      html += '<div class="card"><h3 class="card-title">Per strumento</h3><div class="table-wrap"><table class="tbl"><thead><tr>' +
+        "<th>Strumento</th><th>Operaz.</th><th>Vinte</th><th>Risultato</th></tr></thead><tbody>" +
         pairs.map(function (q) {
-          return "<tr><td><b>" + esc(C.fmtPair(q.pair)) + "</b></td><td>" + q.trades + "</td><td>" + C.fmtPct(q.winRate, 0) + "</td><td>" +
-            (q.profitFactor === Infinity ? "∞" : C.fmtNum(q.profitFactor, 2)) + '</td><td class="' + cls(q.net) + '">' + C.fmtEur(q.net, { sign: true }) + "</td></tr>";
+          return "<tr><td><b>" + esc(C.fmtPair(q.pair)) + "</b></td><td>" + q.trades + "</td><td>" + C.fmtPct(q.winRate, 0) + "</td>" +
+            '<td class="' + cls(q.net) + '">' + C.fmtEur(q.net, { sign: true }) + "</td></tr>";
         }).join("") + "</tbody></table></div></div>";
     }
-    html += '<p class="disclaimer">Conto virtuale: risultati passati non garantiscono risultati futuri.</p>';
 
-    // coppie in pausa
+    // operazioni di studio
+    if (study.length) {
+      var sw = study.filter(function (t) { return n(t.r_multiple) > 0; }).length;
+      var sr = study.reduce(function (a, t) { return a + (n(t.r_multiple) || 0); }, 0);
+      html += '<h2 class="section-title">Operazioni di studio 📝</h2><div class="card"><div class="stat-grid">' +
+        stat("Operazioni", study.length) + stat("Vinte", sw) +
+        stat("Risultato", '<span class="' + cls(sr) + '">' + (sr > 0 ? "+" : "") + C.fmtNum(sr, 1) + "R</span>") + "</div>" +
+        '<div class="kpi-sub" style="margin-top:8px">Segnali che il conto da ' + C.fmtEur(n(data.state && data.state.start_balance), { noDecimals: true }) +
+        " non permetteva: il bot li segue sulla carta per giudicare la strategia.</div></div>";
+    }
+
+    // strumenti in pausa
     var paused = obj(data.state && data.state.paused_pairs);
     var pk = Object.keys(paused);
     if (pk.length) {
-      html += '<h2 class="section-title">Coppie in pausa automatica</h2><div class="card list-card">' + pk.map(function (k) {
+      html += '<h2 class="section-title">In pausa automatica</h2><div class="card">' + pk.map(function (k) {
         var p = obj(paused[k]);
-        return '<div class="sig"><div class="sig-top"><div class="sig-left">' + esc(C.fmtPair(k)) + '</div><span class="tag amber">In pausa</span></div>' +
-          '<div class="sig-note">' + esc(p.reason || "Motivo non indicato") + (p.since ? " · dal " + esc(C.fmtDateTime(p.since)) : "") + "</div></div>";
+        return '<div class="srow"><div><div class="srow-name">' + esc(C.fmtPair(k)) + '</div><div class="srow-sub">' + esc(p.reason || "") + "</div></div></div>";
       }).join("") + "</div>";
     }
-
-    html += renderBacktest();
-
-    // storico
-    html += '<h2 class="section-title">Storico trade <span class="count">' + hist.length + "</span></h2>";
-    if (!hist.length) {
-      html += '<div class="card"><p class="help" style="margin:0">Nessun trade chiuso.</p></div>';
-    } else {
-      var sorted = hist.slice().sort(function (a, b) { return (C.parseTime(b.closed_at) || 0) - (C.parseTime(a.closed_at) || 0); });
-      html += '<div class="card list-card">' + sorted.slice(0, historyShown).map(tradeRow).join("") + "</div>";
-      if (sorted.length > historyShown) {
-        html += '<button type="button" class="btn btn-secondary btn-block more-btn" id="moreHistory">Mostra altri (' + (sorted.length - historyShown) + ")</button>";
-      }
-    }
+    html += '<p class="disclaimer">Conto finto: i risultati passati non garantiscono quelli futuri.</p>';
     box.innerHTML = html;
-    var bt = $("btChart");
-    if (bt) drawBacktestChart(bt);
-    var more = $("moreHistory");
-    if (more) more.onclick = function () { historyShown += 50; renderStats(); };
   }
   function stat(label, value, sub) {
     return '<div class="stat"><span>' + esc(label) + "</span><b>" + value + "</b>" + (sub ? '<span>' + esc(sub) + "</span>" : "") + "</div>";
