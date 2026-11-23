@@ -1,10 +1,10 @@
 {
  "balance": 297.13,
- "equity": 300.08,
+ "equity": 300.09,
  "margin_used": 60.62,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-23T16:08:51Z",
+ "last_run": "2026-11-23T16:09:56Z",
  "open_positions": [
   {
    "id": "USDJPY-20261123T0900",
@@ -26,7 +26,7 @@
    "be_moved": false,
    "breakeven_r": 0,
    "last_price": 159.425,
-   "unrealized_eur": 2.95,
+   "unrealized_eur": 2.96,
    "unrealized_pips": 25.7,
    "strategy": "prova",
    "exit_at": "2026-11-23T20:00:00Z"
@@ -34,16 +34,16 @@
  ],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09276,
-   "time": "2026-11-23T14:45:00Z"
+   "price": 1.08971,
+   "time": "2026-11-23T15:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.30465,
-   "time": "2026-11-23T14:45:00Z"
+   "price": 1.30182,
+   "time": "2026-11-23T15:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83754,
-   "time": "2026-11-23T14:45:00Z"
+   "price": 0.83701,
+   "time": "2026-11-23T15:45:00Z"
   },
   "USDJPY": {
    "price": 159.425,
@@ -62,8 +62,8 @@
    "time": "2026-11-23T15:45:00Z"
   },
   "US500": {
-   "price": 7226.469,
-   "time": "2026-11-23T14:45:00Z"
+   "price": 7259.466,
+   "time": "2026-11-23T15:45:00Z"
   },
   "US30": {
    "price": 49673.027,
@@ -82,7 +82,7 @@
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-23T14:00:00Z",
+  "EURUSD": "2026-11-23T15:00:00Z",
   "GBPUSD": "2026-11-23T15:00:00Z",
   "EURGBP": "2026-11-23T15:00:00Z",
   "USDJPY": "2026-11-23T15:00:00Z",
@@ -99,7 +99,7 @@
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento +2,95 €.",
+ "status_line": "Ha 1 operazione aperta (USD/JPY): in questo momento +2,96 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-23T15:00:43Z",
