@@ -223,5 +223,20 @@
   "t": "2026-11-23T12:05:14Z",
   "level": "warn",
   "msg": "Cambio EUR/CAD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-23T13:04:20Z",
+  "level": "warn",
+  "msg": "USD/CAD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-23T13:06:11Z",
+  "level": "warn",
+  "msg": "Argento: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-23T13:07:13Z",
+  "level": "warn",
+  "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
