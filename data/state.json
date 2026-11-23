@@ -4,7 +4,7 @@
  "margin_used": 60.62,
  "start_balance": 10000.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-23T19:03:05Z",
+ "last_run": "2026-11-23T19:04:09Z",
  "open_positions": [
   {
    "id": "USDJPY-20261123T0900",
@@ -34,16 +34,16 @@
  ],
  "last_prices": {
   "EURUSD": {
-   "price": 1.08845,
-   "time": "2026-11-23T17:45:00Z"
+   "price": 1.08901,
+   "time": "2026-11-23T18:45:00Z"
   },
   "GBPUSD": {
    "price": 1.30251,
    "time": "2026-11-23T18:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83624,
-   "time": "2026-11-23T17:45:00Z"
+   "price": 0.83605,
+   "time": "2026-11-23T18:45:00Z"
   },
   "USDJPY": {
    "price": 159.126,
