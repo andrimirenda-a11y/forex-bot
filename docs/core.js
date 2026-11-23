@@ -62,6 +62,10 @@
     if (CFD[pair]) return CFD[pair][0];
     return pair.length === 6 ? pair.slice(0, 3) + "/" + pair.slice(3) : pair;
   }
+  function fmtTime(iso) {
+    var t = parseTime(iso); if (t === null) return "—";
+    try { return new Date(t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; }
+  }
   function unitName(pair) { return CFD[pair] ? "punti" : "pip"; }
   function fmtLots(v) { return isNum(v) ? fmtNum(v, 2) : "—"; }
 
@@ -329,7 +333,7 @@
     PAIRS: PAIRS, LEVERAGES: LEVERAGES, DEFAULT_SETTINGS: DEFAULT_SETTINGS,
     isNum: isNum, num: num,
     fmtEur: fmtEur, fmtNum: fmtNum, fmtPct: fmtPct, fmtPctShort: fmtPctShort, fmtPrice: fmtPrice, fmtPair: fmtPair, fmtLots: fmtLots, unitName: unitName,
-    fmtDateTime: fmtDateTime, fmtDate: fmtDate, fmtDuration: fmtDuration, timeAgo: timeAgo, minutesSince: minutesSince,
+    fmtDateTime: fmtDateTime, fmtTime: fmtTime, fmtDate: fmtDate, fmtDuration: fmtDuration, timeAgo: timeAgo, minutesSince: minutesSince,
     parseTime: parseTime, pipSize: pipSize, priceDigits: priceDigits,
     slTpFraction: slTpFraction, pipsBetween: pipsBetween,
     computeStats: computeStats, maxDrawdownPct: maxDrawdownPct, todayPnl: todayPnl,

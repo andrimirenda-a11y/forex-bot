@@ -6,7 +6,7 @@
   var CFG = window.APP_CONFIG || {};
   var QS = new URLSearchParams(location.search);
   var DEMO = QS.get("demo") === "1";
-  var FILES = ["state", "settings", "history", "equity", "signals", "calibration", "backtest", "log"];
+  var FILES = ["state", "settings", "history", "equity", "signals", "calibration", "backtest", "log", "study"];
   var REFRESH_MS = 60000;
   var STALE_MIN = 40;
   var TOKEN_KEY = "fxbot_gh_token";
@@ -196,76 +196,101 @@
       return;
     }
     if (!st) {
-      var cap = n(s.capitale_iniziale);
-      box.innerHTML = emptyState("Il bot non è ancora partito",
-        "Appena il bot farà il suo primo giro (di solito ogni 15 minuti) qui vedrai il conto virtuale" +
-        (cap ? " da " + C.fmtEur(cap) : "") + ", le posizioni e i risultati.", ICONS.clock);
+      box.innerHTML = emptyState("Il bot non è ancora partito", "Tra pochi minuti qui vedrai il tuo conto finto.", ICONS.clock);
       return;
     }
-    var equity = n(st.equity), balance = n(st.balance);
+    var equity = n(st.equity);
     var start = n(st.start_balance) || n(s.capitale_iniziale);
     var pnl = equity !== null && start ? equity - start : null;
     var pnlPct = pnl !== null && start ? pnl / start * 100 : null;
-    var today = C.todayPnl(arr(data.equity), equity, start);
-    var todayPct = today !== null && equity ? today / (equity - today) * 100 : null;
-    var unreal = equity !== null && balance !== null ? equity - balance : null;
-    var mUsed = n(st.margin_used) || 0;
-    var mFree = equity !== null ? equity - mUsed : null;
-    var mPct = equity ? Math.min(100, mUsed / equity * 100) : 0;
     var status = botStatus();
-    var stale = staleInfo();
+    var closedMkt = st.market_open === false || isWeekendMarketClosed();
+    var pill = status.cls !== "on" ? status : (closedMkt ? { cls: "paused", label: "Mercato chiuso" } : status);
     var html = "";
-
-    if (stale) {
-      html += '<div class="banner banner-warn">' +
-        "<span>Ultimo aggiornamento " + esc(C.timeAgo(st.last_run)) + ": il bot potrebbe essere fermo." +
-        (stale.weekend ? " (Nel weekend il mercato forex è chiuso, quindi è normale.)" : "") + "</span></div>";
-    }
-    if (n(st.balance) !== null && s.reset_conto) {
-      html += '<div class="banner banner-info"><span>Azzeramento del conto richiesto: il bot lo eseguirà al prossimo giro.</span></div>';
+    var stale = staleInfo();
+    if (stale && !stale.weekend) {
+      html += '<div class="banner banner-warn"><span>Il bot non si aggiorna da ' + esc(C.timeAgo(st.last_run).replace(" fa", "")) +
+        ": di solito riparte da solo entro pochi minuti.</span></div>";
     }
 
+    // 1) il conto
     html += '<div class="card hero">' +
-      '<div class="hero-top"><span class="hero-label">Equity (conto virtuale)</span>' +
-      '<span class="status ' + status.cls + '">' + esc(status.label) + "</span></div>" +
+      '<div class="hero-top"><span class="hero-label">Il tuo conto finto</span>' +
+      '<span class="status ' + pill.cls + '">' + esc(pill.label) + "</span></div>" +
       '<div class="hero-value">' + C.fmtEur(equity) + "</div>" +
-      '<div class="hero-change">' + chip(pnl, pnlPct) + '<span class="muted" style="font-size:13px;font-weight:500">dall\'inizio</span></div>' +
+      '<div class="hero-change">' + chip(pnl, pnlPct) + '<span class="muted" style="font-size:13px;font-weight:500">da quando hai iniziato con ' +
+      C.fmtEur(start, { noDecimals: true }) + "</span></div>" +
       (status.note ? '<div class="halt-note">' + esc(status.note) + "</div>" : "") +
-      '<div style="height:8px"></div></div>';
+      (st.status_line ? '<div class="now-text">' + esc(st.status_line) + "</div>" : "") + "</div>";
 
-    if (st.status_line) {
-      html += '<div class="card now-card"><div class="kpi-label">Cosa sta facendo il bot adesso</div>' +
-        '<div class="now-text">' + esc(st.status_line) + '</div></div>';
+    // 2) operazioni aperte
+    var open = arr(st.open_positions);
+    html += '<div class="card"><h3 class="card-title">Operazioni aperte' + (open.length ? " (" + open.length + ")" : "") + "</h3>";
+    if (!open.length) {
+      html += '<div class="muted simple-empty">Nessuna in questo momento.' + (closedMkt ? "" : " Il bot cerca occasioni ogni mattina tra le 9 e le 12.") + "</div>";
+    } else {
+      html += open.map(function (p) {
+        var eur = n(p.unrealized_eur);
+        return simpleRow(p.side, C.fmtPair(p.pair),
+          p.exit_at ? "chiude da sola alle " + C.fmtTime(p.exit_at) : "aperta " + C.timeAgo(p.opened_at),
+          '<span class="' + cls(eur) + '">' + C.fmtEur(eur, { sign: true }) + "</span>", "goto-op");
+      }).join("");
+    }
+    html += "</div>";
+
+    // 3) ultime chiuse
+    var closed = arr(data.history).slice(-5).reverse();
+    if (closed.length) {
+      html += '<div class="card"><h3 class="card-title">Ultime chiuse</h3>' + closed.map(closedRow).join("") +
+        '<button type="button" class="link-btn goto-op">Vedi tutte</button></div>';
     }
 
-    html += '<div class="kpis">' +
-      kpi("Saldo", C.fmtEur(balance), unreal !== null ? '<span class="' + cls(unreal) + '">' + C.fmtEur(unreal, { sign: true }) + "</span> non realizzati" : "") +
-      kpi("Oggi", '<span class="' + cls(today) + '">' + C.fmtEur(today, { sign: true }) + "</span>", todayPct !== null ? '<span class="' + cls(today) + '">' + C.fmtPct(todayPct, 2, true) + "</span>" : "") +
-      kpi("P&amp;L totale", '<span class="' + cls(pnl) + '">' + C.fmtEur(pnl, { sign: true }) + "</span>", '<span class="' + cls(pnl) + '">' + C.fmtPct(pnlPct, 2, true) + "</span> su " + C.fmtEur(start, { noDecimals: true })) +
-      kpi("Posizioni aperte", String(arr(st.open_positions).length), "leva 1:" + esc(s.leva || "—") + " · rischio " + C.fmtPctShort(n(s.rischio_pct))) +
-      '<div class="kpi wide"><div style="display:flex;justify-content:space-between;gap:8px">' +
-      '<div><div class="kpi-label">Margine usato</div><div class="kpi-value" style="font-size:18px">' + C.fmtEur(mUsed) + "</div></div>" +
-      '<div style="text-align:right"><div class="kpi-label">Margine libero</div><div class="kpi-value" style="font-size:18px">' + C.fmtEur(mFree) + "</div></div></div>" +
-      '<div class="margin-bar"><div style="width:' + mPct.toFixed(1) + '%"></div></div>' +
-      '<div class="kpi-sub" style="margin-top:6px">' + C.fmtPct(mPct, 1) + " dell'equity impegnato</div></div>" +
-      "</div>";
+    // 4) esame della strategia
+    html += examCard();
 
-    html += '<div class="card chart-card"><div class="chart-head"><h3 class="card-title chart-title">Andamento</h3>' +
-      '<div class="seg" id="eqRange">' +
-      [["1d", "1G"], ["7d", "1S"], ["30d", "1M"], ["all", "Tutto"]].map(function (r) {
-        return '<button type="button" data-r="' + r[0] + '" class="' + (eqRange === r[0] ? "active" : "") + '">' + r[1] + "</button>";
-      }).join("") + "</div></div>" +
-      '<div class="chart-box" id="eqChart"></div></div>';
-
-    var logs = arr(data.log).slice(-8).reverse();
-    if (logs.length) {
-      html += '<div class="card"><h3 class="card-title">Ultimi eventi</h3>' + logs.map(function (l) {
-        return '<div class="log-item"><span class="log-dot lv-' + esc(l.level) + '"></span><div><div>' + esc(l.msg) +
-          '</div><div class="log-time">' + esc(C.fmtDateTime(l.t)) + " · " + esc(C.timeAgo(l.t)) + "</div></div></div>";
-      }).join("") + "</div>";
-    }
+    // 5) andamento
+    html += '<div class="card chart-card"><h3 class="card-title">Andamento del conto</h3><div class="chart-box" id="eqChart"></div></div>';
     box.innerHTML = html;
     drawEquityChart();
+  }
+
+  var RESULT_TXT = { TP: ["🎯", "obiettivo raggiunto"], SL: ["🛑", "stop"], BE: ["⚖️", "chiusa a pareggio"],
+    TEMPO: ["⏰", "chiusa a fine giornata"], STOP_MANUALE: ["✋", "chiusa da te"] };
+  function simpleRow(side, name, sub, right, extraCls) {
+    var buy = String(side).toUpperCase() === "BUY";
+    return '<div class="srow ' + (extraCls || "") + '"><div><div class="srow-name">' + esc(name) +
+      ' <span class="side ' + (buy ? "buy" : "sell") + '">' + (buy ? "COMPRA" : "VENDI") + "</span></div>" +
+      '<div class="srow-sub">' + esc(sub) + '</div></div><div class="srow-right">' + right + "</div></div>";
+  }
+  function closedRow(t) {
+    var r = RESULT_TXT[t.result] || ["•", t.result || ""];
+    var eur = n(t.pnl_eur);
+    var right = t.studio
+      ? '<span class="' + cls(n(t.r_multiple)) + '">' + (n(t.r_multiple) > 0 ? "+" : "") + C.fmtNum(n(t.r_multiple), 2) + "R</span>"
+      : '<span class="' + cls(eur) + '">' + C.fmtEur(eur, { sign: true }) + "</span>";
+    return simpleRow(t.side, (t.studio ? "📝 " : "") + C.fmtPair(t.pair),
+      r[0] + " " + r[1] + " · " + C.fmtDateTime(t.closed_at), right);
+  }
+  function examCard() {
+    var real = arr(data.history), study = arr(data.study && data.study.closed);
+    var all = real.concat(study);
+    var nT = all.length, need = 30;
+    var wins = all.filter(function (t) { return n(t.r_multiple) > 0; }).length;
+    var sumR = all.reduce(function (a, t) { return a + (n(t.r_multiple) || 0); }, 0);
+    var pct = Math.min(100, nT / need * 100);
+    var verdict;
+    if (nT < need) verdict = "Servono almeno " + need + " operazioni per giudicare. Mancano " + (need - nT) + ".";
+    else if (sumR > 0) verdict = "✅ Finora guadagna: se resta così, si può pensare a un conto demo vero.";
+    else verdict = "❌ Finora non guadagna: niente soldi veri.";
+    return '<div class="card"><h3 class="card-title">Esame della strategia</h3>' +
+      '<div class="exam-nums"><div><b>' + nT + "</b><span>operazioni</span></div>" +
+      "<div><b>" + wins + "</b><span>vinte</span></div>" +
+      "<div><b>" + (nT - wins) + "</b><span>perse</span></div>" +
+      '<div><b class="' + cls(sumR) + '">' + (sumR > 0 ? "+" : "") + C.fmtNum(sumR, 1) + "R</b><span>risultato</span></div></div>" +
+      '<div class="margin-bar"><div style="width:' + pct.toFixed(0) + '%"></div></div>' +
+      '<div class="kpi-sub" style="margin-top:8px">' + esc(verdict) + "</div>" +
+      (study.length ? '<div class="kpi-sub">Comprende ' + study.length + " operazioni di studio 📝 (segnali troppo grandi per il conto, seguiti sulla carta).</div>" : "") +
+      '<div class="kpi-sub">R = quante volte il rischio: +2R vuol dire che hai guadagnato il doppio di quanto rischiavi.</div></div>';
   }
   function chip(v, pct) {
     if (v === null) return '<span class="chip flat">—</span>';
@@ -299,11 +324,16 @@
       pts = inRange;
     }
     var start = n(st && st.start_balance);
+    if (start) {   // mostra solo il periodo dopo l'ultimo cambio di capitale
+      var k = pts.length;
+      while (k > 0 && pts[k - 1].y > start * 0.3 && pts[k - 1].y < start * 3) k--;
+      pts = pts.slice(k);
+    }
     lineChart(box, C.downsample(pts, 400), {
       fmtY: function (v) { return C.fmtEur(v, { noDecimals: Math.abs(v) >= 1000 }); },
       fmtTip: function (v) { return C.fmtEur(v); },
       ref: start, refLabel: "capitale iniziale",
-      empty: "Il grafico comparirà dopo qualche giro del bot."
+      empty: "Il grafico comparirà dopo le prime operazioni."
     });
   }
 
@@ -401,18 +431,19 @@
     } else if (!positions.length) {
       var status = botStatus();
       var msg = status.cls === "on"
-        ? "Il bot sta osservando il mercato e aprirà un trade quando trova un segnale valido."
+        ? "Il bot cerca occasioni ogni mattina tra le 9 e le 12 e le apre da solo."
         : (status.cls === "paused" ? "Il bot è in pausa: non apre nuovi trade." : (status.note || "Nessuna posizione aperta."));
       listBox.innerHTML = emptyState("Nessuna posizione aperta", msg, ICONS.radar);
     } else {
       listBox.innerHTML = positions.map(positionCard).join("");
     }
 
-    var sigs = arr(data.signals).slice(-30).reverse();
-    if (!sigs.length) {
-      sigBox.innerHTML = emptyState("Nessun segnale ancora", "Qui vedrai tutti i segnali trovati dal bot, anche quelli scartati e il motivo.", ICONS.chart);
+    var hist = arr(data.history).concat(arr(data.study && data.study.closed))
+      .sort(function (a, b) { return (C.parseTime(b.closed_at) || 0) - (C.parseTime(a.closed_at) || 0); }).slice(0, 50);
+    if (!hist.length) {
+      sigBox.innerHTML = '<div class="card"><div class="muted simple-empty">Ancora nessuna operazione chiusa.</div></div>';
     } else {
-      sigBox.innerHTML = '<div class="card list-card">' + sigs.map(signalRow).join("") + "</div>";
+      sigBox.innerHTML = '<div class="card">' + hist.map(closedRow).join("") + "</div>";
     }
   }
 
@@ -432,29 +463,27 @@
 
     var h = '<div class="card pos-card">' +
       '<div class="pos-head"><div><div class="pos-pair">' + esc(C.fmtPair(pair)) +
-      '<span class="side ' + (buy ? "buy" : "sell") + '">' + (buy ? "BUY" : "SELL") + "</span></div>" +
-      '<div class="pos-meta">' + C.fmtLots(n(p.lots)) + " lotti · aperta " + esc(C.fmtDateTime(p.opened_at)) +
-      " · da " + esc(C.fmtDuration(p.opened_at, new Date().toISOString())) + "</div></div>" +
+      '<span class="side ' + (buy ? "buy" : "sell") + '">' + (buy ? "COMPRA" : "VENDI") + "</span></div>" +
+      '<div class="pos-meta">aperta ' + esc(C.timeAgo(p.opened_at)) + "</div></div>" +
       '<div class="pos-pnl"><div class="big ' + cls(eur) + '">' + C.fmtEur(eur, { sign: true }) + "</div>" +
       '<div class="small ' + cls(pips) + '">' + (pips !== null ? (pips > 0 ? "+" : "") + C.fmtNum(pips, 1) + " " + C.unitName(pair) : "—") + "</div></div></div>";
 
     h += '<div class="pos-grid">' +
-      cell("Entrata", C.fmtPrice(entry, pair)) + cell("Prezzo", C.fmtPrice(price, pair)) +
-      cell("Rischio", C.fmtEur(n(p.risk_eur), { noDecimals: true })) + cell("Margine", C.fmtEur(n(p.margin_eur), { noDecimals: true })) + "</div>";
+      cell("Entrata", C.fmtPrice(entry, pair)) + cell("Adesso", C.fmtPrice(price, pair)) +
+      cell("Se va male perdi", C.fmtEur(n(p.risk_eur))) + cell("Lotti", C.fmtLots(n(p.lots))) + "</div>";
 
     if (f !== null) {
       h += '<div class="track"><div class="track-bar">' +
         (fe !== null ? '<div class="track-entry" style="left:' + (fe * 100).toFixed(1) + '%"></div>' : "") +
         '<div class="track-dot ' + cls(pips) + '" style="left:' + (f * 100).toFixed(1) + '%"></div></div>' +
-        '<div class="track-labels"><span class="sl">SL ' + C.fmtPrice(sl, pair) + (toSl !== null ? " · " + C.fmtNum(toSl, 1) + " " + C.unitName(pair) : "") + "</span>" +
-        '<span class="tp">' + (toTp !== null ? C.fmtNum(toTp, 1) + " " + C.unitName(pair) + " · " : "") + "TP " + C.fmtPrice(tp, pair) + "</span></div></div>";
+        '<div class="track-labels"><span class="sl">Stop ' + C.fmtPrice(sl, pair) + (toSl !== null ? " · " + C.fmtNum(toSl, 1) + " " + C.unitName(pair) : "") + "</span>" +
+        '<span class="tp">' + (toTp !== null ? C.fmtNum(toTp, 1) + " " + C.unitName(pair) + " · " : "") + "Obiettivo " + C.fmtPrice(tp, pair) + "</span></div></div>";
     } else {
-      h += '<div class="track-labels"><span class="sl">SL ' + C.fmtPrice(sl, pair) + '</span><span class="tp">TP ' + C.fmtPrice(tp, pair) + "</span></div>";
+      h += '<div class="track-labels"><span class="sl">Stop ' + C.fmtPrice(sl, pair) + '</span><span class="tp">TP ' + C.fmtPrice(tp, pair) + "</span></div>";
     }
 
     var tags = "";
-    if (p.strategy === "prova") tags += '<span class="tag">🧪 Strategia in prova · soldi finti</span> ';
-    else if (n(p.score) !== null) tags += '<span class="score">Punteggio ' + esc(p.score) + "</span> ";
+    if (p.strategy !== "prova" && n(p.score) !== null) tags += '<span class="score">Punteggio ' + esc(p.score) + "</span> ";
     if (p.exit_at) tags += '<span class="tag">⏰ Chiude da sola alle ' + esc(C.fmtDateTime(p.exit_at)) + "</span> ";
     if (slMoved) tags += '<span class="tag green">' + (p.be_moved ? "Stop a pareggio" : "Stop spostato") + "</span> ";
     h += '<div class="pos-reason">' + (tags ? '<div style="margin-bottom:6px">' + tags + "</div>" : "") +
@@ -937,8 +966,19 @@
     if (name === "statistiche") { var bt = $("btChart"); if (bt) drawBacktestChart(bt); }
   }
 
+  function renderTechLog() {
+    var box = $("techLog");
+    if (!box) return;
+    var logs = arr(data.log).slice(-20).reverse();
+    box.innerHTML = logs.length ? logs.map(function (l) {
+      return '<div class="log-item"><span class="log-dot lv-' + esc(l.level) + '"></span><div><div>' + esc(l.msg) +
+        '</div><div class="log-time">' + esc(C.fmtDateTime(l.t)) + "</div></div></div>";
+    }).join("") : '<div class="muted">Nessun evento.</div>';
+  }
+
   function renderAll() {
     renderHeader();
+    try { renderTechLog(); } catch (e) { console.error(e); }
     try { renderConto(); } catch (e) { console.error(e); $("contoBody").innerHTML = emptyState("Errore di visualizzazione", "I dati del conto hanno un formato inatteso.", ICONS.clock); }
     try { renderPositions(); } catch (e) { console.error(e); }
     try { renderStats(); } catch (e) { console.error(e); }
@@ -995,6 +1035,7 @@
     });
     $("refreshBtn").addEventListener("click", function () { loadAll(true); });
     $("contoBody").addEventListener("click", function (e) {
+      if (e.target.closest(".goto-op")) { showTab("posizioni"); return; }
       var b = e.target.closest("#eqRange button");
       if (!b) return;
       eqRange = b.getAttribute("data-r");

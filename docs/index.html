@@ -44,9 +44,9 @@
 
     <!-- ================= POSIZIONI ================= -->
     <section class="tab" id="tab-posizioni" data-tab="posizioni" hidden>
-      <h2 class="section-title">Posizioni aperte <span class="count" id="posCount"></span></h2>
+      <h2 class="section-title">Aperte adesso <span class="count" id="posCount"></span></h2>
       <div id="positionsList"></div>
-      <h2 class="section-title">Ultimi segnali</h2>
+      <h2 class="section-title">Chiuse</h2>
       <div id="signalsList"></div>
     </section>
 
@@ -177,6 +177,10 @@
           </ul>
         </div>
       </form>
+      <details class="card tech">
+        <summary>Dettagli tecnici (registro del bot)</summary>
+        <div id="techLog"></div>
+      </details>
     </section>
 
     <footer class="signature">Firmato Andrea Pietro Mirenda</footer>
@@ -185,19 +189,15 @@
   <nav class="tabbar" id="tabbar" aria-label="Sezioni">
     <button type="button" class="tab-btn active" data-tab="conto">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3zM3 7l2-3h14l2 3M16 13h2"/></svg>
-      <span>Conto</span>
+      <span>Home</span>
     </button>
     <button type="button" class="tab-btn" data-tab="posizioni">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-      <span>Posizioni</span><i class="tab-badge" id="posBadge" hidden></i>
+      <span>Operazioni</span><i class="tab-badge" id="posBadge" hidden></i>
     </button>
     <button type="button" class="tab-btn" data-tab="grafici">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M7 8h-2v6h2M17 4v16M17 7h-2v9h2M12 6v12M12 10h-2v4h2"/></svg>
       <span>Grafici</span>
-    </button>
-    <button type="button" class="tab-btn" data-tab="statistiche">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
-      <span>Statistiche</span>
     </button>
     <button type="button" class="tab-btn" data-tab="impostazioni">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>

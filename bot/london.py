@@ -76,4 +76,4 @@ def describe(row: pd.Series, side: int) -> str:
     verso = "sopra il massimo" if side == 1 else "sotto il minimo"
     trend = "in salita" if side == 1 else "in discesa"
     return (f"All'apertura di Londra il prezzo è uscito {verso} della notte e il trend dei giorni scorsi è {trend}. "
-            f"Stop dall'altro lato del range notturno, chiusura automatica alle 20:00 di Londra.")
+            f"Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.")
