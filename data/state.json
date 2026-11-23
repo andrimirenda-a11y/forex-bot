@@ -1,10 +1,10 @@
 {
- "balance": 297.13,
- "equity": 298.43,
+ "balance": 9997.13,
+ "equity": 9998.43,
  "margin_used": 60.62,
- "start_balance": 300.0,
+ "start_balance": 10000.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-23T17:37:26Z",
+ "last_run": "2026-11-23T17:39:29Z",
  "open_positions": [
   {
    "id": "USDJPY-20261123T0900",
