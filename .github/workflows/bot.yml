@@ -33,15 +33,16 @@ jobs:
           key: duka-${{ github.run_id }}
           restore-keys: duka-
 
+      - name: Identità git e dati aggiornati (branch data)
+        run: |
+          git config user.name "forex-bot"
+          git config user.email "forex-bot@users.noreply.github.com"
+          python -m bot.datasync pull
+
       - name: Calibrazione (solo se manca, max una volta ogni 3 ore)
         continue-on-error: true
         timeout-minutes: 12
         run: python -m bot.calibrate --if-missing
-
-      - name: Identità git per salvare i dati durante il giro
-        run: |
-          git config user.name "forex-bot"
-          git config user.email "forex-bot@users.noreply.github.com"
 
       - name: Giro del bot (controllo del mercato ogni minuto per ~50 minuti)
         env:
@@ -54,14 +55,4 @@ jobs:
 
       - name: Salva i dati
         if: always()
-        run: |
-          git config user.name "forex-bot"
-          git config user.email "forex-bot@users.noreply.github.com"
-          git add data
-          git diff --cached --quiet && exit 0
-          git commit -m "Aggiornamento bot $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3 4 5; do
-            git pull --rebase -X theirs && git push && exit 0
-            sleep $((i * 5))
-          done
-          exit 1
+        run: python -m bot.datasync push

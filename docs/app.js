@@ -7,7 +7,7 @@
   var QS = new URLSearchParams(location.search);
   var DEMO = QS.get("demo") === "1";
   var FILES = ["state", "settings", "history", "equity", "signals", "calibration", "backtest", "log", "study"];
-  var REFRESH_MS = 60000;
+  var REFRESH_MS = 30000;
   var STALE_MIN = 40;
   var TOKEN_KEY = "fxbot_gh_token";
   var SAVED_KEY = "fxbot_last_saved";
@@ -69,17 +69,21 @@
   };
 
   /* ================= caricamento dati ================= */
-  function dataUrl(name) {
+  function dataUrl(name, branchOverride) {
     var t = Date.now();
     if (DEMO) return "sample-data/" + name + ".json?t=" + t;
     return "https://raw.githubusercontent.com/" + encodeURIComponent(CFG.owner || "") + "/" +
-      encodeURIComponent(CFG.repo || "") + "/" + encodeURIComponent(CFG.branch || "main") +
+      encodeURIComponent(CFG.repo || "") + "/" + encodeURIComponent(branchOverride || CFG.dataBranch || CFG.branch || "main") +
       "/data/" + name + ".json?t=" + t;
   }
 
-  function fetchJson(name) {
-    return fetch(dataUrl(name), { cache: "no-store" }).then(function (r) {
-      if (r.status === 404) return { name: name, value: null, err: "missing" };
+  function fetchJson(name, branchOverride) {
+    return fetch(dataUrl(name, branchOverride), { cache: "no-store" }).then(function (r) {
+      if (r.status === 404) {
+        // branch dei dati non ancora creato: ripiego su main
+        if (!branchOverride && CFG.dataBranch && CFG.dataBranch !== (CFG.branch || "main")) return fetchJson(name, CFG.branch || "main");
+        return { name: name, value: null, err: "missing" };
+      }
       if (!r.ok) return { name: name, value: null, err: "network" };
       return r.text().then(function (txt) {
         if (!txt || !txt.trim()) return { name: name, value: null, err: "missing" };
@@ -856,7 +860,7 @@
   /* Legge settings.json dal repo (per sha e valori aggiornati), applica mutate() e scrive. Un tentativo extra in caso di conflitto. */
   function writeSettings(mutate) {
     var path = repoPath() + "/contents/data/settings.json";
-    var branch = CFG.branch || "main";
+    var branch = CFG.dataBranch || CFG.branch || "main";
     function attempt(n0) {
       return ghFetch("GET", path + "?ref=" + encodeURIComponent(branch)).then(function (r) {
         if (r.status === 404) return { sha: null, remote: {} };

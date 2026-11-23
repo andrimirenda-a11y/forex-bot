@@ -28,16 +28,11 @@ jobs:
           path: .cache/duka
           key: duka-${{ github.run_id }}
           restore-keys: duka-
-      - run: python -m bot.calibrate
-      - name: Salva i risultati
+      - name: Dati aggiornati (branch data)
         run: |
           git config user.name "forex-bot"
           git config user.email "forex-bot@users.noreply.github.com"
-          git add data
-          git diff --cached --quiet && exit 0
-          git commit -m "Calibrazione $(date -u +%Y-%m-%d)"
-          for i in 1 2 3 4 5; do
-            git pull --rebase -X theirs && git push && exit 0
-            sleep $((i * 5))
-          done
-          exit 1
+          python -m bot.datasync pull
+      - run: python -m bot.calibrate
+      - name: Salva i risultati
+        run: python -m bot.datasync push "Calibrazione settimanale"

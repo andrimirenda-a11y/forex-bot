@@ -740,7 +740,7 @@ class Bot:
         active = [p for p in PAIRS if self.pair_enabled(p)[0]]
         return any(self.state["last_bar"].get(p) != iso(last_closed) for p in active)
 
-    def run(self, listen_minutes: float = 0, cycle_seconds: float = 60, push=None, push_every: float = 600):
+    def run(self, listen_minutes: float = 0, cycle_seconds: float = 60, push=None, push_every: float = 90):
         """Primo giro completo, poi resta acceso per `listen_minutes`: risponde subito ai comandi
         Telegram e ricontrolla il mercato ogni `cycle_seconds` secondi."""
         self.handle_commands()
@@ -769,19 +769,21 @@ class Bot:
                 self.save_all()
                 next_cycle = time.time() + cycle_seconds
             if push and time.time() - last_push >= push_every:
-                push()
+                if push():      # l'app ha cambiato le impostazioni nel frattempo
+                    self.settings = {**DEFAULT_SETTINGS, **load(SETTINGS_FILE, {})}
+                    self.apply_settings()
+                    self.save_all()
                 last_push = time.time()
 
 
 def git_push():
-    """Pubblica i dati aggiornati (così app e storico restano freschi anche durante un giro lungo)."""
-    import subprocess
-    cmds = ("git add data && (git diff --cached --quiet || git commit -q -m \"Aggiornamento bot $(date -u +%Y-%m-%dT%H:%MZ)\") "
-            "&& (git pull -q --rebase -X theirs && git push -q)")
+    """Pubblica i dati sul branch `data` (così app e storico restano freschi anche durante un giro lungo)."""
+    from . import datasync
     try:
-        subprocess.run(["bash", "-c", cmds], timeout=60, check=False)
+        return datasync.push()
     except Exception as e:  # noqa: BLE001
         print("push fallito:", e)
+        return False
 
 
 def main():
