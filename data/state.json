@@ -4,7 +4,7 @@
  "margin_used": 178.56,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-24T13:46:31Z",
+ "last_run": "2026-11-24T13:47:46Z",
  "open_positions": [
   {
    "id": "US500-20261124T0900",
@@ -165,7 +165,7 @@
   "US500": "2026-11-24T12:00:00Z",
   "US30": "2026-11-24T12:00:00Z"
  },
- "tg_offset": 615229877,
+ "tg_offset": 615229878,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
