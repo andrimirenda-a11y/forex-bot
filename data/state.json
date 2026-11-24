@@ -1,10 +1,10 @@
 {
  "balance": 290.09,
- "equity": 293.67,
+ "equity": 292.31,
  "margin_used": 133.1,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-24T16:07:42Z",
+ "last_run": "2026-11-24T16:08:46Z",
  "open_positions": [
   {
    "id": "US500-20261124T0900",
@@ -52,14 +52,14 @@
    "pip_value_eur": 0.3585,
    "margin_eur": 100.0,
    "opened_at": "2026-11-24T11:00:17Z",
-   "last_check": "2026-11-24T14:45:00Z",
+   "last_check": "2026-11-24T15:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sopra il massimo della notte e il trend dei giorni scorsi è in salita. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 0.83679,
-   "unrealized_eur": -1.76,
-   "unrealized_pips": -4.9,
+   "last_price": 0.83641,
+   "unrealized_eur": -3.12,
+   "unrealized_pips": -8.7,
    "strategy": "prova",
    "exit_at": "2026-11-24T20:00:00Z",
    "ctx": {
@@ -77,16 +77,16 @@
    "time": "2026-11-24T15:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.31138,
-   "time": "2026-11-24T14:45:00Z"
+   "price": 1.3116,
+   "time": "2026-11-24T15:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83679,
-   "time": "2026-11-24T14:45:00Z"
+   "price": 0.83641,
+   "time": "2026-11-24T15:45:00Z"
   },
   "USDJPY": {
-   "price": 159.231,
-   "time": "2026-11-24T14:45:00Z"
+   "price": 159.083,
+   "time": "2026-11-24T15:45:00Z"
   },
   "USDCHF": {
    "price": 0.83539,
@@ -124,7 +124,7 @@
   "EURUSD": "2026-11-24T15:00:00Z",
   "GBPUSD": "2026-11-24T15:00:00Z",
   "EURGBP": "2026-11-24T15:00:00Z",
-  "USDJPY": "2026-11-24T14:00:00Z",
+  "USDJPY": "2026-11-24T15:00:00Z",
   "USDCHF": "2026-11-24T15:00:00Z",
   "AUDUSD": "2026-11-24T15:00:00Z",
   "USDCAD": "2026-11-24T15:00:00Z",
@@ -138,7 +138,7 @@
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 2 operazioni aperte (S&P 500, EUR/GBP): in questo momento +3,58 €.",
+ "status_line": "Ha 2 operazioni aperte (S&P 500, EUR/GBP): in questo momento +2,22 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-24T14:00:45Z",
