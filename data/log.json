@@ -413,5 +413,10 @@
   "t": "2026-11-24T11:06:24Z",
   "level": "trade",
   "msg": "Aperto EURGBP BUY 0.03 lotti a 0.83722"
+ },
+ {
+  "t": "2026-11-24T13:03:53Z",
+  "level": "warn",
+  "msg": "GBP/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
