@@ -85,5 +85,30 @@
   },
   "strategy": "prova",
   "diario": "🔎 <b>Cosa è andato storto</b>: lo stop è arrivato dopo 6.2 ore. Lo segno: se succede spesso, cambio le regole."
+ },
+ {
+  "id": "US500-20261124T0900",
+  "pair": "US500",
+  "side": "SELL",
+  "entry": 7219.313,
+  "exit": 7177.992,
+  "sl_initial": 7282.251,
+  "tp": 7031.699,
+  "lots": 0.1,
+  "opened_at": "2026-11-24T09:00:50Z",
+  "closed_at": "2026-11-24T20:00:00Z",
+  "result": "TEMPO",
+  "pnl_eur": 3.77,
+  "pnl_pips": 41.3,
+  "r_multiple": 0.66,
+  "score": 50,
+  "ctx": {
+   "pair": "US500",
+   "weekday": 1,
+   "hour": 9,
+   "width": 0.32,
+   "strength": 1.211
+  },
+  "strategy": "prova"
  }
 ]
