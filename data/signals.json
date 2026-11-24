@@ -20,5 +20,27 @@
   "score": 50,
   "status": "aperto",
   "note": null
+ },
+ {
+  "time": "2026-11-24T09:00:50Z",
+  "pair": "US500",
+  "side": "SELL",
+  "entry": 7219.613,
+  "sl": 7282.251,
+  "tp": 7031.699,
+  "score": 50,
+  "status": "aperto",
+  "note": null
+ },
+ {
+  "time": "2026-11-24T09:00:50Z",
+  "pair": "US30",
+  "side": "SELL",
+  "entry": 49575.563,
+  "sl": 49819.075,
+  "tp": 48845.027,
+  "score": 50,
+  "status": "aperto",
+  "note": null
  }
 ]
