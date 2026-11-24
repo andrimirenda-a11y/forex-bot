@@ -33,5 +33,31 @@
   "r_multiple": -0.6,
   "score": 50,
   "strategy": "prova"
+ },
+ {
+  "id": "US30-20261124T0900",
+  "pair": "US30",
+  "side": "SELL",
+  "entry": 49574.063,
+  "exit": 49820.575,
+  "sl_initial": 49819.075,
+  "tp": 48845.027,
+  "lots": 0.02,
+  "opened_at": "2026-11-24T09:00:50Z",
+  "closed_at": "2026-11-24T15:00:00Z",
+  "result": "SL",
+  "pnl_eur": -4.49,
+  "pnl_pips": -246.5,
+  "r_multiple": -1.01,
+  "score": 50,
+  "ctx": {
+   "pair": "US30",
+   "weekday": 1,
+   "hour": 9,
+   "width": 0.284,
+   "strength": 1.987
+  },
+  "strategy": "prova",
+  "diario": "🔎 <b>Cosa è andato storto</b>: lo stop è arrivato dopo 6.0 ore. Lo segno: se succede spesso, cambio le regole."
  }
 ]

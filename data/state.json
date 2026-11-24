@@ -1,10 +1,10 @@
 {
- "balance": 294.58,
- "equity": 306.1,
- "margin_used": 178.56,
+ "balance": 290.09,
+ "equity": 288.83,
+ "margin_used": 133.1,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-24T14:59:33Z",
+ "last_run": "2026-11-24T15:02:18Z",
  "open_positions": [
   {
    "id": "US500-20261124T0900",
@@ -20,14 +20,14 @@
    "pip_value_eur": 0.0917,
    "margin_eur": 33.1,
    "opened_at": "2026-11-24T09:00:50Z",
-   "last_check": "2026-11-24T13:45:00Z",
+   "last_check": "2026-11-24T14:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sotto il minimo della notte e il trend dei giorni scorsi è in discesa. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 7142.868,
-   "unrealized_eur": 6.94,
-   "unrealized_pips": 76.1,
+   "last_price": 7213.483,
+   "unrealized_eur": 0.5,
+   "unrealized_pips": 5.5,
    "strategy": "prova",
    "exit_at": "2026-11-24T20:00:00Z",
    "ctx": {
@@ -36,38 +36,6 @@
     "hour": 9,
     "width": 0.32,
     "strength": 1.211
-   }
-  },
-  {
-   "id": "US30-20261124T0900",
-   "pair": "US30",
-   "side": "SELL",
-   "entry": 49574.063,
-   "signal_price": 49575.563,
-   "sl": 49819.075,
-   "tp": 48845.027,
-   "sl_initial": 49819.075,
-   "lots": 0.02,
-   "risk_eur": 4.47,
-   "pip_value_eur": 0.0183,
-   "margin_eur": 45.46,
-   "opened_at": "2026-11-24T09:00:50Z",
-   "last_check": "2026-11-24T13:45:00Z",
-   "score": 50,
-   "reason": "All'apertura di Londra il prezzo è uscito sotto il minimo della notte e il trend dei giorni scorsi è in discesa. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
-   "be_moved": false,
-   "breakeven_r": 0,
-   "last_price": 49287.951,
-   "unrealized_eur": 5.19,
-   "unrealized_pips": 284.6,
-   "strategy": "prova",
-   "exit_at": "2026-11-24T20:00:00Z",
-   "ctx": {
-    "pair": "US30",
-    "weekday": 1,
-    "hour": 9,
-    "width": 0.284,
-    "strength": 1.987
    }
   },
   {
@@ -84,14 +52,14 @@
    "pip_value_eur": 0.3585,
    "margin_eur": 100.0,
    "opened_at": "2026-11-24T11:00:17Z",
-   "last_check": "2026-11-24T13:45:00Z",
+   "last_check": "2026-11-24T14:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sopra il massimo della notte e il trend dei giorni scorsi è in salita. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 0.83711,
-   "unrealized_eur": -0.61,
-   "unrealized_pips": -1.7,
+   "last_price": 0.83679,
+   "unrealized_eur": -1.76,
+   "unrealized_pips": -4.9,
    "strategy": "prova",
    "exit_at": "2026-11-24T20:00:00Z",
    "ctx": {
@@ -105,72 +73,72 @@
  ],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09649,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 1.09742,
+   "time": "2026-11-24T14:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.30979,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 1.31138,
+   "time": "2026-11-24T14:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83711,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 0.83679,
+   "time": "2026-11-24T14:45:00Z"
   },
   "USDJPY": {
-   "price": 159.101,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 159.231,
+   "time": "2026-11-24T14:45:00Z"
   },
   "USDCHF": {
-   "price": 0.83741,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 0.83582,
+   "time": "2026-11-24T14:45:00Z"
   },
   "AUDUSD": {
-   "price": 0.66383,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 0.66554,
+   "time": "2026-11-24T14:45:00Z"
   },
   "USDCAD": {
-   "price": 1.43263,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 1.42902,
+   "time": "2026-11-24T14:45:00Z"
   },
   "US500": {
-   "price": 7142.868,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 7213.483,
+   "time": "2026-11-24T14:45:00Z"
   },
   "US30": {
-   "price": 49287.951,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 49847.275,
+   "time": "2026-11-24T14:45:00Z"
   },
   "XAUUSD": {
-   "price": 3615.14,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 3621.885,
+   "time": "2026-11-24T14:45:00Z"
   },
   "XAGUSD": {
-   "price": 42.05,
-   "time": "2026-11-24T13:45:00Z"
+   "price": 42.18,
+   "time": "2026-11-24T14:45:00Z"
   }
  },
  "paused_pairs": {},
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-24T13:00:00Z",
-  "GBPUSD": "2026-11-24T13:00:00Z",
-  "EURGBP": "2026-11-24T13:00:00Z",
-  "USDJPY": "2026-11-24T13:00:00Z",
-  "USDCHF": "2026-11-24T13:00:00Z",
-  "AUDUSD": "2026-11-24T13:00:00Z",
-  "USDCAD": "2026-11-24T13:00:00Z",
-  "XAUUSD": "2026-11-24T13:00:00Z",
-  "XAGUSD": "2026-11-24T13:00:00Z",
-  "US500": "2026-11-24T13:00:00Z",
-  "US30": "2026-11-24T13:00:00Z"
+  "EURUSD": "2026-11-24T14:00:00Z",
+  "GBPUSD": "2026-11-24T14:00:00Z",
+  "EURGBP": "2026-11-24T14:00:00Z",
+  "USDJPY": "2026-11-24T14:00:00Z",
+  "USDCHF": "2026-11-24T14:00:00Z",
+  "AUDUSD": "2026-11-24T14:00:00Z",
+  "USDCAD": "2026-11-24T14:00:00Z",
+  "XAUUSD": "2026-11-24T14:00:00Z",
+  "XAGUSD": "2026-11-24T14:00:00Z",
+  "US500": "2026-11-24T14:00:00Z",
+  "US30": "2026-11-24T14:00:00Z"
  },
  "tg_offset": 615229878,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 3 operazioni aperte (S&P 500, Dow Jones, EUR/GBP): in questo momento +11,52 €.",
+ "status_line": "Ha 2 operazioni aperte (S&P 500, EUR/GBP): in questo momento -1,26 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-24T14:00:45Z",
