@@ -42,5 +42,16 @@
   "score": 50,
   "status": "aperto",
   "note": null
+ },
+ {
+  "time": "2026-11-24T11:00:17Z",
+  "pair": "EURGBP",
+  "side": "BUY",
+  "entry": 0.83715,
+  "sl": 0.83621,
+  "tp": 0.83997,
+  "score": 50,
+  "status": "aperto",
+  "note": null
  }
 ]
