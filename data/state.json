@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-24T00:59:22Z",
+ "last_run": "2026-11-24T01:05:28Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -12,61 +12,61 @@
    "time": "2026-11-23T23:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.30343,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 1.30399,
+   "time": "2026-11-24T00:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83681,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 0.83666,
+   "time": "2026-11-24T00:45:00Z"
   },
   "USDJPY": {
-   "price": 159.018,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 158.936,
+   "time": "2026-11-24T00:45:00Z"
   },
   "USDCHF": {
-   "price": 0.84151,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 0.84132,
+   "time": "2026-11-24T00:45:00Z"
   },
   "AUDUSD": {
-   "price": 0.6629,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 0.6634,
+   "time": "2026-11-24T00:45:00Z"
   },
   "USDCAD": {
-   "price": 1.4365,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 1.43599,
+   "time": "2026-11-24T00:45:00Z"
   },
   "US500": {
-   "price": 7236.736,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 7258.754,
+   "time": "2026-11-24T00:45:00Z"
   },
   "US30": {
-   "price": 49616.575,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 49742.075,
+   "time": "2026-11-24T00:45:00Z"
   },
   "XAUUSD": {
-   "price": 3631.585,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 3669.245,
+   "time": "2026-11-24T00:45:00Z"
   },
   "XAGUSD": {
-   "price": 43.151,
-   "time": "2026-11-23T23:45:00Z"
+   "price": 43.928,
+   "time": "2026-11-24T00:45:00Z"
   }
  },
  "paused_pairs": {},
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-23T23:00:00Z",
-  "GBPUSD": "2026-11-23T23:00:00Z",
-  "EURGBP": "2026-11-23T23:00:00Z",
-  "USDJPY": "2026-11-23T23:00:00Z",
-  "USDCHF": "2026-11-23T23:00:00Z",
-  "AUDUSD": "2026-11-23T23:00:00Z",
-  "USDCAD": "2026-11-23T23:00:00Z",
-  "XAUUSD": "2026-11-23T23:00:00Z",
-  "XAGUSD": "2026-11-23T23:00:00Z",
-  "US500": "2026-11-23T23:00:00Z",
-  "US30": "2026-11-23T23:00:00Z"
+  "EURUSD": "2026-11-24T00:00:00Z",
+  "GBPUSD": "2026-11-24T00:00:00Z",
+  "EURGBP": "2026-11-24T00:00:00Z",
+  "USDJPY": "2026-11-24T00:00:00Z",
+  "USDCHF": "2026-11-24T00:00:00Z",
+  "AUDUSD": "2026-11-24T00:00:00Z",
+  "USDCAD": "2026-11-24T00:00:00Z",
+  "XAUUSD": "2026-11-24T00:00:00Z",
+  "XAGUSD": "2026-11-24T00:00:00Z",
+  "US500": "2026-11-24T00:00:00Z",
+  "US30": "2026-11-24T00:00:00Z"
  },
  "tg_offset": 615229877,
  "tg_chat_id": 794818610,
@@ -76,7 +76,7 @@
  "status_line": "Sta provando la strategia «Breakout di Londra (in prova)» con soldi finti su EUR/USD, GBP/USD, EUR/GBP, USD/JPY, USD/CHF, AUD/USD, USD/CAD, Oro, Argento, S&P 500, Dow Jones. Cerca occasioni ogni mattina tra le 9 e le 12 italiane (mercato di Londra).",
  "market_open": true,
  "warn_times": {
-  "rate-USD": "2026-11-23T20:00:55Z",
+  "rate-USD": "2026-11-24T01:00:24Z",
   "rate-GBP": "2026-11-23T21:00:38Z",
   "h1-USDCHF": "2026-11-22T23:02:07Z",
   "h1-AUDUSD": "2026-11-22T23:02:07Z",
