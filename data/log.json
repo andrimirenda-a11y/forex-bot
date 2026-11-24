@@ -433,5 +433,25 @@
   "t": "2026-11-24T15:02:16Z",
   "level": "info",
   "msg": "🔎 Cosa è andato storto: lo stop è arrivato dopo 6.0 ore. Lo segno: se succede spesso, cambio le regole."
+ },
+ {
+  "t": "2026-11-24T16:02:46Z",
+  "level": "warn",
+  "msg": "Cambio EUR/AUD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T16:04:22Z",
+  "level": "warn",
+  "msg": "GBP/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T16:05:18Z",
+  "level": "warn",
+  "msg": "EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T16:06:21Z",
+  "level": "warn",
+  "msg": "USD/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
