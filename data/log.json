@@ -458,5 +458,30 @@
   "t": "2026-11-24T17:01:44Z",
   "level": "warn",
   "msg": "Cambio EUR/CHF: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T18:01:01Z",
+  "level": "warn",
+  "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T18:02:03Z",
+  "level": "warn",
+  "msg": "Cambio EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T18:04:15Z",
+  "level": "warn",
+  "msg": "Cambio EUR/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-24T18:05:12Z",
+  "level": "trade",
+  "msg": "Chiuso EURGBP BUY: Stop loss, -3,84 €"
+ },
+ {
+  "t": "2026-11-24T18:05:13Z",
+  "level": "info",
+  "msg": "🔎 Cosa è andato storto: lo stop è arrivato dopo 6.2 ore. Lo segno: se succede spesso, cambio le regole."
  }
 ]
