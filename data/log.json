@@ -693,5 +693,10 @@
   "t": "2026-11-25T19:02:29Z",
   "level": "info",
   "msg": "🔎 Cosa è andato storto: lo stop è arrivato dopo 11.0 ore. Lo segno: se succede spesso, cambio le regole."
+ },
+ {
+  "t": "2026-11-25T19:03:34Z",
+  "level": "warn",
+  "msg": "Blocco di sicurezza: perdita giornaliera -9,07 € oltre il limite del 3%"
  }
 ]

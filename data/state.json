@@ -1,10 +1,10 @@
 {
  "balance": 280.14,
- "equity": 283.39,
+ "equity": 280.95,
  "margin_used": 133.33,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-25T19:02:31Z",
+ "last_run": "2026-11-25T19:03:36Z",
  "open_positions": [
   {
    "id": "EURGBP-20261125T0800",
@@ -20,14 +20,14 @@
    "pip_value_eur": 0.4784,
    "margin_eur": 133.33,
    "opened_at": "2026-11-25T08:00:56Z",
-   "last_check": "2026-11-25T17:45:00Z",
+   "last_check": "2026-11-25T18:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sopra il massimo della notte e il trend dei giorni scorsi è in salita. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 0.83746,
-   "unrealized_eur": 3.25,
-   "unrealized_pips": 6.8,
+   "last_price": 0.83695,
+   "unrealized_eur": 0.81,
+   "unrealized_pips": 1.7,
    "strategy": "prova",
    "exit_at": "2026-11-25T20:00:00Z",
    "ctx": {
@@ -49,8 +49,8 @@
    "time": "2026-11-25T18:45:00Z"
   },
   "EURGBP": {
-   "price": 0.83746,
-   "time": "2026-11-25T17:45:00Z"
+   "price": 0.83695,
+   "time": "2026-11-25T18:45:00Z"
   },
   "USDJPY": {
    "price": 159.105,
@@ -86,12 +86,12 @@
   }
  },
  "paused_pairs": {},
- "trading_halted_until": null,
- "halt_reason": null,
+ "trading_halted_until": "2026-11-26T00:00:00Z",
+ "halt_reason": "perdita giornaliera -9,07 € oltre il limite del 3%",
  "last_bar": {
   "EURUSD": "2026-11-25T18:00:00Z",
   "GBPUSD": "2026-11-25T18:00:00Z",
-  "EURGBP": "2026-11-25T17:00:00Z",
+  "EURGBP": "2026-11-25T18:00:00Z",
   "USDJPY": "2026-11-25T18:00:00Z",
   "USDCHF": "2026-11-25T18:00:00Z",
   "AUDUSD": "2026-11-25T18:00:00Z",
@@ -106,7 +106,7 @@
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 1 operazione aperta (EUR/GBP): in questo momento +3,25 €.",
+ "status_line": "Ha 1 operazione aperta (EUR/GBP): in questo momento +0,81 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-25T16:01:00Z",
