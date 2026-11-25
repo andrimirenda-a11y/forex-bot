@@ -162,5 +162,30 @@
   },
   "strategy": "prova",
   "diario": "🔎 <b>Cosa è andato storto</b>: lo stop è arrivato dopo 11.0 ore. Lo segno: se succede spesso, cambio le regole."
+ },
+ {
+  "id": "EURGBP-20261125T0800",
+  "pair": "EURGBP",
+  "side": "BUY",
+  "entry": 0.836715,
+  "exit": 0.836625,
+  "sl_initial": 0.83569,
+  "tp": 0.83953,
+  "lots": 0.04,
+  "opened_at": "2026-11-25T08:00:56Z",
+  "closed_at": "2026-11-25T20:00:00Z",
+  "result": "TEMPO",
+  "pnl_eur": -0.43,
+  "pnl_pips": -0.9,
+  "r_multiple": -0.09,
+  "score": 50,
+  "ctx": {
+   "pair": "EURGBP",
+   "weekday": 2,
+   "hour": 8,
+   "width": 0.326,
+   "strength": 0.378
+  },
+  "strategy": "prova"
  }
 ]
