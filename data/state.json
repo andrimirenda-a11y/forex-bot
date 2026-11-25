@@ -1,10 +1,10 @@
 {
  "balance": 285.5,
- "equity": 296.86,
+ "equity": 300.56,
  "margin_used": 162.66,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-25T15:58:56Z",
+ "last_run": "2026-11-25T16:04:03Z",
  "open_positions": [
   {
    "id": "EURGBP-20261125T0800",
@@ -52,14 +52,14 @@
    "pip_value_eur": 0.0823,
    "margin_eur": 29.33,
    "opened_at": "2026-11-25T08:00:56Z",
-   "last_check": "2026-11-25T14:45:00Z",
+   "last_check": "2026-11-25T15:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sotto il minimo della notte e il trend dei giorni scorsi è in discesa. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 7049.942,
-   "unrealized_eur": 6.35,
-   "unrealized_pips": 77.2,
+   "last_price": 7004.925,
+   "unrealized_eur": 10.05,
+   "unrealized_pips": 122.2,
    "strategy": "prova",
    "exit_at": "2026-11-25T20:00:00Z",
    "ctx": {
@@ -73,81 +73,81 @@
  ],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09396,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 1.09484,
+   "time": "2026-11-25T15:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.30561,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 1.30606,
+   "time": "2026-11-25T15:45:00Z"
   },
   "EURGBP": {
    "price": 0.83783,
    "time": "2026-11-25T14:45:00Z"
   },
   "USDJPY": {
-   "price": 159.265,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 159.131,
+   "time": "2026-11-25T15:45:00Z"
   },
   "USDCHF": {
-   "price": 0.83138,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 0.83137,
+   "time": "2026-11-25T15:45:00Z"
   },
   "AUDUSD": {
-   "price": 0.6585,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 0.65796,
+   "time": "2026-11-25T15:45:00Z"
   },
   "USDCAD": {
-   "price": 1.42322,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 1.42369,
+   "time": "2026-11-25T15:45:00Z"
   },
   "US500": {
-   "price": 7049.942,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 7004.925,
+   "time": "2026-11-25T15:45:00Z"
   },
   "US30": {
-   "price": 49303.203,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 49268.715,
+   "time": "2026-11-25T15:45:00Z"
   },
   "XAUUSD": {
-   "price": 3471.825,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 3445.475,
+   "time": "2026-11-25T15:45:00Z"
   },
   "XAGUSD": {
-   "price": 39.089,
-   "time": "2026-11-25T14:45:00Z"
+   "price": 38.615,
+   "time": "2026-11-25T15:45:00Z"
   }
  },
  "paused_pairs": {},
  "trading_halted_until": null,
  "halt_reason": null,
  "last_bar": {
-  "EURUSD": "2026-11-25T14:00:00Z",
-  "GBPUSD": "2026-11-25T14:00:00Z",
+  "EURUSD": "2026-11-25T15:00:00Z",
+  "GBPUSD": "2026-11-25T15:00:00Z",
   "EURGBP": "2026-11-25T14:00:00Z",
-  "USDJPY": "2026-11-25T14:00:00Z",
-  "USDCHF": "2026-11-25T14:00:00Z",
-  "AUDUSD": "2026-11-25T14:00:00Z",
-  "USDCAD": "2026-11-25T14:00:00Z",
-  "XAUUSD": "2026-11-25T14:00:00Z",
-  "XAGUSD": "2026-11-25T14:00:00Z",
-  "US500": "2026-11-25T14:00:00Z",
-  "US30": "2026-11-25T14:00:00Z"
+  "USDJPY": "2026-11-25T15:00:00Z",
+  "USDCHF": "2026-11-25T15:00:00Z",
+  "AUDUSD": "2026-11-25T15:00:00Z",
+  "USDCAD": "2026-11-25T15:00:00Z",
+  "XAUUSD": "2026-11-25T15:00:00Z",
+  "XAGUSD": "2026-11-25T15:00:00Z",
+  "US500": "2026-11-25T15:00:00Z",
+  "US30": "2026-11-25T15:00:00Z"
  },
  "tg_offset": 615229878,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 2 operazioni aperte (EUR/GBP, S&P 500): in questo momento +11,36 €.",
+ "status_line": "Ha 2 operazioni aperte (EUR/GBP, S&P 500): in questo momento +15,06 €.",
  "market_open": true,
  "warn_times": {
-  "rate-USD": "2026-11-25T11:00:18Z",
+  "rate-USD": "2026-11-25T16:01:00Z",
   "rate-GBP": "2026-11-25T14:00:42Z",
   "h1-USDCHF": "2026-11-22T23:02:07Z",
   "h1-AUDUSD": "2026-11-22T23:02:07Z",
   "h1-EURGBP": "2026-11-22T23:09:35Z",
   "h1-USDCAD": "2026-11-22T23:09:35Z",
-  "rate-CHF": "2026-11-25T10:00:29Z",
+  "rate-CHF": "2026-11-25T16:01:00Z",
   "rate-AUD": "2026-11-24T16:00:13Z",
   "m15-EURGBP": "2026-11-25T10:00:29Z",
   "m15-USDJPY": "2026-11-24T16:00:13Z",
