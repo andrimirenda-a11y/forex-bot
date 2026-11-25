@@ -728,5 +728,20 @@
   "t": "2026-11-25T23:04:46Z",
   "level": "warn",
   "msg": "Argento: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T23:21:45Z",
+  "level": "warn",
+  "msg": "Oro: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T23:23:49Z",
+  "level": "warn",
+  "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T23:24:29Z",
+  "level": "warn",
+  "msg": "Dow Jones: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
