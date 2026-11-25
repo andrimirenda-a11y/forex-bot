@@ -1,10 +1,10 @@
 {
  "balance": 290.02,
- "equity": 293.24,
+ "equity": 295.61,
  "margin_used": 223.63,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-25T12:00:48Z",
+ "last_run": "2026-11-25T12:04:24Z",
  "open_positions": [
   {
    "id": "EURGBP-20261125T0800",
@@ -84,14 +84,14 @@
    "pip_value_eur": 0.0823,
    "margin_eur": 29.33,
    "opened_at": "2026-11-25T08:00:56Z",
-   "last_check": "2026-11-25T10:45:00Z",
+   "last_check": "2026-11-25T11:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sotto il minimo della notte e il trend dei giorni scorsi è in discesa. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 7101.609,
-   "unrealized_eur": 2.1,
-   "unrealized_pips": 25.5,
+   "last_price": 7072.792,
+   "unrealized_eur": 4.47,
+   "unrealized_pips": 54.3,
    "strategy": "prova",
    "exit_at": "2026-11-25T20:00:00Z",
    "ctx": {
@@ -133,12 +133,12 @@
    "time": "2026-11-25T11:45:00Z"
   },
   "US500": {
-   "price": 7101.609,
-   "time": "2026-11-25T10:45:00Z"
+   "price": 7072.792,
+   "time": "2026-11-25T11:45:00Z"
   },
   "US30": {
-   "price": 49645.503,
-   "time": "2026-11-25T10:45:00Z"
+   "price": 49430.587,
+   "time": "2026-11-25T11:45:00Z"
   },
   "XAUUSD": {
    "price": 3490.33,
@@ -162,15 +162,15 @@
   "USDCAD": "2026-11-25T11:00:00Z",
   "XAUUSD": "2026-11-25T11:00:00Z",
   "XAGUSD": "2026-11-25T11:00:00Z",
-  "US500": "2026-11-25T10:00:00Z",
-  "US30": "2026-11-25T10:00:00Z"
+  "US500": "2026-11-25T11:00:00Z",
+  "US30": "2026-11-25T11:00:00Z"
  },
  "tg_offset": 615229878,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 3 operazioni aperte (EUR/GBP, USD/CAD, S&P 500): in questo momento +3,22 €.",
+ "status_line": "Ha 3 operazioni aperte (EUR/GBP, USD/CAD, S&P 500): in questo momento +5,59 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-25T11:00:18Z",
