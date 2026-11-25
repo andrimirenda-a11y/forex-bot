@@ -678,5 +678,20 @@
   "t": "2026-11-25T18:06:09Z",
   "level": "warn",
   "msg": "USD/CAD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T19:02:20Z",
+  "level": "warn",
+  "msg": "Cambio EUR/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T19:02:29Z",
+  "level": "trade",
+  "msg": "Chiuso US500 SELL: Stop loss, -5,36 €"
+ },
+ {
+  "t": "2026-11-25T19:02:29Z",
+  "level": "info",
+  "msg": "🔎 Cosa è andato storto: lo stop è arrivato dopo 11.0 ore. Lo segno: se succede spesso, cambio le regole."
  }
 ]

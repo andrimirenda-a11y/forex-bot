@@ -136,5 +136,31 @@
   },
   "strategy": "prova",
   "diario": "🔎 <b>Cosa è andato storto</b>: lo stop è arrivato dopo 4.5 ore; la notte si era già mossa parecchio. Lo segno: se succede spesso, cambio le regole."
+ },
+ {
+  "id": "US500-20261125T0800",
+  "pair": "US500",
+  "side": "SELL",
+  "entry": 7127.401,
+  "exit": 7192.801,
+  "sl_initial": 7192.501,
+  "tp": 6933.301,
+  "lots": 0.09,
+  "opened_at": "2026-11-25T08:00:56Z",
+  "closed_at": "2026-11-25T19:00:00Z",
+  "result": "SL",
+  "pnl_eur": -5.36,
+  "pnl_pips": -65.4,
+  "r_multiple": -1.0,
+  "score": 50,
+  "ctx": {
+   "pair": "US500",
+   "weekday": 2,
+   "hour": 8,
+   "width": 0.342,
+   "strength": 1.342
+  },
+  "strategy": "prova",
+  "diario": "🔎 <b>Cosa è andato storto</b>: lo stop è arrivato dopo 11.0 ore. Lo segno: se succede spesso, cambio le regole."
  }
 ]
