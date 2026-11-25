@@ -4,12 +4,12 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-25T21:07:20Z",
+ "last_run": "2026-11-25T21:08:24Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09792,
-   "time": "2026-11-25T19:45:00Z"
+   "price": 1.09756,
+   "time": "2026-11-25T20:45:00Z"
   },
   "GBPUSD": {
    "price": 1.31192,
@@ -56,7 +56,7 @@
  "trading_halted_until": "2026-11-26T00:00:00Z",
  "halt_reason": "perdita giornaliera -9,07 € oltre il limite del 3%",
  "last_bar": {
-  "EURUSD": "2026-11-25T19:00:00Z",
+  "EURUSD": "2026-11-25T20:00:00Z",
   "GBPUSD": "2026-11-25T20:00:00Z",
   "EURGBP": "2026-11-25T20:00:00Z",
   "USDJPY": "2026-11-25T20:00:00Z",
