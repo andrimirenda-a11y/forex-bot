@@ -628,5 +628,25 @@
   "t": "2026-11-25T11:01:43Z",
   "level": "warn",
   "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T13:01:48Z",
+  "level": "warn",
+  "msg": "Cambio EUR/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T13:03:12Z",
+  "level": "warn",
+  "msg": "Cambio EUR/CAD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T13:05:35Z",
+  "level": "trade",
+  "msg": "Chiuso USDCAD BUY: Stop loss, -4,52 €"
+ },
+ {
+  "t": "2026-11-25T13:05:36Z",
+  "level": "info",
+  "msg": "🔎 Cosa è andato storto: lo stop è arrivato dopo 4.5 ore; la notte si era già mossa parecchio. Lo segno: se succede spesso, cambio le regole."
  }
 ]

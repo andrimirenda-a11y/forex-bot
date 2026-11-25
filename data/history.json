@@ -110,5 +110,31 @@
    "strength": 1.211
   },
   "strategy": "prova"
+ },
+ {
+  "id": "USDCAD-20261125T0800",
+  "pair": "USDCAD",
+  "side": "BUY",
+  "entry": 1.42941,
+  "exit": 1.42588,
+  "sl_initial": 1.42596,
+  "tp": 1.43944,
+  "lots": 0.02,
+  "opened_at": "2026-11-25T08:00:56Z",
+  "closed_at": "2026-11-25T12:30:00Z",
+  "result": "SL",
+  "pnl_eur": -4.52,
+  "pnl_pips": -35.3,
+  "r_multiple": -1.02,
+  "score": 50,
+  "ctx": {
+   "pair": "USDCAD",
+   "weekday": 2,
+   "hour": 8,
+   "width": 0.447,
+   "strength": 1.134
+  },
+  "strategy": "prova",
+  "diario": "🔎 <b>Cosa è andato storto</b>: lo stop è arrivato dopo 4.5 ore; la notte si era già mossa parecchio. Lo segno: se succede spesso, cambio le regole."
  }
 ]
