@@ -1,10 +1,10 @@
 {
  "balance": 285.5,
- "equity": 296.61,
+ "equity": 296.86,
  "margin_used": 162.66,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-25T15:02:06Z",
+ "last_run": "2026-11-25T15:03:29Z",
  "open_positions": [
   {
    "id": "EURGBP-20261125T0800",
@@ -52,14 +52,14 @@
    "pip_value_eur": 0.0823,
    "margin_eur": 29.33,
    "opened_at": "2026-11-25T08:00:56Z",
-   "last_check": "2026-11-25T13:45:00Z",
+   "last_check": "2026-11-25T14:45:00Z",
    "score": 50,
    "reason": "All'apertura di Londra il prezzo è uscito sotto il minimo della notte e il trend dei giorni scorsi è in discesa. Stop dall'altro lato del range notturno; se non tocca stop o obiettivo, si chiude da sola in serata.",
    "be_moved": false,
    "breakeven_r": 0,
-   "last_price": 7052.945,
-   "unrealized_eur": 6.1,
-   "unrealized_pips": 74.2,
+   "last_price": 7049.942,
+   "unrealized_eur": 6.35,
+   "unrealized_pips": 77.2,
    "strategy": "prova",
    "exit_at": "2026-11-25T20:00:00Z",
    "ctx": {
@@ -101,12 +101,12 @@
    "time": "2026-11-25T14:45:00Z"
   },
   "US500": {
-   "price": 7052.945,
-   "time": "2026-11-25T13:45:00Z"
+   "price": 7049.942,
+   "time": "2026-11-25T14:45:00Z"
   },
   "US30": {
-   "price": 49339.003,
-   "time": "2026-11-25T13:45:00Z"
+   "price": 49303.203,
+   "time": "2026-11-25T14:45:00Z"
   },
   "XAUUSD": {
    "price": 3471.825,
@@ -130,15 +130,15 @@
   "USDCAD": "2026-11-25T14:00:00Z",
   "XAUUSD": "2026-11-25T14:00:00Z",
   "XAGUSD": "2026-11-25T14:00:00Z",
-  "US500": "2026-11-25T13:00:00Z",
-  "US30": "2026-11-25T13:00:00Z"
+  "US500": "2026-11-25T14:00:00Z",
+  "US30": "2026-11-25T14:00:00Z"
  },
  "tg_offset": 615229878,
  "tg_chat_id": 794818610,
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Ha 2 operazioni aperte (EUR/GBP, S&P 500): in questo momento +11,11 €.",
+ "status_line": "Ha 2 operazioni aperte (EUR/GBP, S&P 500): in questo momento +11,36 €.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-25T11:00:18Z",
