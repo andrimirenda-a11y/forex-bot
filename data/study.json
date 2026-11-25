@@ -1,5 +1,38 @@
 {
- "open_positions": [],
+ "open_positions": [
+  {
+   "id": "US30-20261125T0800",
+   "pair": "US30",
+   "side": "SELL",
+   "entry": 49734.051,
+   "signal_price": 49735.551,
+   "sl": 49937.551,
+   "tp": 49129.551,
+   "sl_initial": 49937.551,
+   "lots": 0.0314,
+   "risk_eur": 5.8,
+   "pip_value_eur": 0.0287,
+   "margin_eur": 0.0,
+   "opened_at": "2026-11-25T08:00:56Z",
+   "last_check": "2026-11-25T08:00:56Z",
+   "score": 50,
+   "reason": "già 3 posizioni aperte",
+   "be_moved": false,
+   "breakeven_r": 0,
+   "last_price": 49735.551,
+   "unrealized_eur": 0.0,
+   "unrealized_pips": 0.0,
+   "studio": true,
+   "ctx": {
+    "pair": "US30",
+    "weekday": 2,
+    "hour": 8,
+    "width": 0.222,
+    "strength": 1.44
+   },
+   "exit_at": "2026-11-25T20:00:00Z"
+  }
+ ],
  "closed": [],
  "balance": 0.0
 }

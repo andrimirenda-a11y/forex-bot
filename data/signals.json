@@ -53,5 +53,49 @@
   "score": 50,
   "status": "aperto",
   "note": null
+ },
+ {
+  "time": "2026-11-25T08:00:56Z",
+  "pair": "EURGBP",
+  "side": "BUY",
+  "entry": 0.83665,
+  "sl": 0.83569,
+  "tp": 0.83953,
+  "score": 50,
+  "status": "aperto",
+  "note": null
+ },
+ {
+  "time": "2026-11-25T08:00:56Z",
+  "pair": "USDCAD",
+  "side": "BUY",
+  "entry": 1.42933,
+  "sl": 1.42596,
+  "tp": 1.43944,
+  "score": 50,
+  "status": "aperto",
+  "note": null
+ },
+ {
+  "time": "2026-11-25T08:00:56Z",
+  "pair": "US500",
+  "side": "SELL",
+  "entry": 7127.701,
+  "sl": 7192.501,
+  "tp": 6933.301,
+  "score": 50,
+  "status": "aperto",
+  "note": null
+ },
+ {
+  "time": "2026-11-25T08:00:56Z",
+  "pair": "US30",
+  "side": "SELL",
+  "entry": 49735.551,
+  "sl": 49937.551,
+  "tp": 49129.551,
+  "score": 50,
+  "status": "scartato",
+  "note": "già 3 posizioni aperte"
  }
 ]
