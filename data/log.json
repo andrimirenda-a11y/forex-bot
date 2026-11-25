@@ -543,5 +543,15 @@
   "t": "2026-11-25T00:15:20Z",
   "level": "warn",
   "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T01:01:13Z",
+  "level": "warn",
+  "msg": "Cambio EUR/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-25T01:04:02Z",
+  "level": "warn",
+  "msg": "USD/CHF: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
