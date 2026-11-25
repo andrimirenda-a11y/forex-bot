@@ -698,5 +698,10 @@
   "t": "2026-11-25T19:03:34Z",
   "level": "warn",
   "msg": "Blocco di sicurezza: perdita giornaliera -9,07 € oltre il limite del 3%"
+ },
+ {
+  "t": "2026-11-25T20:04:44Z",
+  "level": "warn",
+  "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
