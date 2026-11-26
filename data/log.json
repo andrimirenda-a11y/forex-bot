@@ -818,5 +818,10 @@
   "t": "2026-11-26T11:01:27Z",
   "level": "info",
   "msg": "Segnale US30 SELL scartato: perdita settimanale -20,29 € oltre il limite del 6%"
+ },
+ {
+  "t": "2026-11-26T14:02:17Z",
+  "level": "warn",
+  "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
