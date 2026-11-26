@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-25T23:59:29Z",
+ "last_run": "2026-11-26T00:00:41Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -53,8 +53,8 @@
   }
  },
  "paused_pairs": {},
- "trading_halted_until": "2026-11-26T00:00:00Z",
- "halt_reason": "perdita giornaliera -9,07 € oltre il limite del 3%",
+ "trading_halted_until": "2026-11-30T00:00:00Z",
+ "halt_reason": "perdita settimanale -20,29 € oltre il limite del 6%",
  "last_bar": {
   "EURUSD": "2026-11-25T22:00:00Z",
   "GBPUSD": "2026-11-25T22:00:00Z",
@@ -73,7 +73,7 @@
  "last_weekly_report": "2026-11-22T17:00:56Z",
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
- "status_line": "Fermo per sicurezza fino al 26/11 01:00: perdita giornaliera -9,07 € oltre il limite del 3%.",
+ "status_line": "Fermo per sicurezza fino al 30/11 01:00: perdita settimanale -20,29 € oltre il limite del 6%.",
  "market_open": true,
  "warn_times": {
   "rate-USD": "2026-11-25T20:02:29Z",

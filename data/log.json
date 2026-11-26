@@ -748,5 +748,15 @@
   "t": "2026-11-25T23:27:37Z",
   "level": "warn",
   "msg": "Oro: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-26T00:00:38Z",
+  "level": "info",
+  "msg": "Blocco di sicurezza terminato, il bot riprende a operare"
+ },
+ {
+  "t": "2026-11-26T00:00:38Z",
+  "level": "warn",
+  "msg": "Blocco di sicurezza: perdita settimanale -20,29 € oltre il limite del 6%"
  }
 ]
