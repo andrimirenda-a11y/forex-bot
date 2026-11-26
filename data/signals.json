@@ -97,5 +97,16 @@
   "score": 50,
   "status": "scartato",
   "note": "già 3 posizioni aperte"
+ },
+ {
+  "time": "2026-11-26T08:00:08Z",
+  "pair": "EURGBP",
+  "side": "BUY",
+  "entry": 0.8374,
+  "sl": 0.83627,
+  "tp": 0.84079,
+  "score": 50,
+  "status": "scartato",
+  "note": "perdita settimanale -20,29 € oltre il limite del 6%"
  }
 ]
