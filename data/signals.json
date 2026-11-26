@@ -108,5 +108,27 @@
   "score": 50,
   "status": "scartato",
   "note": "perdita settimanale -20,29 € oltre il limite del 6%"
+ },
+ {
+  "time": "2026-11-26T11:00:00Z",
+  "pair": "USDJPY",
+  "side": "BUY",
+  "entry": 159.287,
+  "sl": 158.952,
+  "tp": 160.292,
+  "score": 50,
+  "status": "scartato",
+  "note": "perdita settimanale -20,29 € oltre il limite del 6%"
+ },
+ {
+  "time": "2026-11-26T11:00:00Z",
+  "pair": "US30",
+  "side": "SELL",
+  "entry": 50250.527,
+  "sl": 50470.087,
+  "tp": 49591.847,
+  "score": 50,
+  "status": "scartato",
+  "note": "perdita settimanale -20,29 € oltre il limite del 6%"
  }
 ]
