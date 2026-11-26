@@ -4,12 +4,12 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-26T18:06:52Z",
+ "last_run": "2026-11-26T18:07:55Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09707,
-   "time": "2026-11-26T16:45:00Z"
+   "price": 1.09708,
+   "time": "2026-11-26T17:45:00Z"
   },
   "GBPUSD": {
    "price": 1.31073,
@@ -40,8 +40,8 @@
    "time": "2026-11-26T17:45:00Z"
   },
   "US30": {
-   "price": 50482.739,
-   "time": "2026-11-26T16:45:00Z"
+   "price": 50396.775,
+   "time": "2026-11-26T17:45:00Z"
   },
   "XAUUSD": {
    "price": 3567.305,
@@ -56,7 +56,7 @@
  "trading_halted_until": "2026-11-30T00:00:00Z",
  "halt_reason": "perdita settimanale -20,29 € oltre il limite del 6%",
  "last_bar": {
-  "EURUSD": "2026-11-26T16:00:00Z",
+  "EURUSD": "2026-11-26T17:00:00Z",
   "GBPUSD": "2026-11-26T17:00:00Z",
   "EURGBP": "2026-11-26T16:00:00Z",
   "USDJPY": "2026-11-26T17:00:00Z",
