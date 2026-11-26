@@ -863,5 +863,10 @@
   "t": "2026-11-26T19:02:25Z",
   "level": "warn",
   "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-26T19:26:03Z",
+  "level": "warn",
+  "msg": "Dow Jones: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
