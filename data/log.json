@@ -888,5 +888,10 @@
   "t": "2026-11-26T21:17:08Z",
   "level": "warn",
   "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-26T22:09:52Z",
+  "level": "warn",
+  "msg": "Argento: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
