@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-27T20:59:34Z",
+ "last_run": "2026-11-27T21:00:58Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -74,7 +74,7 @@
  "last_error_notice": "2026-11-23T08:17:32Z",
  "last_calibration_seen": "2026-11-21T21:07:44Z",
  "status_line": "Fermo per sicurezza fino al 30/11 01:00: perdita settimanale -20,29 € oltre il limite del 6%.",
- "market_open": true,
+ "market_open": false,
  "warn_times": {
   "rate-USD": "2026-11-27T17:00:29Z",
   "rate-GBP": "2026-11-27T13:00:28Z",
@@ -104,5 +104,5 @@
   "h1-XAGUSD": "2026-11-26T22:06:21Z",
   "h1-GBPUSD": "2026-11-27T18:00:13Z"
  },
- "last_daily_report": "2026-11-26T21:00:54Z"
+ "last_daily_report": "2026-11-27T21:00:34Z"
 }
