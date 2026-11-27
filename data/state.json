@@ -4,12 +4,12 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-27T10:05:46Z",
+ "last_run": "2026-11-27T10:06:48Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
-   "price": 1.09642,
-   "time": "2026-11-27T08:45:00Z"
+   "price": 1.09612,
+   "time": "2026-11-27T09:45:00Z"
   },
   "GBPUSD": {
    "price": 1.31258,
