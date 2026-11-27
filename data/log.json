@@ -963,5 +963,20 @@
   "t": "2026-11-27T08:05:31Z",
   "level": "warn",
   "msg": "USD/JPY: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T09:02:26Z",
+  "level": "warn",
+  "msg": "Cambio EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T09:02:41Z",
+  "level": "info",
+  "msg": "Segnale USDJPY BUY scartato: perdita settimanale -20,29 € oltre il limite del 6%"
+ },
+ {
+  "t": "2026-11-27T09:02:41Z",
+  "level": "info",
+  "msg": "Segnale USDCHF BUY scartato: perdita settimanale -20,29 € oltre il limite del 6%"
  }
 ]
