@@ -1,25 +1,5 @@
 [
  {
-  "t": "2026-11-22T22:01:18Z",
-  "level": "warn",
-  "msg": "Cambio EUR/USD non disponibile: Dukascopy non raggiungibile per EURUSD/2026/10/22/21h_ticks.bi5: HTTPSConnectionPool(host='datafeed.dukascopy.com', port=443): Read timed out. (read timeout=25)"
- },
- {
-  "t": "2026-11-22T22:06:56Z",
-  "level": "warn",
-  "msg": "Candele orarie GBPUSD non disponibili: Dukascopy non raggiungibile per GBPUSD/2026/10/22/21h_ticks.bi5: HTTP 503"
- },
- {
-  "t": "2026-11-22T22:08:02Z",
-  "level": "warn",
-  "msg": "Candele orarie EURGBP non disponibili: Dukascopy non raggiungibile per EURGBP/2026/10/22/21h_ticks.bi5: HTTPSConnectionPool(host='datafeed.dukascopy.com', port=443): Read timed out. (read timeout=25)"
- },
- {
-  "t": "2026-11-22T22:08:28Z",
-  "level": "warn",
-  "msg": "Candele orarie USDJPY non disponibili: Dukascopy non raggiungibile per USDJPY/2026/10/22/21h_ticks.bi5: HTTP 503"
- },
- {
   "t": "2026-11-22T22:13:58Z",
   "level": "warn",
   "msg": "Prezzi USDJPY non disponibili: Dukascopy non raggiungibile per USDJPY/2026/10/22/21h_ticks.bi5: HTTP 503"
@@ -998,5 +978,25 @@
   "t": "2026-11-27T13:06:33Z",
   "level": "warn",
   "msg": "Cambio EUR/CAD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T14:05:02Z",
+  "level": "warn",
+  "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T14:06:18Z",
+  "level": "warn",
+  "msg": "Dow Jones: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T14:07:03Z",
+  "level": "warn",
+  "msg": "EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T14:07:54Z",
+  "level": "warn",
+  "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
