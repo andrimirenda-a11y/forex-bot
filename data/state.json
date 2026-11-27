@@ -4,7 +4,7 @@
  "margin_used": 0,
  "start_balance": 300.0,
  "created": "2026-11-21T21:11:16Z",
- "last_run": "2026-11-27T18:07:21Z",
+ "last_run": "2026-11-27T18:09:26Z",
  "open_positions": [],
  "last_prices": {
   "EURUSD": {
@@ -12,8 +12,8 @@
    "time": "2026-11-27T17:45:00Z"
   },
   "GBPUSD": {
-   "price": 1.31014,
-   "time": "2026-11-27T16:45:00Z"
+   "price": 1.30989,
+   "time": "2026-11-27T17:45:00Z"
   },
   "EURGBP": {
    "price": 0.8349,
@@ -57,7 +57,7 @@
  "halt_reason": "perdita settimanale -20,29 € oltre il limite del 6%",
  "last_bar": {
   "EURUSD": "2026-11-27T17:00:00Z",
-  "GBPUSD": "2026-11-27T16:00:00Z",
+  "GBPUSD": "2026-11-27T17:00:00Z",
   "EURGBP": "2026-11-27T17:00:00Z",
   "USDJPY": "2026-11-27T17:00:00Z",
   "USDCHF": "2026-11-27T17:00:00Z",
