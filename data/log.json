@@ -1,20 +1,5 @@
 [
  {
-  "t": "2026-11-22T22:16:58Z",
-  "level": "warn",
-  "msg": "Prezzi XAUUSD non disponibili: Dukascopy non raggiungibile per XAUUSD/2026/10/22/21h_ticks.bi5: HTTPSConnectionPool(host='datafeed.dukascopy.com', port=443): Read timed out. (read timeout=25)"
- },
- {
-  "t": "2026-11-22T22:22:30Z",
-  "level": "warn",
-  "msg": "Cambio EUR/CAD non disponibile: Dukascopy non raggiungibile per EURCAD/2026/10/22/21h_ticks.bi5: HTTP 503"
- },
- {
-  "t": "2026-11-22T22:23:41Z",
-  "level": "warn",
-  "msg": "Cambio EUR/AUD non disponibile: Dukascopy non raggiungibile per EURAUD/2026/10/22/21h_ticks.bi5: HTTP 503"
- },
- {
   "t": "2026-11-22T22:24:03Z",
   "level": "warn",
   "msg": "Prezzi EURUSD non disponibili: Dukascopy non raggiungibile per EURUSD/2026/10/22/21h_ticks.bi5: HTTP 503"
@@ -998,5 +983,20 @@
   "t": "2026-11-27T17:01:31Z",
   "level": "warn",
   "msg": "Cambio EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T18:04:10Z",
+  "level": "warn",
+  "msg": "Dow Jones: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T18:05:10Z",
+  "level": "warn",
+  "msg": "EUR/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T18:06:13Z",
+  "level": "warn",
+  "msg": "GBP/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
