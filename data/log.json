@@ -1,10 +1,5 @@
 [
  {
-  "t": "2026-11-22T22:50:39Z",
-  "level": "warn",
-  "msg": "Cambio EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
- },
- {
   "t": "2026-11-22T22:51:32Z",
   "level": "warn",
   "msg": "Errore nel giro: nessun prezzo scaricato"
@@ -996,6 +991,11 @@
  },
  {
   "t": "2026-11-27T21:13:18Z",
+  "level": "warn",
+  "msg": "Argento: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T21:29:03Z",
   "level": "warn",
   "msg": "Argento: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
