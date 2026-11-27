@@ -1,10 +1,5 @@
 [
  {
-  "t": "2026-11-22T23:05:52Z",
-  "level": "warn",
-  "msg": "AUD/USD: fonte prezzi momentaneamente occupata, riprovo da solo."
- },
- {
   "t": "2026-11-22T23:11:46Z",
   "level": "warn",
   "msg": "EUR/GBP: fonte prezzi momentaneamente occupata, riprovo da solo."
@@ -998,5 +993,10 @@
   "t": "2026-11-27T23:23:23Z",
   "level": "warn",
   "msg": "Oro: fonte prezzi momentaneamente occupata, riprovo da solo."
+ },
+ {
+  "t": "2026-11-27T23:53:48Z",
+  "level": "warn",
+  "msg": "S&P 500: fonte prezzi momentaneamente occupata, riprovo da solo."
  }
 ]
